@@ -12,9 +12,6 @@
 
 __version__ = "1.0.0"
 
-# import ApiClient
-from amberelectric.api_client import ApiClient
-
 # import Configuration
 from amberelectric.configuration import Configuration
 
