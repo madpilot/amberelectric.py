@@ -242,7 +242,7 @@ def test_prices_params(mocker, configuration):
     mocker.patch('amberelectric.rest.RESTClientObject.request', mock_prices)
 
     api = AmberApi(RESTClientObject(configuration))
-    prices = api.get_prices('01F5A5CRKMZ5BCX9P1S4V990AM', start_date=date(
+    api.get_prices('01F5A5CRKMZ5BCX9P1S4V990AM', start_date=date(
         2021, 5, 5), end_date=date(2021, 5, 6), resolution=30)
 
 
@@ -322,7 +322,7 @@ def test_current_prices_params(mocker, configuration):
     mocker.patch('amberelectric.rest.RESTClientObject.request', mock_prices)
 
     api = AmberApi(RESTClientObject(configuration))
-    prices = api.get_current_price('01F5A5CRKMZ5BCX9P1S4V990AM', resolution=30)
+    api.get_current_price('01F5A5CRKMZ5BCX9P1S4V990AM', resolution=30)
 
 
 def test_usage_success(mocker, configuration):
@@ -388,3 +388,18 @@ def test_usage_success(mocker, configuration):
     assert(usage.quality == 'estimated')
     assert(usage.cost == 2)
     assert(usage.channelIdentifier == "E1")
+
+
+def test_usage_success_params(mocker, configuration):
+    def mock_prices(self, method, path, query_params=None, headers=None, body=None, post_params=None, _preload_content=True, _request_timeout=None):
+        assert(method == "GET")
+        assert(path == "https://api.amber.com.au/v1/sites/01F5A5CRKMZ5BCX9P1S4V990AM/usage")
+        assert(query_params == {'startDate': '2021-05-05',
+                                'endDate': '2021-05-06', 'resolution': 30})
+        assert(headers == {'Authorization': 'Bearer psk_secret_key'})
+        return MockRestResponse(200, "", "[]".encode('utf-8'))
+
+    mocker.patch('amberelectric.rest.RESTClientObject.request', mock_prices)
+
+    api = AmberApi(RESTClientObject(configuration))
+    api.get_usage('01F5A5CRKMZ5BCX9P1S4V990AM', date(2021, 5, 5), date(2021, 5, 6), resolution=30)
