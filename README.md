@@ -52,7 +52,7 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import time
 import amberelectric
 from pprint import pprint
-from amberelectric.api import default_api
+from amberelectric.api import amber_api
 from amberelectric.model.current_interval import CurrentInterval
 from amberelectric.model.site import Site
 from amberelectric.model.usage import Usage
