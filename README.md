@@ -96,6 +96,10 @@ All URIs are relative to *https://api.amber.com.au/v1*
 
 - **Type**: Bearer authentication
 
+### To generate
+
+Visit [the developer area](https://app.amber.com.au/developers) and click _Generate an API Token_
+
 ## Author
 
 Myles Eftos
