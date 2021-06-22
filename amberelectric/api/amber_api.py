@@ -3,17 +3,17 @@ import json
 import dateutil.parser
 from datetime import date
 
-from ..rest import RESTResponse
-from ..configuration import Configuration
-from ..model.site import Site
-from ..model.current_interval import CurrentInterval
-from ..model.actual_interval import ActualInterval
-from ..model.forecast_interval import ForecastInterval
-from ..model.usage import Usage
-from ..model.tariff_information import TariffInformation
-from ..model.channel import Channel
-from ..model.range import Range
-from ..exceptions import ApiException
+from amberelectric.rest import RESTResponse
+from amberelectric.configuration import Configuration
+from amberelectric.model.site import Site
+from amberelectric.model.current_interval import CurrentInterval
+from amberelectric.model.actual_interval import ActualInterval
+from amberelectric.model.forecast_interval import ForecastInterval
+from amberelectric.model.usage import Usage
+from amberelectric.model.tariff_information import TariffInformation
+from amberelectric.model.channel import Channel
+from amberelectric.model.range import Range
+from amberelectric.exceptions import ApiException
 
 from ..rest import RESTClientObject
 
