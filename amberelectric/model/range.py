@@ -1,5 +1,12 @@
 class Range(object):
-    def __init__(self, min: str, max: str):
+    """When prices are particularly volatile, the API may return a range of prices that are possible."""
+
+    """Estimated minimum price (c/kWh)"""
+    min: float
+    """Estimated maximum price (c/kWh)"""
+    max: float
+
+    def __init__(self, min: float, max: float):
         self.min = min
         self.max = max
 

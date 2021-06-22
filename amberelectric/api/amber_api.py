@@ -149,14 +149,14 @@ class AmberApi:
         url = self._rest_client.configuration.host + path
         return self._rest_client.request(method, url, query_params, headers, body, post_params, _preload_content, _request_timeout)
 
-    def get_sites(self):
+    def get_sites(self) -> List[Site]:
         response = self.request("GET", "/sites")
         if response.status == 200:
             return parse_sites(json.loads(response.data.decode("utf-8")))
         else:
             raise ApiException(response.status, response.reason, response)
 
-    def get_current_price(self, site_id: str, **kwargs) -> CurrentInterval:
+    def get_current_price(self, site_id: str, **kwargs) -> List[CurrentInterval]:
         query_params = {}
         if "resolution" in kwargs:
             query_params["resolution"] = kwargs.get("resolution")
@@ -189,7 +189,7 @@ class AmberApi:
         else:
             raise ApiException(response.status, response.reason, response)
 
-    def get_usage(self, site_id: str, start_date: date, end_date: date, **kwargs) -> Union[ActualInterval, CurrentInterval, ForecastInterval]:
+    def get_usage(self, site_id: str, start_date: date, end_date: date, **kwargs) -> Usage:
         query_params = {'startDate': start_date, 'endDate': end_date}
         if "resolution" in kwargs:
             query_params["resolution"] = kwargs.get("resolution")
