@@ -88,9 +88,6 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
         )
 
     if interval['type'] == 'Usage':
-        if 'channelIdentifier' in interval:
-            optional['channelIdentifier'] = interval['channelIdentifier']
-
         return Usage(
             float(interval['duration']),
             float(interval['spotPerKwh']),
@@ -102,6 +99,7 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
+            interval['channelIdentifier'],
             float(interval['kwh']),
             interval['quality'],
             float(interval['cost']),
