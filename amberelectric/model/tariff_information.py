@@ -8,6 +8,11 @@ class PeriodType(Enum):
     SOLAR_SPONGE = "solarSponge"
     PEAK = "peak"
 
+    def from_str(s: Union[str, None]):
+        possible = list(filter(lambda t: t.value == s, PeriodType))
+        if len(possible) > 0:
+            return possible[0]
+
 
 class SeasonType(Enum):
     SUMMER = "summer"
@@ -19,6 +24,11 @@ class SeasonType(Enum):
     WEEKEND = "weekend"
     WEEKEND_HOLIDAY = "weekendHoliday"
     WEEKDAY = "weekday"
+
+    def from_str(s: Union[str, None]):
+        possible = list(filter(lambda t: t.value == s, SeasonType))
+        if len(possible) > 0:
+            return possible[0]
 
 
 class TariffInformation(object):
@@ -37,10 +47,10 @@ class TariffInformation(object):
     demand_window: Union[bool, None]
 
     def __init__(self, **kwargs):
-        self.period = kwargs.get('period')
-        self.season = kwargs.get('season')
+        self.period = PeriodType.from_str(kwargs.get('period'))
+        self.season = SeasonType.from_str(kwargs.get('season'))
         self.block = kwargs.get('block')
-        self.demand_window = kwargs.get('demand_window')
+        self.demand_window = kwargs.get('demandWindow')
 
     def __repr__(self) -> str:
         return self.to_str()

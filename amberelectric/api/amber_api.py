@@ -22,7 +22,7 @@ def parse_tariff_information(tariff_information: Optional[object]) -> TariffInfo
     if tariff_information is None:
         return None
     else:
-        return TariffInformation(tariff_information)
+        return TariffInformation(**tariff_information)
 
 
 def parse_range(range: Optional[object]) -> Range:
@@ -35,8 +35,8 @@ def parse_range(range: Optional[object]) -> Range:
 def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, ForecastInterval, Usage]:
     optional = {}
 
-    if 'tariff_information' in interval:
-        optional['tariff_information'] = parse_tariff_information(interval['tariff_information'])
+    if 'tariffInformation' in interval:
+        optional['tariff_information'] = parse_tariff_information(interval['tariffInformation'])
 
     if 'range' in interval:
         optional['range'] = parse_range(interval['range'])

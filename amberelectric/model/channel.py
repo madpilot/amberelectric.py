@@ -1,10 +1,16 @@
 from enum import Enum
+from typing import Union
 
 
 class ChannelType(Enum):
     GENERAL = "general"
     CONTROLLED_LOAD = "controlledLoad"
     FEED_IN = "feedIn"
+
+    def from_str(s: Union[str, None]):
+        possible = list(filter(lambda t: t.value == s, ChannelType))
+        if len(possible) > 0:
+            return possible[0]
 
 
 class Channel(object):
@@ -24,7 +30,7 @@ class Channel(object):
 
     def __init__(self, identifier: str, type: ChannelType):
         self.identifier = identifier
-        self.type = type
+        self.type = ChannelType.from_str(type)
 
     def __repr__(self) -> str:
         return self.to_str()

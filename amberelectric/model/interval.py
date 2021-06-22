@@ -1,5 +1,19 @@
 from datetime import date, datetime
+from enum import Enum
+from typing import Union
 from .tariff_information import TariffInformation
+from .channel import ChannelType
+
+
+class SpikeStatus(Enum):
+    NO_SPIKE = "none"
+    POTENTIAL = "potential"
+    SPIKE = "spike"
+
+    def from_str(s: Union[str, None]):
+        possible = list(filter(lambda t: t.value == s, SpikeStatus))
+        if len(possible) > 0:
+            return possible[0]
 
 
 class Interval(object):
@@ -47,8 +61,8 @@ class Interval(object):
         self.start_time = start_time
         self.end_time = end_time
         self.renewables = renewables
-        self.channel_type = channel_type
-        self.spike_status = spike_status
+        self.channel_type = ChannelType.from_str(channel_type)
+        self.spike_status = SpikeStatus.from_str(spike_status)
         self.tariff_information = kwargs.get('tariff_information')
 
     def to_dict(self) -> dict:
