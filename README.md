@@ -16,10 +16,10 @@ Python >= 3.6
 If the python package is hosted on a repository, you can install directly using:
 
 ```sh
-pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
+pip install git+https://github.com/madpilot/amberelectric.py.git
 ```
 
-(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git`)
+(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/madpilot/amberelectric.py.git`)
 
 Then import the package:
 
@@ -56,12 +56,6 @@ from amberelectric.api import amber_api
 from amberelectric.model.current_interval import CurrentInterval
 from amberelectric.model.site import Site
 from amberelectric.model.usage import Usage
-# Defining the host is optional and defaults to https://api.amber.com.au/v1
-# See configuration.py for a list of all supported configuration parameters.
-configuration = amberelectric.Configuration(
-    host = "https://api.amber.com.au/v1"
-)
-
 # The client must configure the authentication and authorization parameters
 # in accordance with the API server security policy.
 # Examples for each auth method are provided below, use the example that
