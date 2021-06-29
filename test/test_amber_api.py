@@ -235,7 +235,7 @@ def test_prices_params(mocker, configuration):
         assert(method == "GET")
         assert(path == "https://api.amber.com.au/v1/sites/01F5A5CRKMZ5BCX9P1S4V990AM/prices")
         assert(query_params == {'startDate': '2021-05-05',
-                                'endDate': '2021-05-06', 'resolution': 30})
+                                'endDate': '2021-05-06', 'resolution': '30'})
         assert(headers == {'Authorization': 'Bearer psk_secret_key'})
         return MockRestResponse(200, "", "[]".encode('utf-8'))
 
@@ -312,17 +312,92 @@ def test_current_price_success(mocker, configuration):
 
 
 def test_current_prices_params(mocker, configuration):
+    json = """
+      [
+        {
+          "type": "ActualInterval",
+          "duration": 5,
+          "spotPerKwh": 6.12,
+          "perKwh": 24.33,
+          "date": "2021-05-05",
+          "nemTime": "2021-05-06T12:00:00+10:00",
+          "startTime": "2021-05-05T01:30:01Z",
+          "endTime": "2021-05-05T02:00:00Z",
+          "renewables": 45,
+          "channelType": "general",
+          "tariffInformation": {
+            "period": "offPeak",
+            "season": "summer",
+            "block": 2,
+            "demandWindow": true
+          },
+          "spikeStatus": "none"
+        },
+        {
+          "type": "CurrentInterval",
+          "duration": 5,
+          "spotPerKwh": 6.12,
+          "perKwh": 24.33,
+          "date": "2021-05-05",
+          "nemTime": "2021-05-06T12:30:00+10:00",
+          "startTime": "2021-05-05T02:00:01Z",
+          "endTime": "2021-05-05T02:30:00Z",
+          "renewables": 45,
+          "channelType": "general",
+          "tariffInformation": {
+            "period": "peak",
+            "season": "weekend",
+            "block": 2,
+            "demandWindow": true
+          },
+          "spikeStatus": "spike",
+          "range": {
+            "min": 0,
+            "max": 100
+          },
+          "estimate": true
+        },
+        {
+          "type": "ForecastInterval",
+          "duration": 5,
+          "spotPerKwh": 6.12,
+          "perKwh": 24.33,
+          "date": "2021-05-05",
+          "nemTime": "2021-05-06T01:30:00+10:00",
+          "startTime": "2021-05-05T03:00:01Z",
+          "endTime": "2021-05-05T03:30:00Z",
+          "renewables": 45,
+          "channelType": "general",
+          "tariffInformation": {
+            "period": "shoulder",
+            "season": "winter",
+            "block": 2,
+            "demandWindow": true
+          },
+          "spikeStatus": "potential",
+          "range": {
+            "min": 10,
+            "max": 90
+          }
+        }
+      ]
+    """
+
     def mock_prices(self, method, path, query_params=None, headers=None, body=None, post_params=None, _preload_content=True, _request_timeout=None):
         assert(method == "GET")
         assert(path == "https://api.amber.com.au/v1/sites/01F5A5CRKMZ5BCX9P1S4V990AM/prices/current")
-        assert(query_params == {'resolution': 30})
+        assert(query_params == {'resolution': '30', 'next': '1', 'previous': '1'})
         assert(headers == {'Authorization': 'Bearer psk_secret_key'})
-        return MockRestResponse(200, "", "[]".encode('utf-8'))
+        return MockRestResponse(200, "", json.encode('utf-8'))
 
     mocker.patch('amberelectric.rest.RESTClientObject.request', mock_prices)
 
     api = AmberApi(RESTClientObject(configuration))
-    api.get_current_price('01F5A5CRKMZ5BCX9P1S4V990AM', resolution=30)
+    prices = api.get_current_price('01F5A5CRKMZ5BCX9P1S4V990AM', resolution=30, next=1, previous=1)
+    assert len(prices) == 3
+    assert(prices[0].__class__ == ActualInterval)
+    assert(prices[1].__class__ == CurrentInterval)
+    assert(prices[2].__class__ == ForecastInterval)
 
 
 def test_usage_success(mocker, configuration):
@@ -395,7 +470,7 @@ def test_usage_success_params(mocker, configuration):
         assert(method == "GET")
         assert(path == "https://api.amber.com.au/v1/sites/01F5A5CRKMZ5BCX9P1S4V990AM/usage")
         assert(query_params == {'startDate': '2021-05-05',
-                                'endDate': '2021-05-06', 'resolution': 30})
+                                'endDate': '2021-05-06', 'resolution': '30'})
         assert(headers == {'Authorization': 'Bearer psk_secret_key'})
         return MockRestResponse(200, "", "[]".encode('utf-8'))
 

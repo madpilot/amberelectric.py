@@ -154,10 +154,14 @@ class AmberApi:
         else:
             raise ApiException(response.status, response.reason, response)
 
-    def get_current_price(self, site_id: str, **kwargs) -> List[CurrentInterval]:
+    def get_current_price(self, site_id: str, **kwargs) -> List[Union[ActualInterval, CurrentInterval, ForecastInterval]]:
         query_params = {}
         if "resolution" in kwargs:
-            query_params["resolution"] = kwargs.get("resolution")
+            query_params["resolution"] = str(kwargs.get("resolution"))
+        if "previous" in kwargs:
+            query_params["previous"] = str(kwargs.get("previous"))
+        if "next" in kwargs:
+            query_params["next"] = str(kwargs.get("next"))
 
         if query_params == {}:
             query_params = None
@@ -168,14 +172,14 @@ class AmberApi:
         else:
             raise ApiException(response.status, response.reason, response)
 
-    def get_prices(self, site_id: str, **kwargs) -> Union[ActualInterval, CurrentInterval, ForecastInterval]:
+    def get_prices(self, site_id: str, **kwargs) -> List[Union[ActualInterval, CurrentInterval, ForecastInterval]]:
         query_params = {}
         if "end_date" in kwargs:
             query_params["endDate"] = kwargs.get("end_date").isoformat()
         if "start_date" in kwargs:
             query_params["startDate"] = kwargs.get("start_date").isoformat()
         if "resolution" in kwargs:
-            query_params["resolution"] = kwargs.get("resolution")
+            query_params["resolution"] = str(kwargs.get("resolution"))
 
         if query_params == {}:
             query_params = None
@@ -190,7 +194,7 @@ class AmberApi:
     def get_usage(self, site_id: str, start_date: date, end_date: date, **kwargs) -> Usage:
         query_params = {'startDate': start_date.isoformat(), 'endDate': end_date.isoformat()}
         if "resolution" in kwargs:
-            query_params["resolution"] = kwargs.get("resolution")
+            query_params["resolution"] = str(kwargs.get("resolution"))
 
         response = self.request("GET", "/sites/" + site_id + "/usage", query_params)
 
