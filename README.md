@@ -1,99 +1,67 @@
-# amberelectric
+# Amber - An entirely new way to buy electricity
 
-Python interface to the Amber Electric Public API: https://app.amber.com.au/developers
+Amber is an Australian-based electricity retailer that pass through the real-time wholesale price of energy.
+
+Because of Amber's wholesale power prices, you can save hundreds of dollars a year by automating high power devices like air-conditioners, heat pumps and pool pumps.
+
+This Python library provides an interface to the API, allowing you to react to current and forecast prices, as well as download your historic usage.
+
+## Details
 
 - API version: 1.0
 - Package version: 1.0.0
 
-## Requirements.
+## Requirements
 
 Python >= 3.6
 
-## Installation & Usage
+## Getting started
+
+Not an Amber customer yet? Join here: https://join.amber.com.au/sign-up
+
+Once your account has been created, you need to create an [API token](https://app.amber.com.au/developers)
+
+## Installation
 
 ### pip install
 
 If the python package is hosted on a repository, you can install directly using:
 
 ```sh
-pip install git+https://github.com/madpilot/amberelectric.py.git
+pip install amberelectric.py
 ```
 
-(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/madpilot/amberelectric.py.git`)
+## Usage
 
-Then import the package:
+### Setup and confirguration
 
 ```python
+# Import the library
 import amberelectric
-```
-
-### Setuptools
-
-Install via [Setuptools](http://pypi.python.org/pypi/setuptools).
-
-```sh
-python setup.py install --user
-```
-
-(or `sudo python setup.py install` to install the package for all users)
-
-Then import the package:
-
-```python
-import amberelectric
-```
-
-## Getting Started
-
-Please follow the [installation procedure](#installation--usage) and then run the following:
-
-```python
-
-import time
-import amberelectric
-from pprint import pprint
 from amberelectric.api import amber_api
-from amberelectric.model.current_interval import CurrentInterval
-from amberelectric.model.site import Site
-from amberelectric.model.usage import Usage
-# The client must configure the authentication and authorization parameters
-# in accordance with the API server security policy.
-# Examples for each auth method are provided below, use the example that
-# satisfies your auth use case.
 
-# Configure Bearer authorization: apiKey
+# These are just for demo purposes...
+from pprint import pprint
+import date from datetime
+
+# Insert the API token you created at https://app.amber.com.au/developers
 configuration = amberelectric.Configuration(
-    access_token = 'YOUR_BEARER_TOKEN'
+    access_token = 'psk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 )
 
+# Create an API instance
 api = amber_api.AmberApi.create(configuration)
+```
+
+### Fetching sites
+
+All the interesting functions require a site id, so find one of those first - they can be identified by the National Metering Identifier (NMI)
+
+```python
 try:
     sites = api.get_sites()
 except amberelectric.ApiException as e:
     print("Exception: %s\n" % e)
 ```
 
-## Documentation for API Endpoints
-
-All URIs are relative to *https://api.amber.com.au/v1*
-
-| Class      | Method                                       | HTTP request                           | Description                        |
-| ---------- | -------------------------------------------- | -------------------------------------- | ---------------------------------- |
-| _AmberApi_ | **get_sites**                                | **GET** /sites                         | Returns all sites                  |
-| _AmberApi_ | **get_prices(site_id)**                      | **GET** /sites/{siteId}/prices/current | Returns all prices for the site    |
-| _AmberApi_ | **get_current_prices(site_id)**              | **GET** /sites/{siteId}/prices         | Returns current price for the site |
-| _AmberApi_ | **get_usage(site_id, start_date, end_date)** | **GET** /sites/{siteId}/usage          | Returns usage for the site         |
-
-## Documentation For Authorization
-
-## apiKey
-
-- **Type**: Bearer authentication
-
-### To generate
-
-Visit [the developer area](https://app.amber.com.au/developers) and click _Generate an API Token_
-
-## Author
-
-Myles Eftos
+This will return an Array of Sites
