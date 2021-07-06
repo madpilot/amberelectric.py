@@ -64,4 +64,4 @@ except amberelectric.ApiException as e:
     print("Exception: %s\n" % e)
 ```
 
-This will return an Array of Sites
+This will return an List of Sites
