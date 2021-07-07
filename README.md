@@ -17,7 +17,7 @@ Python >= 3.6
 
 ## Getting started
 
-Not an Amber customer yet? Join here: https://join.amber.com.au/sign-up
+Not an Amber customer yet? Join here: https://join.amber.com.au/signup
 
 Once your account has been created, you need to create an [API token](https://app.amber.com.au/developers)
 
