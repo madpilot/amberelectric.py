@@ -28,7 +28,7 @@ Once your account has been created, you need to create an [API token](https://ap
 If the python package is hosted on a repository, you can install directly using:
 
 ```sh
-pip install amberelectric.py
+pip install amberelectric
 ```
 
 ## Usage

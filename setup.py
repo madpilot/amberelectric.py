@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages  # noqa: H301
 
-NAME = "amberelectric.py"
+NAME = "amberelectric"
 VERSION = "1.0.0"
 # To install the library, run the following
 #
@@ -20,8 +20,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name=NAME,
     version=VERSION,
-    author="Myles Eftos",
-    author_email="myles@madpilot.com.au",
+    author="Amber Electric",
+    author_email="dev+pypi@amber.com.au",
     url="https://github.com/madpilot/amberelectric.py",
     keywords=["amberelectric"],
     python_requires=">=3.6",
