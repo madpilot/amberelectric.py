@@ -1,6 +1,6 @@
 from typing import Union
 from datetime import date, datetime
-from .interval import Interval
+from .interval import Interval, SpikeStatus, ChannelType
 from .range import Range
 
 
@@ -18,8 +18,8 @@ class ForecastInterval(Interval):
         start_time: datetime,
         end_time: datetime,
         renewables: float,
-        channel_type: str,
-        spike_status: str,
+        channel_type: ChannelType,
+        spike_status: SpikeStatus,
         **kwargs
     ):
         super().__init__(

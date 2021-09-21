@@ -1,6 +1,7 @@
+from amberelectric.model.channel import ChannelType
 from typing import Union
 from datetime import date, datetime
-from .interval import Interval
+from .interval import Interval, SpikeStatus
 from .range import Range
 
 
@@ -19,8 +20,8 @@ class CurrentInterval(Interval):
         start_time: datetime,
         end_time: datetime,
         renewables: float,
-        channel_type: str,
-        spike_status: str,
+        channel_type: ChannelType,
+        spike_status: SpikeStatus,
         estimate: bool,
         **kwargs
     ):
