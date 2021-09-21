@@ -34,9 +34,9 @@ class Interval(object):
     """Percentage of renewables in the grid"""
     renewables: float
     """Meter channel type"""
-    channel_type: str
+    channel_type: ChannelType
     """Indicates whether this interval will potentially spike, or is currently in a spike state"""
-    spike_status: str
+    spike_status: SpikeStatus
     tariff_information: TariffInformation
 
     def __init__(
@@ -49,8 +49,8 @@ class Interval(object):
         start_time: datetime,
         end_time: datetime,
         renewables: float,
-        channel_type: ChannelType,
-        spike_status: SpikeStatus,
+        channel_type: str,
+        spike_status: str,
         **kwargs
     ):
         self.duration = duration

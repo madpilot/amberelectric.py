@@ -20,8 +20,8 @@ class CurrentInterval(Interval):
         start_time: datetime,
         end_time: datetime,
         renewables: float,
-        channel_type: ChannelType,
-        spike_status: SpikeStatus,
+        channel_type: str,
+        spike_status: str,
         estimate: bool,
         **kwargs
     ):

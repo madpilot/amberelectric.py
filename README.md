@@ -9,7 +9,7 @@ This Python library provides an interface to the API, allowing you to react to c
 ## Details
 
 - API version: 1.0
-- Package version: 1.0.2
+- Package version: 1.0.3
 
 ## Requirements
 
