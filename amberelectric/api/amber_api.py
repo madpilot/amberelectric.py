@@ -191,7 +191,7 @@ class AmberApi:
         else:
             raise ApiException(response.status, response.reason, response)
 
-    def get_usage(self, site_id: str, start_date: date, end_date: date, **kwargs) -> Usage:
+    def get_usage(self, site_id: str, start_date: date, end_date: date, **kwargs) -> List[Usage]:
         query_params = {'startDate': start_date.isoformat(), 'endDate': end_date.isoformat()}
         if "resolution" in kwargs:
             query_params["resolution"] = str(kwargs.get("resolution"))

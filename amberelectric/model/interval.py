@@ -49,8 +49,8 @@ class Interval(object):
         start_time: datetime,
         end_time: datetime,
         renewables: float,
-        channel_type: str,
-        spike_status: str,
+        channel_type: ChannelType,
+        spike_status: SpikeStatus,
         **kwargs
     ):
         self.duration = duration
