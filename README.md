@@ -64,7 +64,7 @@ except amberelectric.ApiException as e:
     print("Exception: %s\n" % e)
 ```
 
-This will return an List of Sites
+This will return a List of Sites
 
 ### Fetching Prices
 
@@ -97,8 +97,6 @@ except amberelectric.ApiException as e:
 ```
 
 and the current price plus some number of previous and next intervals
-
-You can also just ask for the current price
 
 ```python
 site_id = sites[0].id
