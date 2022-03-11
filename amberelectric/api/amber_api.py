@@ -53,6 +53,7 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
+            interval['descriptor'],
             **optional
         )
 
@@ -68,6 +69,7 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
+            interval['descriptor'],
             interval['estimate'],
             **optional
         )
@@ -84,6 +86,7 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
+            interval['descriptor'],
             **optional
         )
 
@@ -99,6 +102,7 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
+            interval['descriptor'],
             interval['channelIdentifier'],
             float(interval['kwh']),
             interval['quality'],

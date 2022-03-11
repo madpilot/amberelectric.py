@@ -16,6 +16,21 @@ class SpikeStatus(Enum):
             return possible[0]
 
 
+class Descriptor(Enum):
+    NEGATIVE = "negative"
+    EXTREMELY_LOW = "extremelyLow"
+    VERY_LOW = "veryLow"
+    LOW = "low"
+    NEUTRAL = "neutral"
+    HIGH = "high"
+    SPIKE = "spike"
+
+    def from_str(s: Union[str, None]):
+        possible = list(filter(lambda t: t.value == s, Descriptor))
+        if len(possible) > 0:
+            return possible[0]
+
+
 class Interval(object):
     """Length of the interval in minutes."""
     duration: str
@@ -37,6 +52,9 @@ class Interval(object):
     channel_type: ChannelType
     """Indicates whether this interval will potentially spike, or is currently in a spike state"""
     spike_status: SpikeStatus
+    """Describes the current price. Gives you an indication of how cheap the price is in relation to the average VMO and DMO. Note: Negative is no longer used. It has been replaced with extremelyLow."""
+    descriptor: Descriptor
+
     tariff_information: TariffInformation
 
     def __init__(
@@ -51,6 +69,7 @@ class Interval(object):
         renewables: float,
         channel_type: str,
         spike_status: str,
+        descriptor: str,
         **kwargs
     ):
         self.duration = duration
@@ -63,6 +82,7 @@ class Interval(object):
         self.renewables = renewables
         self.channel_type = ChannelType.from_str(channel_type)
         self.spike_status = SpikeStatus.from_str(spike_status)
+        self.descriptor = Descriptor.from_str(descriptor)
         self.tariff_information = kwargs.get('tariff_information')
 
     def to_dict(self) -> dict:
@@ -77,6 +97,7 @@ class Interval(object):
             "renewables": self.renewables,
             "channel_type": self.channel_type,
             "spike_status": self.spike_status,
+            "descriptor": self.descriptor
         }
 
     def __repr__(self) -> str:

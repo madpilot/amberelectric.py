@@ -16,6 +16,7 @@ class ActualInterval(Interval):
         renewables: float,
         channel_type: str,
         spike_status: str,
+        descriptor: str,
         **kwargs
     ):
         super().__init__(
@@ -29,6 +30,7 @@ class ActualInterval(Interval):
             renewables,
             channel_type,
             spike_status,
+            descriptor,
             **kwargs)
 
     def to_dict(self) -> dict:
