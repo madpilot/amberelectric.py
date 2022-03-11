@@ -22,6 +22,7 @@ class Usage(Interval):
         renewables: float,
         channel_type: str,
         spike_status: str,
+        descriptor: str,
         channelIdentifier: str,
         kwh: float,
         quality: str,
@@ -39,6 +40,7 @@ class Usage(Interval):
             renewables,
             channel_type,
             spike_status,
+            descriptor,
             **kwargs)
 
         self.channelIdentifier = channelIdentifier

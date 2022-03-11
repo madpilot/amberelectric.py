@@ -22,6 +22,7 @@ class CurrentInterval(Interval):
         renewables: float,
         channel_type: str,
         spike_status: str,
+        descriptor: str,
         estimate: bool,
         **kwargs
     ):
@@ -36,6 +37,7 @@ class CurrentInterval(Interval):
             renewables,
             channel_type,
             spike_status,
+            descriptor,
             **kwargs)
 
         self.estimate = estimate

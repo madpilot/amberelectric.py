@@ -1,4 +1,4 @@
-from amberelectric.model.interval import SpikeStatus
+from amberelectric.model.interval import Descriptor, SpikeStatus
 from amberelectric.configuration import Configuration
 from amberelectric.api.amber_api import AmberApi
 from amberelectric.rest import RESTClientObject, RESTResponse
@@ -107,7 +107,8 @@ def test_prices_success(mocker, configuration):
             "block": 2,
             "demandWindow": true
           },
-          "spikeStatus": "none"
+          "spikeStatus": "none",
+          "descriptor": "veryLow"
         },
         {
           "type": "ForecastInterval",
@@ -127,6 +128,7 @@ def test_prices_success(mocker, configuration):
             "demandWindow": true
           },
           "spikeStatus": "potential",
+          "descriptor": "high",
           "range": {
             "min": 10,
             "max": 90
@@ -150,6 +152,7 @@ def test_prices_success(mocker, configuration):
             "demandWindow": true
           },
           "spikeStatus": "spike",
+          "descriptor": "spike",
           "range": {
             "min": 0,
             "max": 100
@@ -187,6 +190,7 @@ def test_prices_success(mocker, configuration):
     assert(actual.renewables == 45.0)
     assert(actual.channel_type == ChannelType.GENERAL)
     assert(actual.spike_status == SpikeStatus.NO_SPIKE)
+    assert(actual.descriptor == Descriptor.VERY_LOW)
     assert(actual.tariff_information.period == PeriodType.OFF_PEAK)
     assert(actual.tariff_information.season == SeasonType.SUMMER)
     assert(actual.tariff_information.block == 2)
@@ -203,6 +207,7 @@ def test_prices_success(mocker, configuration):
     assert(current.renewables == 45.0)
     assert(current.channel_type == ChannelType.GENERAL)
     assert(current.spike_status == SpikeStatus.SPIKE)
+    assert(current.descriptor == Descriptor.SPIKE)
     assert(current.tariff_information.period == PeriodType.PEAK)
     assert(current.tariff_information.season == SeasonType.WEEKEND)
     assert(current.tariff_information.block == 2)
@@ -222,6 +227,7 @@ def test_prices_success(mocker, configuration):
     assert(forecast.renewables == 45.0)
     assert(forecast.channel_type == ChannelType.GENERAL)
     assert(forecast.spike_status == SpikeStatus.POTENTIAL)
+    assert(forecast.descriptor == Descriptor.HIGH)
     assert(forecast.tariff_information.period == PeriodType.SHOULDER)
     assert(forecast.tariff_information.season == SeasonType.WINTER)
     assert(forecast.tariff_information.block == 2)
@@ -267,6 +273,7 @@ def test_current_price_success(mocker, configuration):
             "demandWindow": true
           },
           "spikeStatus": "none",
+          "descriptor": "low",
           "range": {
             "min": 0,
             "max": 0
@@ -302,6 +309,7 @@ def test_current_price_success(mocker, configuration):
     assert(current.renewables == 45.0)
     assert(current.channel_type == ChannelType.GENERAL)
     assert(current.spike_status == SpikeStatus.NO_SPIKE)
+    assert(current.descriptor == Descriptor.LOW)
     assert(current.tariff_information.period == PeriodType.OFF_PEAK)
     assert(current.tariff_information.season == SeasonType.SUMMER)
     assert(current.tariff_information.block == 2)
@@ -331,7 +339,8 @@ def test_current_prices_params(mocker, configuration):
             "block": 2,
             "demandWindow": true
           },
-          "spikeStatus": "none"
+          "spikeStatus": "none",
+          "descriptor": "extremelyLow"
         },
         {
           "type": "CurrentInterval",
@@ -351,6 +360,7 @@ def test_current_prices_params(mocker, configuration):
             "demandWindow": true
           },
           "spikeStatus": "spike",
+          "descriptor": "spike",
           "range": {
             "min": 0,
             "max": 100
@@ -375,6 +385,7 @@ def test_current_prices_params(mocker, configuration):
             "demandWindow": true
           },
           "spikeStatus": "potential",
+          "descriptor": "high",
           "range": {
             "min": 10,
             "max": 90
@@ -421,6 +432,7 @@ def test_usage_success(mocker, configuration):
             "demandWindow": true
           },
           "spikeStatus": "none",
+          "descriptor": "low",
           "channelIdentifier": "E1",
           "kwh": 1,
           "quality": "estimated",
@@ -455,6 +467,7 @@ def test_usage_success(mocker, configuration):
     assert(usage.renewables == 45.0)
     assert(usage.channel_type == ChannelType.GENERAL)
     assert(usage.spike_status == SpikeStatus.NO_SPIKE)
+    assert(usage.descriptor == Descriptor.LOW)
     assert(usage.tariff_information.period == PeriodType.OFF_PEAK)
     assert(usage.tariff_information.season == SeasonType.SUMMER)
     assert(usage.tariff_information.block == 2)

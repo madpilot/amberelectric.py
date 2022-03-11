@@ -20,6 +20,7 @@ class ForecastInterval(Interval):
         renewables: float,
         channel_type: str,
         spike_status: str,
+        descriptor: str,
         **kwargs
     ):
         super().__init__(
@@ -33,6 +34,7 @@ class ForecastInterval(Interval):
             renewables,
             channel_type,
             spike_status,
+            descriptor,
             **kwargs)
 
         self.range = kwargs.get('range')
