@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "amberelectric"
-VERSION = "1.0.3"
+VERSION = "1.0.4"
 # To install the library, run the following
 #
 # python setup.py install
