@@ -116,7 +116,7 @@ def parse_intervals(intervals: List[object]) -> List[Union[ActualInterval, Curre
 
 
 def parse_channel(channel: object) -> Channel:
-    return Channel(channel['identifier'], channel['type'])
+    return Channel(channel['identifier'], channel['type'], channel['tariff'])
 
 
 def parse_channels(channels: List[object]) -> List[Channel]:

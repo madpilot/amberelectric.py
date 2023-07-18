@@ -28,12 +28,13 @@ class Channel(object):
     """Channel type."""
     type: ChannelType
 
-    def __init__(self, identifier: str, type: ChannelType):
+    def __init__(self, identifier: str, type: ChannelType, tariff: str):
         self.identifier = identifier
+        self.tariff = tariff
         self.type = ChannelType.from_str(type)
 
     def __repr__(self) -> str:
         return self.to_str()
 
     def to_str(self):
-        return str({'identifier': self.identifier, 'type': self.type})
+        return str({'identifier': self.identifier, 'type': self.type, 'tariff': self.tariff})
