@@ -42,15 +42,18 @@ def test_sites_success(mocker, configuration):
           "channels": [
             {
               "identifier": "E1",
-              "type": "general"
+              "type": "general",
+              "tariff": "3970"
             },
             {
               "identifier": "E2",
-              "type": "controlledLoad"
+              "type": "controlledLoad",
+              "tariff": "3300"
             },
             {
               "identifier": "B1",
-              "type": "feedIn"
+              "type": "feedIn",
+              "tariff": "9850"
             }
           ]
         }
