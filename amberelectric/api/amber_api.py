@@ -1,7 +1,8 @@
 from typing import List, Optional, Union
 import json
-import dateutil.parser
+from dateutil import tz, parser
 from datetime import date
+import pandas as pd
 
 from amberelectric.rest import RESTResponse
 from amberelectric.configuration import Configuration
@@ -11,7 +12,7 @@ from amberelectric.model.actual_interval import ActualInterval
 from amberelectric.model.forecast_interval import ForecastInterval
 from amberelectric.model.usage import Usage
 from amberelectric.model.tariff_information import TariffInformation
-from amberelectric.model.channel import Channel
+from amberelectric.model.channel import Channel, ChannelType
 from amberelectric.model.range import Range
 from amberelectric.exceptions import ApiException
 
@@ -47,10 +48,10 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['duration']),
             float(interval['spotPerKwh']),
             float(interval['perKwh']),
-            dateutil.parser.isoparse(interval['date']).date(),
-            dateutil.parser.isoparse(interval['nemTime']),
-            dateutil.parser.isoparse(interval['startTime']),
-            dateutil.parser.isoparse(interval['endTime']),
+            parser.isoparse(interval['date']).date(),
+            parser.isoparse(interval['nemTime']),
+            parser.isoparse(interval['startTime']),
+            parser.isoparse(interval['endTime']),
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
@@ -63,10 +64,10 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['duration']),
             float(interval['spotPerKwh']),
             float(interval['perKwh']),
-            dateutil.parser.isoparse(interval['date']).date(),
-            dateutil.parser.isoparse(interval['nemTime']),
-            dateutil.parser.isoparse(interval['startTime']),
-            dateutil.parser.isoparse(interval['endTime']),
+            parser.isoparse(interval['date']).date(),
+            parser.isoparse(interval['nemTime']),
+            parser.isoparse(interval['startTime']),
+            parser.isoparse(interval['endTime']),
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
@@ -80,10 +81,10 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['duration']),
             float(interval['spotPerKwh']),
             float(interval['perKwh']),
-            dateutil.parser.isoparse(interval['date']).date(),
-            dateutil.parser.isoparse(interval['nemTime']),
-            dateutil.parser.isoparse(interval['startTime']),
-            dateutil.parser.isoparse(interval['endTime']),
+            parser.isoparse(interval['date']).date(),
+            parser.isoparse(interval['nemTime']),
+            parser.isoparse(interval['startTime']),
+            parser.isoparse(interval['endTime']),
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
@@ -96,10 +97,10 @@ def parse_interval(interval: object) -> Union[ActualInterval, CurrentInterval, F
             float(interval['duration']),
             float(interval['spotPerKwh']),
             float(interval['perKwh']),
-            dateutil.parser.isoparse(interval['date']).date(),
-            dateutil.parser.isoparse(interval['nemTime']),
-            dateutil.parser.isoparse(interval['startTime']),
-            dateutil.parser.isoparse(interval['endTime']),
+            parser.isoparse(interval['date']).date(),
+            parser.isoparse(interval['nemTime']),
+            parser.isoparse(interval['startTime']),
+            parser.isoparse(interval['endTime']),
             float(interval['renewables']),
             interval['channelType'],
             interval['spikeStatus'],
@@ -207,3 +208,24 @@ class AmberApi:
             return parse_intervals(json.loads(response.data.decode("utf-8")))
         else:
             raise ApiException(response.status, response.reason, response)
+        
+    def get_usage_dateframe(self, site_id: str, start_date: date, end_date: date, **kwargs):
+        response = self.get_usage(site_id, start_date, end_date, **kwargs)
+        df1 = pd.DataFrame([row.to_dict() for row in response])
+        if len(df1) == 0:
+            raise Exception('No data found for site %s' % site_id)
+        timezone = kwargs.get('timezone', 'Australia/Brisbane')
+        df1['nem_time'] = pd.to_datetime(df1['nem_time']).dt.tz_convert(tz.gettz(timezone))
+        df1.index = df1['nem_time']
+        df1.sort_index(inplace=True)
+        feed_in = df1[df1['channel_type'] == ChannelType.FEED_IN]
+        general = df1[df1['channel_type'] == ChannelType.GENERAL]
+        amber_prices = feed_in.copy()
+        # Rename Price to feed_in_tariff
+        amber_prices.rename(columns={'per_kwh': 'feed_in_tariff'}, inplace=True)
+        amber_prices.rename(columns={'kwh': 'feed_in_kwh'}, inplace=True)
+        amber_prices.rename(columns={'cost': 'feed_in_cost'}, inplace=True)
+        amber_prices['general_tariff'] = general['per_kwh']
+        amber_prices['general_kwh'] = general['kwh']
+        amber_prices['general_cost'] = general['cost']
+        return amber_prices
