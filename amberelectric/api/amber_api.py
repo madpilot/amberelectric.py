@@ -16,6 +16,7 @@ from amberelectric.model.range import Range
 from amberelectric.exceptions import ApiException
 
 from ..rest import RESTClientObject
+AMBER_DATE_FORMAT = '%Y-%m-%d'
 
 
 def parse_tariff_information(tariff_information: Optional[object]) -> TariffInformation:
@@ -179,9 +180,9 @@ class AmberApi:
     def get_prices(self, site_id: str, **kwargs) -> List[Union[ActualInterval, CurrentInterval, ForecastInterval]]:
         query_params = {}
         if "end_date" in kwargs:
-            query_params["endDate"] = kwargs.get("end_date").isoformat()
+            query_params["endDate"] = kwargs.get("end_date").strftime(AMBER_DATE_FORMAT)
         if "start_date" in kwargs:
-            query_params["startDate"] = kwargs.get("start_date").isoformat()
+            query_params["startDate"] = kwargs.get("start_date").strftime(AMBER_DATE_FORMAT)
         if "resolution" in kwargs:
             query_params["resolution"] = str(kwargs.get("resolution"))
 
@@ -196,7 +197,7 @@ class AmberApi:
             raise ApiException(response.status, response.reason, response)
 
     def get_usage(self, site_id: str, start_date: date, end_date: date, **kwargs) -> List[Usage]:
-        query_params = {'startDate': start_date.isoformat(), 'endDate': end_date.isoformat()}
+        query_params = {'startDate': start_date.strftime(AMBER_DATE_FORMAT), 'endDate': end_date.strftime(AMBER_DATE_FORMAT)}
         if "resolution" in kwargs:
             query_params["resolution"] = str(kwargs.get("resolution"))
 
