@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List
+from typing import List, Union
 from .channel import Channel
 from enum import Enum
 
@@ -10,7 +10,7 @@ class SiteStatus(Enum):
     CLOSED = "closed"
 
     @staticmethod
-    def from_str(s: str | None):
+    def from_str(s: Union[str, None]):
         possible = list(filter(lambda t: t.value == s, SiteStatus))
         if len(possible) > 0:
             return possible[0]
@@ -25,8 +25,8 @@ class Site(object):
         channels: List[Channel],
         network: str,
         status: SiteStatus,
-        active_from: date | None,
-        closed_on: date | None,
+        active_from: Union[date, None],
+        closed_on: Union[date, None],
     ):
         self.id = id
         self.nmi = nmi

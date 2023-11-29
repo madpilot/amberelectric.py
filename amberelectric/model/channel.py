@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Union
 
 
 class ChannelType(Enum):
@@ -7,7 +8,7 @@ class ChannelType(Enum):
     FEED_IN = "feedIn"
 
     @staticmethod
-    def from_str(s: str | None):
+    def from_str(s: Union[str, None]):
         possible = list(filter(lambda t: t.value == s, ChannelType))
         if len(possible) > 0:
             return possible[0]

@@ -22,14 +22,14 @@ ISO_DATE_FORMAT = "%Y-%m-%d"
 
 def parse_tariff_information(
     tariff_information: Optional[dict],
-) -> TariffInformation | None:
+) -> Union[TariffInformation, None]:
     if tariff_information is None:
         return None
     else:
         return TariffInformation(**tariff_information)
 
 
-def parse_range(range: Optional[dict]) -> Range | None:
+def parse_range(range: Optional[dict]) -> Union[Range, None]:
     if range is None:
         return None
     else:
