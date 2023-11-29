@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Union
 
 
 class ChannelType(Enum):
@@ -7,10 +6,12 @@ class ChannelType(Enum):
     CONTROLLED_LOAD = "controlledLoad"
     FEED_IN = "feedIn"
 
-    def from_str(s: Union[str, None]):
+    @staticmethod
+    def from_str(s: str | None):
         possible = list(filter(lambda t: t.value == s, ChannelType))
         if len(possible) > 0:
             return possible[0]
+        return None
 
 
 class Channel(object):
@@ -20,7 +21,8 @@ class Channel(object):
 
     Controlled loads are only on for a limited time during the day (usually when the load on the network is low, or generation is high) - you may have your hot water system attached to this channel.
 
-    The feed in channel sends power back to the grid - you will have these types of channels if you have solar or batteries."""
+    The feed in channel sends power back to the grid - you will have these types of channels if you have solar or batteries.
+    """
 
     """Identifier of the channel"""
     identifier: str
@@ -28,12 +30,15 @@ class Channel(object):
     """Channel type."""
     type: ChannelType
 
-    def __init__(self, identifier: str, type: ChannelType):
+    def __init__(self, identifier: str, type: ChannelType, tariff: str):
         self.identifier = identifier
-        self.type = ChannelType.from_str(type)
+        self.type = type
+        self.tariff = tariff
 
     def __repr__(self) -> str:
         return self.to_str()
 
     def to_str(self):
-        return str({'identifier': self.identifier, 'type': self.type})
+        return str(
+            {"identifier": self.identifier, "type": self.type, "tariff": self.tariff}
+        )
