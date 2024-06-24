@@ -31,4 +31,7 @@ setup(
     description="Interface to the Amber Electric API, allowing you to download current and forecast price, as well as download your historic usage.",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    classifiers = [
+      "License :: OSI Approved :: Apache Software License",
+    ]
 )
