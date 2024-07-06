@@ -9,11 +9,13 @@ This Python library provides an interface to the API, allowing you to react to c
 ## Details
 
 - API version: 1.0
-- Package version: 1.1.0
+- Package version: 2.0.0
+- Generator version: 7.7.0
+- Build package: org.openapitools.codegen.languages.PythonClientCodegen
 
-## Requirements
+## Requirements.
 
-Python >= 3.7
+Python 3.7+
 
 ## Getting started
 
@@ -21,100 +23,127 @@ Not an Amber customer yet? Join here: https://join.amber.com.au/signup
 
 Once your account has been created, you need to create an [API token](https://app.amber.com.au/developers)
 
-## Installation
+## Installation & Usage
 
 ### pip install
 
 If the python package is hosted on a repository, you can install directly using:
 
 ```sh
-pip install amberelectric
+pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
 ```
 
-## Usage
+(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git`)
 
-### Setup and confirguration
+Then import the package:
 
 ```python
-# Import the library
 import amberelectric
-from amberelectric.api import amber_api
+```
 
-# These are just for demo purposes...
+### Setuptools
+
+Install via [Setuptools](http://pypi.python.org/pypi/setuptools).
+
+```sh
+python setup.py install --user
+```
+
+(or `sudo python setup.py install` to install the package for all users)
+
+Then import the package:
+
+```python
+import amberelectric
+```
+
+### Tests
+
+Execute `pytest` to run the tests.
+
+## Getting Started
+
+Please follow the [installation procedure](#installation--usage) and then run the following:
+
+```python
+
+import amberelectric
+from amberelectric.rest import ApiException
 from pprint import pprint
-from datetime import date
 
-# Insert the API token you created at https://app.amber.com.au/developers
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: apiKey
 configuration = amberelectric.Configuration(
     access_token = 'psk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 )
 
-# Create an API instance
-api = amber_api.AmberApi.create(configuration)
+
+# Enter a context with an instance of the API client
+async with amberelectric.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amberelectric.DefaultApi(api_client)
+    site_id = 'site_id_example' # str | ID of the site you are fetching prices for. Can be found using the `/sites` enpoint
+    next = 56 # int | Return the _next_ number of forecast intervals (optional)
+    previous = 56 # int | Return the _previous_ number of actual intervals. (optional)
+    resolution = 30 # int | Specify the required interval duration resolution. Valid options: 30. Default: 30 (optional) (default to 30)
+
+    try:
+        api_response = await api_instance.get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
+        print("The response of DefaultApi->get_current_prices:\n")
+        pprint(api_response)
+    except ApiException as e:
+        print("Exception when calling DefaultApi->get_current_prices: %s\n" % e)
+
 ```
 
-### Fetching Sites
+## Documentation for API Endpoints
 
-All the interesting functions require a site id, so find one of those first - they can be identified by the National Metering Identifier (NMI)
+All URIs are relative to *https://api.amber.com.au/v1*
 
-```python
-try:
-    sites = api.get_sites()
-except amberelectric.ApiException as e:
-    print("Exception: %s\n" % e)
-```
+| Class        | Method                                                                  | HTTP request                              | Description |
+| ------------ | ----------------------------------------------------------------------- | ----------------------------------------- | ----------- |
+| _DefaultApi_ | [**get_current_prices**](docs/DefaultApi.md#get_current_prices)         | **GET** /sites/{siteId}/prices/current    |
+| _DefaultApi_ | [**get_current_renewables**](docs/DefaultApi.md#get_current_renewables) | **GET** /state/{state}/renewables/current |
+| _DefaultApi_ | [**get_prices**](docs/DefaultApi.md#get_prices)                         | **GET** /sites/{siteId}/prices            |
+| _DefaultApi_ | [**get_sites**](docs/DefaultApi.md#get_sites)                           | **GET** /sites                            |
+| _DefaultApi_ | [**get_usage**](docs/DefaultApi.md#get_usage)                           | **GET** /sites/{siteId}/usage             |
 
-This will return a List of Sites
+## Documentation For Models
 
-### Fetching Prices
+- [ActualInterval](docs/ActualInterval.md)
+- [ActualRenewable](docs/ActualRenewable.md)
+- [AdvancedPrice](docs/AdvancedPrice.md)
+- [Channel](docs/Channel.md)
+- [ChannelType](docs/ChannelType.md)
+- [CurrentInterval](docs/CurrentInterval.md)
+- [CurrentRenewable](docs/CurrentRenewable.md)
+- [ForecastInterval](docs/ForecastInterval.md)
+- [ForecastRenewable](docs/ForecastRenewable.md)
+- [GetCurrentRenewables200ResponseInner](docs/GetCurrentRenewables200ResponseInner.md)
+- [GetPrices200ResponseInner](docs/GetPrices200ResponseInner.md)
+- [Interval](docs/Interval.md)
+- [PriceDescriptor](docs/PriceDescriptor.md)
+- [Range](docs/Range.md)
+- [Renewable](docs/Renewable.md)
+- [RenewableDescriptor](docs/RenewableDescriptor.md)
+- [Site](docs/Site.md)
+- [SpikeStatus](docs/SpikeStatus.md)
+- [TariffInformation](docs/TariffInformation.md)
+- [Usage](docs/Usage.md)
 
-The API allows you to fetch previous, current and forecast prices by day.
+<a id="documentation-for-authorization"></a>
 
-If no start_date or end_date is supplied, it default to the current day.
+## Documentation For Authorization
 
-Note: If duration is 30, there will be 48 intervals per channel. A duration of
-5 returns 288 intervals.
+Authentication schemes defined for the API:
+<a id="apiKey"></a>
 
-```python
-site_id = sites[0].id
-try:
-    start_date = date(2021, 6, 1)
-    end_date = date(2021, 6, 2)
-    range = api.get_prices(site_id, start_date=start_date, end_date=end_date)
-    today = api.get_prices(site_id)
-except amberelectric.ApiException as e:
-    print("Exception: %s\n" % e)
-```
+### apiKey
 
-You can also just ask for the current price
+- **Type**: Bearer authentication
 
-```python
-site_id = sites[0].id
-try:
-    current = api.get_current_prices(site_id)
-except amberelectric.ApiException as e:
-    print("Exception: %s\n" % e)
-```
-
-and the current price plus some number of previous and next intervals
-
-```python
-site_id = sites[0].id
-try:
-    current = api.get_current_price(site_id, next=4)
-    # returns the current interval and the next 4 forecast intervasl
-except amberelectric.ApiException as e:
-    print("Exception: %s\n" % e)
-```
-
-### Usage
-
-You can request your usage for a given day.
-
-```python
-site_id = sites[0].id
-try:
-    usage = api.get_usage(site_id, date(2021, 6, 1), date(2021, 6, 1))
-except amberelectric.ApiException as e:
-    print("Exception: %s\n" % e)
-```
+## Author

@@ -1,7 +1,6 @@
 # coding: utf-8
 
 # flake8: noqa
-
 """
     Amber Electric Public API
 
@@ -14,23 +13,7 @@
 """  # noqa: E501
 
 
-__version__ = "2.0.0"
-
-# import apis into sdk package
-from amberelectric.api.default_api import DefaultApi
-
-# import ApiClient
-from amberelectric.api_response import ApiResponse
-from amberelectric.api_client import ApiClient
-from amberelectric.configuration import Configuration
-from amberelectric.exceptions import OpenApiException
-from amberelectric.exceptions import ApiTypeError
-from amberelectric.exceptions import ApiValueError
-from amberelectric.exceptions import ApiKeyError
-from amberelectric.exceptions import ApiAttributeError
-from amberelectric.exceptions import ApiException
-
-# import models into sdk package
+# import models into model package
 from amberelectric.models.actual_interval import ActualInterval
 from amberelectric.models.actual_renewable import ActualRenewable
 from amberelectric.models.advanced_price import AdvancedPrice
