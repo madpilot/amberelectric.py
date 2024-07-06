@@ -3,7 +3,6 @@
 One time interval
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -30,7 +29,7 @@ json = "{}"
 # create an instance of BaseInterval from a JSON string
 base_interval_instance = BaseInterval.from_json(json)
 # print the JSON string representation of the object
-print(BaseInterval.to_json())
+print BaseInterval.to_json()
 
 # convert the object into a dict
 base_interval_dict = base_interval_instance.to_dict()

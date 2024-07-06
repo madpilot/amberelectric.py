@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -32,7 +31,7 @@ json = "{}"
 # create an instance of Interval from a JSON string
 interval_instance = Interval.from_json(json)
 # print the JSON string representation of the object
-print(Interval.to_json())
+print Interval.to_json()
 
 # convert the object into a dict
 interval_dict = interval_instance.to_dict()

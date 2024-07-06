@@ -3,7 +3,6 @@
 Amber has created an advanced forecast system, that represents our confidence in the AEMO forecast. The range indicates where we think the price will land for a given interval.
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **low** | **float** | The lower bound of our prediction band. Price includes network and market fees. (c/kWh). | 
@@ -19,7 +18,7 @@ json = "{}"
 # create an instance of AdvancedPrice from a JSON string
 advanced_price_instance = AdvancedPrice.from_json(json)
 # print the JSON string representation of the object
-print(AdvancedPrice.to_json())
+print AdvancedPrice.to_json()
 
 # convert the object into a dict
 advanced_price_dict = advanced_price_instance.to_dict()

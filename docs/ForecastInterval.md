@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -31,7 +30,7 @@ json = "{}"
 # create an instance of ForecastInterval from a JSON string
 forecast_interval_instance = ForecastInterval.from_json(json)
 # print the JSON string representation of the object
-print(ForecastInterval.to_json())
+print ForecastInterval.to_json()
 
 # convert the object into a dict
 forecast_interval_dict = forecast_interval_instance.to_dict()

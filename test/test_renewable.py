@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.renewable import Renewable
+from amberelectric.models.renewable import Renewable  # noqa: E501
 
 class TestRenewable(unittest.TestCase):
     """Renewable unit test stubs"""
@@ -28,12 +29,12 @@ class TestRenewable(unittest.TestCase):
 
     def make_instance(self, include_optional) -> Renewable:
         """Test Renewable
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `Renewable`
         """
-        model = Renewable()
+        model = Renewable()  # noqa: E501
         if include_optional:
             return Renewable(
                 type = 'ForecastRenewable',

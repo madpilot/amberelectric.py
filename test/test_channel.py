@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.channel import Channel
+from amberelectric.models.channel import Channel  # noqa: E501
 
 class TestChannel(unittest.TestCase):
     """Channel unit test stubs"""
@@ -28,12 +29,12 @@ class TestChannel(unittest.TestCase):
 
     def make_instance(self, include_optional) -> Channel:
         """Test Channel
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `Channel`
         """
-        model = Channel()
+        model = Channel()  # noqa: E501
         if include_optional:
             return Channel(
                 identifier = 'E1',

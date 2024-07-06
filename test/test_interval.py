@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.interval import Interval
+from amberelectric.models.interval import Interval  # noqa: E501
 
 class TestInterval(unittest.TestCase):
     """Interval unit test stubs"""
@@ -28,12 +29,12 @@ class TestInterval(unittest.TestCase):
 
     def make_instance(self, include_optional) -> Interval:
         """Test Interval
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `Interval`
         """
-        model = Interval()
+        model = Interval()  # noqa: E501
         if include_optional:
             return Interval(
                 type = 'ActualInterval',

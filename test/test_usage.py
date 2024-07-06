@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.usage import Usage
+from amberelectric.models.usage import Usage  # noqa: E501
 
 class TestUsage(unittest.TestCase):
     """Usage unit test stubs"""
@@ -28,12 +29,12 @@ class TestUsage(unittest.TestCase):
 
     def make_instance(self, include_optional) -> Usage:
         """Test Usage
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `Usage`
         """
-        model = Usage()
+        model = Usage()  # noqa: E501
         if include_optional:
             return Usage(
                 type = 'Usage',

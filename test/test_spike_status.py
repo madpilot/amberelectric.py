@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.spike_status import SpikeStatus
+from amberelectric.models.spike_status import SpikeStatus  # noqa: E501
 
 class TestSpikeStatus(unittest.TestCase):
     """SpikeStatus unit test stubs"""

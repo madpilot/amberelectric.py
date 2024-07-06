@@ -13,10 +13,13 @@
 """  # noqa: E501
 
 
-from __future__ import annotations
 import json
-from enum import Enum
-from typing_extensions import Self
+import pprint
+import re  # noqa: F401
+from aenum import Enum, no_arg
+
+
+
 
 
 class SpikeStatus(str, Enum):
@@ -32,8 +35,8 @@ class SpikeStatus(str, Enum):
     SPIKE = 'spike'
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> SpikeStatus:
         """Create an instance of SpikeStatus from a JSON string"""
-        return cls(json.loads(json_str))
+        return SpikeStatus(json.loads(json_str))
 
 

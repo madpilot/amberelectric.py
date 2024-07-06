@@ -15,14 +15,14 @@
 
 import unittest
 
-from amberelectric.api.amber_api import AmberApi
+from amberelectric.api.amber_api import AmberApi  # noqa: E501
 
 
 class TestAmberApi(unittest.TestCase):
     """AmberApi unit test stubs"""
 
     def setUp(self) -> None:
-        self.api = AmberApi()
+        self.api = AmberApi()  # noqa: E501
 
     def tearDown(self) -> None:
         pass

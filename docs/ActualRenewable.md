@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -24,7 +23,7 @@ json = "{}"
 # create an instance of ActualRenewable from a JSON string
 actual_renewable_instance = ActualRenewable.from_json(json)
 # print the JSON string representation of the object
-print(ActualRenewable.to_json())
+print ActualRenewable.to_json()
 
 # convert the object into a dict
 actual_renewable_dict = actual_renewable_instance.to_dict()

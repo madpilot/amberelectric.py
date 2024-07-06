@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.forecast_interval import ForecastInterval
+from amberelectric.models.forecast_interval import ForecastInterval  # noqa: E501
 
 class TestForecastInterval(unittest.TestCase):
     """ForecastInterval unit test stubs"""
@@ -28,12 +29,12 @@ class TestForecastInterval(unittest.TestCase):
 
     def make_instance(self, include_optional) -> ForecastInterval:
         """Test ForecastInterval
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `ForecastInterval`
         """
-        model = ForecastInterval()
+        model = ForecastInterval()  # noqa: E501
         if include_optional:
             return ForecastInterval(
                 type = 'ForecastInterval',

@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.renewable_descriptor import RenewableDescriptor
+from amberelectric.models.renewable_descriptor import RenewableDescriptor  # noqa: E501
 
 class TestRenewableDescriptor(unittest.TestCase):
     """RenewableDescriptor unit test stubs"""

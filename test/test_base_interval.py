@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.base_interval import BaseInterval
+from amberelectric.models.base_interval import BaseInterval  # noqa: E501
 
 class TestBaseInterval(unittest.TestCase):
     """BaseInterval unit test stubs"""
@@ -28,12 +29,12 @@ class TestBaseInterval(unittest.TestCase):
 
     def make_instance(self, include_optional) -> BaseInterval:
         """Test BaseInterval
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `BaseInterval`
         """
-        model = BaseInterval()
+        model = BaseInterval()  # noqa: E501
         if include_optional:
             return BaseInterval(
                 type = '',

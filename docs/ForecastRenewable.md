@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -24,7 +23,7 @@ json = "{}"
 # create an instance of ForecastRenewable from a JSON string
 forecast_renewable_instance = ForecastRenewable.from_json(json)
 # print the JSON string representation of the object
-print(ForecastRenewable.to_json())
+print ForecastRenewable.to_json()
 
 # convert the object into a dict
 forecast_renewable_dict = forecast_renewable_instance.to_dict()

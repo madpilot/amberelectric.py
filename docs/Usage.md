@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -33,7 +32,7 @@ json = "{}"
 # create an instance of Usage from a JSON string
 usage_instance = Usage.from_json(json)
 # print the JSON string representation of the object
-print(Usage.to_json())
+print Usage.to_json()
 
 # convert the object into a dict
 usage_dict = usage_instance.to_dict()

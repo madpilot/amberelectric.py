@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **str** | Unique Site Identifier | 
@@ -23,7 +22,7 @@ json = "{}"
 # create an instance of Site from a JSON string
 site_instance = Site.from_json(json)
 # print the JSON string representation of the object
-print(Site.to_json())
+print Site.to_json()
 
 # convert the object into a dict
 site_dict = site_instance.to_dict()

@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.range import Range
+from amberelectric.models.range import Range  # noqa: E501
 
 class TestRange(unittest.TestCase):
     """Range unit test stubs"""
@@ -28,12 +29,12 @@ class TestRange(unittest.TestCase):
 
     def make_instance(self, include_optional) -> Range:
         """Test Range
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `Range`
         """
-        model = Range()
+        model = Range()  # noqa: E501
         if include_optional:
             return Range(
                 min = 1.337,

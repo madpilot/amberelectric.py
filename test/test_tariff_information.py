@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.tariff_information import TariffInformation
+from amberelectric.models.tariff_information import TariffInformation  # noqa: E501
 
 class TestTariffInformation(unittest.TestCase):
     """TariffInformation unit test stubs"""
@@ -28,12 +29,12 @@ class TestTariffInformation(unittest.TestCase):
 
     def make_instance(self, include_optional) -> TariffInformation:
         """Test TariffInformation
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `TariffInformation`
         """
-        model = TariffInformation()
+        model = TariffInformation()  # noqa: E501
         if include_optional:
             return TariffInformation(
                 period = 'offPeak',

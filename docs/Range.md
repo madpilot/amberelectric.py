@@ -3,7 +3,6 @@
 When prices are particularly volatile, the API may return a range of NEM spot prices (c/kWh) that are possible.
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **min** | **float** | Estimated minimum price (c/kWh) | 
@@ -19,7 +18,7 @@ json = "{}"
 # create an instance of Range from a JSON string
 range_instance = Range.from_json(json)
 # print the JSON string representation of the object
-print(Range.to_json())
+print Range.to_json()
 
 # convert the object into a dict
 range_dict = range_instance.to_dict()

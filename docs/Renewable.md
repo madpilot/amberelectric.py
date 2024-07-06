@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -24,7 +23,7 @@ json = "{}"
 # create an instance of Renewable from a JSON string
 renewable_instance = Renewable.from_json(json)
 # print the JSON string representation of the object
-print(Renewable.to_json())
+print Renewable.to_json()
 
 # convert the object into a dict
 renewable_dict = renewable_instance.to_dict()

@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.advanced_price import AdvancedPrice
+from amberelectric.models.advanced_price import AdvancedPrice  # noqa: E501
 
 class TestAdvancedPrice(unittest.TestCase):
     """AdvancedPrice unit test stubs"""
@@ -28,12 +29,12 @@ class TestAdvancedPrice(unittest.TestCase):
 
     def make_instance(self, include_optional) -> AdvancedPrice:
         """Test AdvancedPrice
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `AdvancedPrice`
         """
-        model = AdvancedPrice()
+        model = AdvancedPrice()  # noqa: E501
         if include_optional:
             return AdvancedPrice(
                 low = 1.337,

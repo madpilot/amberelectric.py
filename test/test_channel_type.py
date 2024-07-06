@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.channel_type import ChannelType
+from amberelectric.models.channel_type import ChannelType  # noqa: E501
 
 class TestChannelType(unittest.TestCase):
     """ChannelType unit test stubs"""

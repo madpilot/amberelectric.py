@@ -21,8 +21,9 @@ Returns the current price
 ### Example
 
 * Bearer Authentication (apiKey):
-
 ```python
+import time
+import os
 import amberelectric
 from amberelectric.models.interval import Interval
 from amberelectric.rest import ApiException
@@ -65,7 +66,6 @@ async with amberelectric.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **site_id** | **str**| ID of the site you are fetching prices for. Can be found using the &#x60;/sites&#x60; enpoint | 
@@ -87,7 +87,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | The current price on all channels.&lt;br&gt;&lt;br&gt;Return Order: General &gt; Controlled Load &gt; Feed In.&lt;br&gt;&lt;br&gt;**NOTE**: If a channel is added or removed the index offset will change. It is best to filter or group the array by channel type. |  * RateLimit-Limit -  <br>  * RateLimit-Remaining -  <br>  * RateLimit-Reset -  <br>  * RateLimit-Policy -  <br>  |
@@ -107,8 +106,9 @@ Returns the current percentage of renewables in the grid
 
 ### Example
 
-
 ```python
+import time
+import os
 import amberelectric
 from amberelectric.models.renewable import Renewable
 from amberelectric.rest import ApiException
@@ -142,7 +142,6 @@ async with amberelectric.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **state** | **str**| State you would like the renewables for. Valid states: nsw, sa, qld, vic | 
@@ -164,7 +163,6 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | The current percentage of renewables in the grid. |  * RateLimit-Limit -  <br>  * RateLimit-Remaining -  <br>  * RateLimit-Reset -  <br>  * RateLimit-Policy -  <br>  |
@@ -184,8 +182,9 @@ Returns all the prices between the start and end dates
 ### Example
 
 * Bearer Authentication (apiKey):
-
 ```python
+import time
+import os
 import amberelectric
 from amberelectric.models.interval import Interval
 from amberelectric.rest import ApiException
@@ -228,7 +227,6 @@ async with amberelectric.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **site_id** | **str**| ID of the site you are fetching prices for. Can be found using the &#x60;/sites&#x60; endpoint | 
@@ -250,7 +248,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of priced intervals&lt;br&gt;&lt;br&gt;Return Order: General &gt; Controlled Load &gt; Feed In.&lt;br&gt;&lt;br&gt;**NOTE**: If a channel is added or removed the index offset will change. It is best to filter or group the array by channel type. |  * RateLimit-Limit -  <br>  * RateLimit-Remaining -  <br>  * RateLimit-Reset -  <br>  * RateLimit-Policy -  <br>  |
@@ -271,8 +268,9 @@ Return all sites linked to your account
 ### Example
 
 * Bearer Authentication (apiKey):
-
 ```python
+import time
+import os
 import amberelectric
 from amberelectric.models.site import Site
 from amberelectric.rest import ApiException
@@ -310,7 +308,6 @@ async with amberelectric.ApiClient(configuration) as api_client:
 
 
 ### Parameters
-
 This endpoint does not need any parameter.
 
 ### Return type
@@ -327,7 +324,6 @@ This endpoint does not need any parameter.
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of sites. |  * RateLimit-Limit -  <br>  * RateLimit-Remaining -  <br>  * RateLimit-Reset -  <br>  * RateLimit-Policy -  <br>  |
@@ -346,8 +342,9 @@ Returns all usage data between the start and end dates. The API can only return 
 ### Example
 
 * Bearer Authentication (apiKey):
-
 ```python
+import time
+import os
 import amberelectric
 from amberelectric.models.usage import Usage
 from amberelectric.rest import ApiException
@@ -390,7 +387,6 @@ async with amberelectric.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **site_id** | **str**| ID of the site you are fetching usage for. Can be found using the &#x60;/sites&#x60; enpoint | 
@@ -412,7 +408,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Usage for the requested period.&lt;br&gt;&lt;br&gt;Return Order: General &gt; Controlled Load &gt; Feed In.&lt;br&gt;&lt;br&gt;**NOTE**: If a channel is added or removed the index offset will change. It is best to filter or group the array by channel type. |  * RateLimit-Limit -  <br>  * RateLimit-Remaining -  <br>  * RateLimit-Reset -  <br>  * RateLimit-Policy -  <br>  |

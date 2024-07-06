@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.current_interval import CurrentInterval
+from amberelectric.models.current_interval import CurrentInterval  # noqa: E501
 
 class TestCurrentInterval(unittest.TestCase):
     """CurrentInterval unit test stubs"""
@@ -28,12 +29,12 @@ class TestCurrentInterval(unittest.TestCase):
 
     def make_instance(self, include_optional) -> CurrentInterval:
         """Test CurrentInterval
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `CurrentInterval`
         """
-        model = CurrentInterval()
+        model = CurrentInterval()  # noqa: E501
         if include_optional:
             return CurrentInterval(
                 type = 'CurrentInterval',

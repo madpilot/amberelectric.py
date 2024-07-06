@@ -3,7 +3,6 @@
 Information about how your tariff affects an interval
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **period** | **str** | The Time of Use period that is currently active. Only available if the site in on a time of use tariff | [optional] 
@@ -21,7 +20,7 @@ json = "{}"
 # create an instance of TariffInformation from a JSON string
 tariff_information_instance = TariffInformation.from_json(json)
 # print the JSON string representation of the object
-print(TariffInformation.to_json())
+print TariffInformation.to_json()
 
 # convert the object into a dict
 tariff_information_dict = tariff_information_instance.to_dict()

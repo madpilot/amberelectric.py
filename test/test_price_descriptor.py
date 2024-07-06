@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.price_descriptor import PriceDescriptor
+from amberelectric.models.price_descriptor import PriceDescriptor  # noqa: E501
 
 class TestPriceDescriptor(unittest.TestCase):
     """PriceDescriptor unit test stubs"""

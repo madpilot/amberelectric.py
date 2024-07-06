@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.models.site import Site
+from amberelectric.models.site import Site  # noqa: E501
 
 class TestSite(unittest.TestCase):
     """Site unit test stubs"""
@@ -28,12 +29,12 @@ class TestSite(unittest.TestCase):
 
     def make_instance(self, include_optional) -> Site:
         """Test Site
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `Site`
         """
-        model = Site()
+        model = Site()  # noqa: E501
         if include_optional:
             return Site(
                 id = '01F5A5CRKMZ5BCX9P1S4V990AM',

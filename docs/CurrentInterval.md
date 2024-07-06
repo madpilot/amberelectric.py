@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | **str** |  | 
@@ -32,7 +31,7 @@ json = "{}"
 # create an instance of CurrentInterval from a JSON string
 current_interval_instance = CurrentInterval.from_json(json)
 # print the JSON string representation of the object
-print(CurrentInterval.to_json())
+print CurrentInterval.to_json()
 
 # convert the object into a dict
 current_interval_dict = current_interval_instance.to_dict()
