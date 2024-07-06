@@ -5,7 +5,7 @@
 README.md
 amberelectric/__init__.py
 amberelectric/api/__init__.py
-amberelectric/api/default_api.py
+amberelectric/api/amber_api.py
 amberelectric/api_client.py
 amberelectric/api_response.py
 amberelectric/configuration.py
@@ -13,7 +13,6 @@ amberelectric/exceptions.py
 amberelectric/models/__init__.py
 amberelectric/models/actual_interval.py
 amberelectric/models/actual_renewable.py
-amberelectric/models/advanced_price.py
 amberelectric/models/channel.py
 amberelectric/models/channel_type.py
 amberelectric/models/current_interval.py
@@ -35,12 +34,11 @@ amberelectric/py.typed
 amberelectric/rest.py
 docs/ActualInterval.md
 docs/ActualRenewable.md
-docs/AdvancedPrice.md
+docs/AmberApi.md
 docs/Channel.md
 docs/ChannelType.md
 docs/CurrentInterval.md
 docs/CurrentRenewable.md
-docs/DefaultApi.md
 docs/ForecastInterval.md
 docs/ForecastRenewable.md
 docs/GetCurrentRenewables200ResponseInner.md

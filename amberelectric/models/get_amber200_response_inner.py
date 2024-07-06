@@ -25,11 +25,11 @@ from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-GETPRICES200RESPONSEINNER_ONE_OF_SCHEMAS = ["ActualInterval", "CurrentInterval", "ForecastInterval"]
+GETAMBER200RESPONSEINNER_ONE_OF_SCHEMAS = ["ActualInterval", "CurrentInterval", "ForecastInterval"]
 
-class GetPrices200ResponseInner(BaseModel):
+class GetAmber200ResponseInner(BaseModel):
     """
-    GetPrices200ResponseInner
+    GetAmber200ResponseInner
     """
     # data type: ActualInterval
     oneof_schema_1_validator: Optional[ActualInterval] = None
@@ -61,7 +61,7 @@ class GetPrices200ResponseInner(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = GetPrices200ResponseInner.model_construct()
+        instance = GetAmber200ResponseInner.model_construct()
         error_messages = []
         match = 0
         # validate data type: ActualInterval
@@ -81,10 +81,10 @@ class GetPrices200ResponseInner(BaseModel):
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in GetPrices200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in GetAmber200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in GetPrices200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in GetAmber200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -120,10 +120,10 @@ class GetPrices200ResponseInner(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into GetPrices200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into GetAmber200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into GetPrices200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into GetAmber200ResponseInner with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
         else:
             return instance
 

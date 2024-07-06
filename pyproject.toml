@@ -2,8 +2,8 @@
 name = "amberelectric"
 version = "2.0.0"
 description = "Amber Electric Public API"
-authors = ["OpenAPI Generator Community <team@openapitools.org>"]
-license = "NoLicense"
+authors = ["Amber Electric Development Team <dev@amber.com.au>"]
+license = "Apache Software License"
 readme = "README.md"
 repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Amber Electric Public API"]

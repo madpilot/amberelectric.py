@@ -19,7 +19,6 @@ Name | Type | Description | Notes
 **descriptor** | [**PriceDescriptor**](PriceDescriptor.md) |  | 
 **type** | **str** |  | 
 **range** | [**Range**](Range.md) |  | [optional] 
-**advanced_price** | [**AdvancedPrice**](AdvancedPrice.md) |  | [optional] 
 
 ## Example
 

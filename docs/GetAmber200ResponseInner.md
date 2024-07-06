@@ -1,4 +1,4 @@
-# CurrentInterval
+# GetAmber200ResponseInner
 
 
 ## Properties
@@ -24,19 +24,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from amberelectric.models.current_interval import CurrentInterval
+from amberelectric.models.get_amber200_response_inner import GetAmber200ResponseInner
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of CurrentInterval from a JSON string
-current_interval_instance = CurrentInterval.from_json(json)
+# create an instance of GetAmber200ResponseInner from a JSON string
+get_amber200_response_inner_instance = GetAmber200ResponseInner.from_json(json)
 # print the JSON string representation of the object
-print(CurrentInterval.to_json())
+print(GetAmber200ResponseInner.to_json())
 
 # convert the object into a dict
-current_interval_dict = current_interval_instance.to_dict()
-# create an instance of CurrentInterval from a dict
-current_interval_from_dict = CurrentInterval.from_dict(current_interval_dict)
+get_amber200_response_inner_dict = get_amber200_response_inner_instance.to_dict()
+# create an instance of GetAmber200ResponseInner from a dict
+get_amber200_response_inner_from_dict = GetAmber200ResponseInner.from_dict(get_amber200_response_inner_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

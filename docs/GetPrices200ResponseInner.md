@@ -20,7 +20,6 @@ Name | Type | Description | Notes
 **type** | **str** |  | 
 **range** | [**Range**](Range.md) |  | [optional] 
 **estimate** | **bool** | Shows true the current price is an estimate. Shows false is the price has been locked in. | 
-**advanced_price** | [**AdvancedPrice**](AdvancedPrice.md) |  | [optional] 
 
 ## Example
 
