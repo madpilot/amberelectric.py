@@ -29,9 +29,9 @@ from amberelectric.models.tariff_information import TariffInformation
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ActualInterval(BaseModel):
+class BaseInterval(BaseModel):
     """
-    ActualInterval
+    One time interval
     """ # noqa: E501
     type: StrictStr
     duration: StrictInt = Field(description="Length of the interval in minutes.")
@@ -47,13 +47,6 @@ class ActualInterval(BaseModel):
     spike_status: SpikeStatus = Field(alias="spikeStatus")
     descriptor: PriceDescriptor
     __properties: ClassVar[List[str]] = ["type", "duration", "spotPerKwh", "perKwh", "date", "nemTime", "startTime", "endTime", "renewables", "channelType", "tariffInformation", "spikeStatus", "descriptor"]
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['ActualInterval']):
-            raise ValueError("must be one of enum values ('ActualInterval')")
-        return value
 
     @field_validator('duration')
     def duration_validate_enum(cls, value):
@@ -80,7 +73,7 @@ class ActualInterval(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ActualInterval from a JSON string"""
+        """Create an instance of BaseInterval from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -113,7 +106,7 @@ class ActualInterval(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ActualInterval from a dict"""
+        """Create an instance of BaseInterval from a dict"""
         if obj is None:
             return None
 

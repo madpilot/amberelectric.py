@@ -20,40 +20,25 @@ import json
 
 from datetime import date, datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
-from amberelectric.models.channel_type import ChannelType
-from amberelectric.models.price_descriptor import PriceDescriptor
-from amberelectric.models.spike_status import SpikeStatus
-from amberelectric.models.tariff_information import TariffInformation
+from amberelectric.models.renewable_descriptor import RenewableDescriptor
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ActualInterval(BaseModel):
+class BaseRenewable(BaseModel):
     """
-    ActualInterval
+    Renewable data
     """ # noqa: E501
     type: StrictStr
     duration: StrictInt = Field(description="Length of the interval in minutes.")
-    spot_per_kwh: float = Field(description="NEM spot price (c/kWh). This is the price generators get paid to generate electricity, and what drives the variable component of your perKwh price - includes GST", alias="spotPerKwh")
-    per_kwh: float = Field(description="Number of cents you will pay per kilowatt-hour (c/kWh) - includes GST", alias="perKwh")
     var_date: date = Field(description="Date the interval belongs to (in NEM time). This may be different to the date component of nemTime, as the last interval of the day ends at 12:00 the following day. Formatted as a ISO 8601 date", alias="date")
     nem_time: datetime = Field(description="The interval's NEM time. This represents the time at the end of the interval UTC+10. Formatted as a ISO 8601 time", alias="nemTime")
     start_time: datetime = Field(description="Start time of the interval in UTC. Formatted as a ISO 8601 time", alias="startTime")
     end_time: datetime = Field(description="End time of the interval in UTC. Formatted as a ISO 8601 time", alias="endTime")
     renewables: Annotated[float, Field(le=100, ge=0)] = Field(description="Percentage of renewables in the grid")
-    channel_type: ChannelType = Field(alias="channelType")
-    tariff_information: Optional[TariffInformation] = Field(default=None, alias="tariffInformation")
-    spike_status: SpikeStatus = Field(alias="spikeStatus")
-    descriptor: PriceDescriptor
-    __properties: ClassVar[List[str]] = ["type", "duration", "spotPerKwh", "perKwh", "date", "nemTime", "startTime", "endTime", "renewables", "channelType", "tariffInformation", "spikeStatus", "descriptor"]
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['ActualInterval']):
-            raise ValueError("must be one of enum values ('ActualInterval')")
-        return value
+    descriptor: RenewableDescriptor
+    __properties: ClassVar[List[str]] = ["type", "duration", "date", "nemTime", "startTime", "endTime", "renewables", "descriptor"]
 
     @field_validator('duration')
     def duration_validate_enum(cls, value):
@@ -80,7 +65,7 @@ class ActualInterval(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ActualInterval from a JSON string"""
+        """Create an instance of BaseRenewable from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -101,19 +86,11 @@ class ActualInterval(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of tariff_information
-        if self.tariff_information:
-            _dict['tariffInformation'] = self.tariff_information.to_dict()
-        # set to None if tariff_information (nullable) is None
-        # and model_fields_set contains the field
-        if self.tariff_information is None and "tariff_information" in self.model_fields_set:
-            _dict['tariffInformation'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ActualInterval from a dict"""
+        """Create an instance of BaseRenewable from a dict"""
         if obj is None:
             return None
 
@@ -123,16 +100,11 @@ class ActualInterval(BaseModel):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "duration": obj.get("duration"),
-            "spotPerKwh": obj.get("spotPerKwh"),
-            "perKwh": obj.get("perKwh"),
             "date": obj.get("date"),
             "nemTime": obj.get("nemTime"),
             "startTime": obj.get("startTime"),
             "endTime": obj.get("endTime"),
             "renewables": obj.get("renewables"),
-            "channelType": obj.get("channelType"),
-            "tariffInformation": TariffInformation.from_dict(obj["tariffInformation"]) if obj.get("tariffInformation") is not None else None,
-            "spikeStatus": obj.get("spikeStatus"),
             "descriptor": obj.get("descriptor")
         })
         return _obj

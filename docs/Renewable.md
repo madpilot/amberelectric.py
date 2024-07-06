@@ -1,6 +1,5 @@
 # Renewable
 
-Renewable data
 
 ## Properties
 

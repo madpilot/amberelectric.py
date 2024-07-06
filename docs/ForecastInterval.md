@@ -5,6 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**type** | **str** |  | 
 **duration** | **int** | Length of the interval in minutes. | 
 **spot_per_kwh** | **float** | NEM spot price (c/kWh). This is the price generators get paid to generate electricity, and what drives the variable component of your perKwh price - includes GST | 
 **per_kwh** | **float** | Number of cents you will pay per kilowatt-hour (c/kWh) - includes GST | 
@@ -17,8 +18,8 @@ Name | Type | Description | Notes
 **tariff_information** | [**TariffInformation**](TariffInformation.md) |  | [optional] 
 **spike_status** | [**SpikeStatus**](SpikeStatus.md) |  | 
 **descriptor** | [**PriceDescriptor**](PriceDescriptor.md) |  | 
-**type** | **str** |  | 
 **range** | [**Range**](Range.md) |  | [optional] 
+**advanced_price** | [**AdvancedPrice**](AdvancedPrice.md) |  | [optional] 
 
 ## Example
 

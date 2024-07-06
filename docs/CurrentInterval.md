@@ -5,6 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**type** | **str** |  | 
 **duration** | **int** | Length of the interval in minutes. | 
 **spot_per_kwh** | **float** | NEM spot price (c/kWh). This is the price generators get paid to generate electricity, and what drives the variable component of your perKwh price - includes GST | 
 **per_kwh** | **float** | Number of cents you will pay per kilowatt-hour (c/kWh) - includes GST | 
@@ -17,9 +18,9 @@ Name | Type | Description | Notes
 **tariff_information** | [**TariffInformation**](TariffInformation.md) |  | [optional] 
 **spike_status** | [**SpikeStatus**](SpikeStatus.md) |  | 
 **descriptor** | [**PriceDescriptor**](PriceDescriptor.md) |  | 
-**type** | **str** |  | 
 **range** | [**Range**](Range.md) |  | [optional] 
 **estimate** | **bool** | Shows true the current price is an estimate. Shows false is the price has been locked in. | 
+**advanced_price** | [**AdvancedPrice**](AdvancedPrice.md) | Amber has created an advanced forecast system, that represents our confidence in the AEMO forecast. The range indicates where we think the price will land for a given interval. The advanced price will only be returned if the current price is an estimate. | [optional] 
 
 ## Example
 

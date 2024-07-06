@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **get_current_prices**
-> List[GetPrices200ResponseInner] get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
+> List[Interval] get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
 
 
 
@@ -24,7 +24,7 @@ Returns the current price
 
 ```python
 import amberelectric
-from amberelectric.models.get_prices200_response_inner import GetPrices200ResponseInner
+from amberelectric.models.interval import Interval
 from amberelectric.rest import ApiException
 from pprint import pprint
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List[GetPrices200ResponseInner]**](GetPrices200ResponseInner.md)
+[**List[Interval]**](Interval.md)
 
 ### Authorization
 
@@ -99,7 +99,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_current_renewables**
-> List[GetCurrentRenewables200ResponseInner] get_current_renewables(state, next=next, previous=previous, resolution=resolution)
+> List[Renewable] get_current_renewables(state, next=next, previous=previous, resolution=resolution)
 
 
 
@@ -110,7 +110,7 @@ Returns the current percentage of renewables in the grid
 
 ```python
 import amberelectric
-from amberelectric.models.get_current_renewables200_response_inner import GetCurrentRenewables200ResponseInner
+from amberelectric.models.renewable import Renewable
 from amberelectric.rest import ApiException
 from pprint import pprint
 
@@ -152,7 +152,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List[GetCurrentRenewables200ResponseInner]**](GetCurrentRenewables200ResponseInner.md)
+[**List[Renewable]**](Renewable.md)
 
 ### Authorization
 
@@ -175,7 +175,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_prices**
-> List[GetPrices200ResponseInner] get_prices(site_id, start_date=start_date, end_date=end_date, resolution=resolution)
+> List[Interval] get_prices(site_id, start_date=start_date, end_date=end_date, resolution=resolution)
 
 
 
@@ -187,7 +187,7 @@ Returns all the prices between the start and end dates
 
 ```python
 import amberelectric
-from amberelectric.models.get_prices200_response_inner import GetPrices200ResponseInner
+from amberelectric.models.interval import Interval
 from amberelectric.rest import ApiException
 from pprint import pprint
 
@@ -238,7 +238,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List[GetPrices200ResponseInner]**](GetPrices200ResponseInner.md)
+[**List[Interval]**](Interval.md)
 
 ### Authorization
 
