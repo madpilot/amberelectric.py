@@ -79,7 +79,7 @@ configuration = amberelectric.Configuration(
 
 
 # Enter a context with an instance of the API client
-async with amberelectric.ApiClient(configuration) as api_client:
+with amberelectric.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = amberelectric.AmberApi(api_client)
     site_id = '01J23BAP2SFA218BMV8A73Y9Z9' # str | ID of the site you are fetching prices for. Can be found using the `/sites` enpoint
@@ -88,7 +88,7 @@ async with amberelectric.ApiClient(configuration) as api_client:
     resolution = 30 # int | Specify the required interval duration resolution. Valid options: 30. Default: 30 (optional) (default to 30)
 
     try:
-        api_response = await api_instance.get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
+        api_response = api_instance.get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
         print("The response of AmberApi->get_current_prices:\n")
         pprint(api_response)
     except ApiException as e:

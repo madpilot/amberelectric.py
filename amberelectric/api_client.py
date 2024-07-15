@@ -18,6 +18,7 @@ import datetime
 from dateutil.parser import parse
 import json
 import mimetypes
+from multiprocessing.pool import ThreadPool
 import os
 import re
 import tempfile
@@ -45,6 +46,8 @@ class ApiClient:
         the API.
     :param cookie: a cookie to include in the header when making calls
         to the API
+    :param pool_threads: The number of threads to use for async requests
+        to the API. More threads means more concurrent API requests.
     """
 
     PRIMITIVE_TYPES = (float, bool, bytes, str, int)
@@ -61,11 +64,12 @@ class ApiClient:
     _pool = None
 
     def __init__(self, configuration=None, header_name=None, header_value=None,
-                 cookie=None) -> None:
+                 cookie=None, pool_threads=1) -> None:
         # use default configuration if none is provided
         if configuration is None:
             configuration = Configuration.get_default()
         self.configuration = configuration
+        self.pool_threads = pool_threads
 
         self.rest_client = rest.RESTClientObject(configuration)
         self.default_headers = {}
@@ -76,14 +80,29 @@ class ApiClient:
         self.user_agent = 'OpenAPI-Generator/2.0.0/python'
         self.client_side_validation = configuration.client_side_validation
 
-    async def __aenter__(self):
+    def __enter__(self):
         return self
 
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.close()
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
 
-    async def close(self):
-        await self.rest_client.close()
+    def close(self):
+        if self._pool:
+            self._pool.close()
+            self._pool.join()
+            self._pool = None
+            if hasattr(atexit, 'unregister'):
+                atexit.unregister(self.close)
+
+    @property
+    def pool(self):
+        """Create thread pool on first request
+         avoids instantiating unused threadpool for blocking clients.
+        """
+        if self._pool is None:
+            atexit.register(self.close)
+            self._pool = ThreadPool(self.pool_threads)
+        return self._pool
 
     @property
     def user_agent(self):
@@ -124,7 +143,7 @@ class ApiClient:
         """
         cls._default = default
 
-    async def __call_api(
+    def __call_api(
             self, resource_path, method, path_params=None,
             query_params=None, header_params=None, body=None, post_params=None,
             files=None, response_types_map=None, auth_settings=None,
@@ -190,7 +209,7 @@ class ApiClient:
 
         try:
             # perform request and return response
-            response_data = await self.request(
+            response_data = self.request(
                 method, url,
                 query_params=query_params,
                 headers=header_params,
@@ -339,14 +358,16 @@ class ApiClient:
         else:
             return self.__deserialize_model(data, klass)
 
-    async def call_api(self, resource_path, method,
+    def call_api(self, resource_path, method,
                  path_params=None, query_params=None, header_params=None,
                  body=None, post_params=None, files=None,
                  response_types_map=None, auth_settings=None,
-                 _return_http_data_only=None,
+                 async_req=None, _return_http_data_only=None,
                  collection_formats=None, _preload_content=True,
                  _request_timeout=None, _host=None, _request_auth=None):
         """Makes the HTTP request (synchronous) and returns deserialized data.
+
+        To make an async_req request, set the async_req parameter.
 
         :param resource_path: Path to method endpoint.
         :param method: Method to call.
@@ -361,6 +382,7 @@ class ApiClient:
         :param response: Response data type.
         :param files dict: key -> filename, value -> filepath,
             for `multipart/form-data`.
+        :param async_req bool: execute request asynchronously
         :param _return_http_data_only: response data instead of ApiResponse
                                        object with status code, headers, etc
         :param _preload_content: if False, the ApiResponse.data will
@@ -378,7 +400,11 @@ class ApiClient:
                               in the spec for a single request.
         :type _request_token: dict, optional
         :return:
-            The response.
+            If async_req parameter is True,
+            the request will be called asynchronously.
+            The method will return the request thread.
+            If parameter async_req is False or missing,
+            then the method will return the response directly.
         """
         args = (
             resource_path,
@@ -398,32 +424,35 @@ class ApiClient:
             _host,
             _request_auth,
         )
-        return await self.__call_api(*args)
+        if not async_req:
+            return self.__call_api(*args)
 
-    async def request(self, method, url, query_params=None, headers=None,
+        return self.pool.apply_async(self.__call_api, args)
+
+    def request(self, method, url, query_params=None, headers=None,
                 post_params=None, body=None, _preload_content=True,
                 _request_timeout=None):
         """Makes the HTTP request using RESTClient."""
         if method == "GET":
-            return await self.rest_client.get_request(url,
+            return self.rest_client.get_request(url,
                                         query_params=query_params,
                                         _preload_content=_preload_content,
                                         _request_timeout=_request_timeout,
                                         headers=headers)
         elif method == "HEAD":
-            return await self.rest_client.head_request(url,
+            return self.rest_client.head_request(url,
                                          query_params=query_params,
                                          _preload_content=_preload_content,
                                          _request_timeout=_request_timeout,
                                          headers=headers)
         elif method == "OPTIONS":
-            return await self.rest_client.options_request(url,
+            return self.rest_client.options_request(url,
                                             query_params=query_params,
                                             headers=headers,
                                             _preload_content=_preload_content,
                                             _request_timeout=_request_timeout)
         elif method == "POST":
-            return await self.rest_client.post_request(url,
+            return self.rest_client.post_request(url,
                                          query_params=query_params,
                                          headers=headers,
                                          post_params=post_params,
@@ -431,7 +460,7 @@ class ApiClient:
                                          _request_timeout=_request_timeout,
                                          body=body)
         elif method == "PUT":
-            return await self.rest_client.put_request(url,
+            return self.rest_client.put_request(url,
                                         query_params=query_params,
                                         headers=headers,
                                         post_params=post_params,
@@ -439,7 +468,7 @@ class ApiClient:
                                         _request_timeout=_request_timeout,
                                         body=body)
         elif method == "PATCH":
-            return await self.rest_client.patch_request(url,
+            return self.rest_client.patch_request(url,
                                           query_params=query_params,
                                           headers=headers,
                                           post_params=post_params,
@@ -447,7 +476,7 @@ class ApiClient:
                                           _request_timeout=_request_timeout,
                                           body=body)
         elif method == "DELETE":
-            return await self.rest_client.delete_request(url,
+            return self.rest_client.delete_request(url,
                                            query_params=query_params,
                                            headers=headers,
                                            _preload_content=_preload_content,
