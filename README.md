@@ -128,6 +128,7 @@ Class | Method | HTTP request | Description
  - [Renewable](docs/Renewable.md)
  - [RenewableDescriptor](docs/RenewableDescriptor.md)
  - [Site](docs/Site.md)
+ - [SiteStatus](docs/SiteStatus.md)
  - [SpikeStatus](docs/SpikeStatus.md)
  - [TariffInformation](docs/TariffInformation.md)
  - [Usage](docs/Usage.md)

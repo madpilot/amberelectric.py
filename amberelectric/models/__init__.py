@@ -32,6 +32,7 @@ from amberelectric.models.range import Range
 from amberelectric.models.renewable import Renewable
 from amberelectric.models.renewable_descriptor import RenewableDescriptor
 from amberelectric.models.site import Site
+from amberelectric.models.site_status import SiteStatus
 from amberelectric.models.spike_status import SpikeStatus
 from amberelectric.models.tariff_information import TariffInformation
 from amberelectric.models.usage import Usage

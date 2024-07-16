@@ -28,6 +28,7 @@ amberelectric/models/range.py
 amberelectric/models/renewable.py
 amberelectric/models/renewable_descriptor.py
 amberelectric/models/site.py
+amberelectric/models/site_status.py
 amberelectric/models/spike_status.py
 amberelectric/models/tariff_information.py
 amberelectric/models/usage.py
@@ -51,6 +52,7 @@ docs/Range.md
 docs/Renewable.md
 docs/RenewableDescriptor.md
 docs/Site.md
+docs/SiteStatus.md
 docs/SpikeStatus.md
 docs/TariffInformation.md
 docs/Usage.md
@@ -61,4 +63,5 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_site_status.py
 tox.ini

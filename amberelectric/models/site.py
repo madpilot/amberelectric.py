@@ -20,8 +20,9 @@ import json
 
 from datetime import date
 from typing import List, Optional
-from pydantic import BaseModel, Field, StrictStr, conlist, constr, validator
+from pydantic import BaseModel, Field, StrictStr, conlist, constr
 from amberelectric.models.channel import Channel
+from amberelectric.models.site_status import SiteStatus
 
 class Site(BaseModel):
     """
@@ -31,17 +32,10 @@ class Site(BaseModel):
     nmi: constr(strict=True, max_length=11, min_length=10) = Field(default=..., description="National Metering Identifier (NMI) for the site")
     channels: conlist(Channel) = Field(default=..., description="List of channels that are readable from your meter")
     network: StrictStr = Field(default=..., description="The name of the site's network")
-    status: StrictStr = Field(default=..., description="Site status.  Pending sites are still in the process of being transferred. Note: We only include sites that have correct address details. If you expect to see a site, but don't, you may need to contact [info@amber.com.au](mailto:info@amber.com.au) to check that the address is correct.  Active sites are ones that we actively supply electricity to.  Closed sites are old sites that we no longer supply.")
+    status: SiteStatus = Field(...)
     active_from: Optional[date] = Field(default=None, alias="activeFrom", description="Date the site became active. This date will be in the future for pending sites. It may also be undefined, though if it is, contact [info@amber.com.au](mailto:info@amber.com.au) - there may be an issue with your address. Formatted as a ISO 8601 date when present.")
     closed_on: Optional[date] = Field(default=None, alias="closedOn", description="Date the site closed. Undefined if the site is pending or active. Formatted as a ISO 8601 date when present.")
     __properties = ["id", "nmi", "channels", "network", "status", "activeFrom", "closedOn"]
-
-    @validator('status')
-    def status_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in ('pending', 'active', 'closed'):
-            raise ValueError("must be one of enum values ('pending', 'active', 'closed')")
-        return value
 
     class Config:
         """Pydantic configuration"""
