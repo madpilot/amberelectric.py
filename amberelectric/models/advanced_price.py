@@ -27,8 +27,9 @@ class AdvancedPrice(BaseModel):
     Amber has created an advanced forecast system, that represents our confidence in the AEMO forecast. The range indicates where we think the price will land for a given interval.  # noqa: E501
     """
     low: float = Field(default=..., description="The lower bound of our prediction band. Price includes network and market fees. (c/kWh).")
+    predicted: float = Field(default=..., description="The predicted price. Use this if you need a single number for forecasting against. Price includes network and market fees. (c/kWh).")
     high: float = Field(default=..., description="The upper bound of our prediction band. Price includes network and market fees. (c/kWh).")
-    __properties = ["low", "high"]
+    __properties = ["low", "predicted", "high"]
 
     class Config:
         """Pydantic configuration"""
@@ -67,6 +68,7 @@ class AdvancedPrice(BaseModel):
 
         _obj = AdvancedPrice.parse_obj({
             "low": obj.get("low"),
+            "predicted": obj.get("predicted"),
             "high": obj.get("high")
         })
         return _obj
