@@ -14,49 +14,22 @@
 
 
 import unittest
+import datetime
 
-from amberelectric.api.amber_api import AmberApi  # noqa: E501
+from amberelectric.models.price_descriptor import PriceDescriptor  # noqa: E501
 
+class TestPriceDescriptor(unittest.TestCase):
+    """PriceDescriptor unit test stubs"""
 
-class TestAmberApi(unittest.TestCase):
-    """AmberApi unit test stubs"""
-
-    def setUp(self) -> None:
-        self.api = AmberApi()  # noqa: E501
-
-    def tearDown(self) -> None:
+    def setUp(self):
         pass
 
-    def test_get_current_prices(self) -> None:
-        """Test case for get_current_prices
-
-        """
+    def tearDown(self):
         pass
 
-    def test_get_current_renewables(self) -> None:
-        """Test case for get_current_renewables
-
-        """
-        pass
-
-    def test_get_prices(self) -> None:
-        """Test case for get_prices
-
-        """
-        pass
-
-    def test_get_sites(self) -> None:
-        """Test case for get_sites
-
-        """
-        pass
-
-    def test_get_usage(self) -> None:
-        """Test case for get_usage
-
-        """
-        pass
-
+    def testPriceDescriptor(self):
+        """Test PriceDescriptor"""
+        # inst = PriceDescriptor()
 
 if __name__ == '__main__':
     unittest.main()
