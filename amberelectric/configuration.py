@@ -15,16 +15,25 @@
 
 import copy
 import logging
+import multiprocessing
 import sys
 import urllib3
 
 import http.client as httplib
 
 JSON_SCHEMA_VALIDATION_KEYWORDS = {
-    'multipleOf', 'maximum', 'exclusiveMaximum',
-    'minimum', 'exclusiveMinimum', 'maxLength',
-    'minLength', 'pattern', 'maxItems', 'minItems'
+    "multipleOf",
+    "maximum",
+    "exclusiveMaximum",
+    "minimum",
+    "exclusiveMinimum",
+    "maxLength",
+    "minLength",
+    "pattern",
+    "maxItems",
+    "minItems",
 }
+
 
 class Configuration:
     """This class contains various settings of the API client.
@@ -58,16 +67,21 @@ class Configuration:
 
     _default = None
 
-    def __init__(self, host=None,
-                 api_key=None, api_key_prefix=None,
-                 username=None, password=None,
-                 access_token=None,
-                 server_index=None, server_variables=None,
-                 server_operation_index=None, server_operation_variables=None,
-                 ssl_ca_cert=None,
-                 ) -> None:
-        """Constructor
-        """
+    def __init__(
+        self,
+        host=None,
+        api_key=None,
+        api_key_prefix=None,
+        username=None,
+        password=None,
+        access_token=None,
+        server_index=None,
+        server_variables=None,
+        server_operation_index=None,
+        server_operation_variables=None,
+        ssl_ca_cert=None,
+    ) -> None:
+        """Constructor"""
         self._base_path = "https://api.amber.com.au/v1" if host is None else host
         """Default Base url
         """
@@ -110,7 +124,7 @@ class Configuration:
         """
         self.logger["package_logger"] = logging.getLogger("amberelectric")
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
-        self.logger_format = '%(asctime)s %(levelname)s %(message)s'
+        self.logger_format = "%(asctime)s %(levelname)s %(message)s"
         """Log format
         """
         self.logger_stream_handler = None
@@ -148,9 +162,12 @@ class Configuration:
            Set this to the SNI value expected by the server.
         """
 
-        self.connection_pool_maxsize = 100
-        """This value is passed to the aiohttp to limit simultaneous connections.
-           Default values is 100, None means no-limit.
+        self.connection_pool_maxsize = multiprocessing.cpu_count() * 5
+        """urllib3 connection pool's maximum number of connections saved
+           per pool. urllib3 uses 1 connection as default value, but this is
+           not the best value when you are making a lot of possibly parallel
+           requests to the same host, which is often the case here.
+           cpu_count * 5 is used as default value to increase performance.
         """
 
         self.proxy = None
@@ -159,7 +176,7 @@ class Configuration:
         self.proxy_headers = None
         """Proxy headers
         """
-        self.safe_chars_for_path_param = ''
+        self.safe_chars_for_path_param = ""
         """Safe chars for path_param
         """
         self.retries = None
@@ -185,7 +202,7 @@ class Configuration:
         result = cls.__new__(cls)
         memo[id(self)] = result
         for k, v in self.__dict__.items():
-            if k not in ('logger', 'logger_file_handler'):
+            if k not in ("logger", "logger_file_handler"):
                 setattr(result, k, copy.deepcopy(v, memo))
         # shallow copy of loggers
         result.logger = copy.copy(self.logger)
@@ -326,7 +343,9 @@ class Configuration:
         """
         if self.refresh_api_key_hook is not None:
             self.refresh_api_key_hook(self)
-        key = self.api_key.get(identifier, self.api_key.get(alias) if alias is not None else None)
+        key = self.api_key.get(
+            identifier, self.api_key.get(alias) if alias is not None else None
+        )
         if key:
             prefix = self.api_key_prefix.get(identifier)
             if prefix:
@@ -345,9 +364,9 @@ class Configuration:
         password = ""
         if self.password is not None:
             password = self.password
-        return urllib3.util.make_headers(
-            basic_auth=username + ':' + password
-        ).get('authorization')
+        return urllib3.util.make_headers(basic_auth=username + ":" + password).get(
+            "authorization"
+        )
 
     def auth_settings(self):
         """Gets Auth Settings dict for api client.
@@ -356,11 +375,11 @@ class Configuration:
         """
         auth = {}
         if self.access_token is not None:
-            auth['apiKey'] = {
-                'type': 'bearer',
-                'in': 'header',
-                'key': 'Authorization',
-                'value': 'Bearer ' + self.access_token
+            auth["apiKey"] = {
+                "type": "bearer",
+                "in": "header",
+                "key": "Authorization",
+                "value": "Bearer " + self.access_token,
             }
         return auth
 
@@ -369,12 +388,13 @@ class Configuration:
 
         :return: The report for debugging.
         """
-        return "Python SDK Debug Report:\n"\
-               "OS: {env}\n"\
-               "Python Version: {pyversion}\n"\
-               "Version of the API: 2.0.0\n"\
-               "SDK Package Version: 2.0.1".\
-               format(env=sys.platform, pyversion=sys.version)
+        return (
+            "Python SDK Debug Report:\n"
+            "OS: {env}\n"
+            "Python Version: {pyversion}\n"
+            "Version of the API: 2.0.0\n"
+            "SDK Package Version: 2.0.1".format(env=sys.platform, pyversion=sys.version)
+        )
 
     def get_host_settings(self):
         """Gets an array of host settings
@@ -383,8 +403,8 @@ class Configuration:
         """
         return [
             {
-                'url': "https://api.amber.com.au/v1",
-                'description': "No description provided",
+                "url": "https://api.amber.com.au/v1",
+                "description": "No description provided",
             }
         ]
 
@@ -406,22 +426,22 @@ class Configuration:
         except IndexError:
             raise ValueError(
                 "Invalid index {0} when selecting the host settings. "
-                "Must be less than {1}".format(index, len(servers)))
+                "Must be less than {1}".format(index, len(servers))
+            )
 
-        url = server['url']
+        url = server["url"]
 
         # go through variables and replace placeholders
-        for variable_name, variable in server.get('variables', {}).items():
-            used_value = variables.get(
-                variable_name, variable['default_value'])
+        for variable_name, variable in server.get("variables", {}).items():
+            used_value = variables.get(variable_name, variable["default_value"])
 
-            if 'enum_values' in variable \
-                    and used_value not in variable['enum_values']:
+            if "enum_values" in variable and used_value not in variable["enum_values"]:
                 raise ValueError(
                     "The variable `{0}` in the host URL has invalid value "
                     "{1}. Must be {2}.".format(
-                        variable_name, variables[variable_name],
-                        variable['enum_values']))
+                        variable_name, variables[variable_name], variable["enum_values"]
+                    )
+                )
 
             url = url.replace("{" + variable_name + "}", used_value)
 
@@ -430,7 +450,9 @@ class Configuration:
     @property
     def host(self):
         """Return generated host."""
-        return self.get_host_from_settings(self.server_index, variables=self.server_variables)
+        return self.get_host_from_settings(
+            self.server_index, variables=self.server_variables
+        )
 
     @host.setter
     def host(self, value):
