@@ -14,30 +14,31 @@
 
 
 from __future__ import annotations
-from inspect import getfullargspec
 import json
 import pprint
 import re  # noqa: F401
 
 from typing import Any, List, Optional
+
 try:
-    
+
     from pydantic.v1 import BaseModel, Field, StrictStr, ValidationError, validator
 except ImportError:
-    
+
     from pydantic import BaseModel, Field, StrictStr, ValidationError, validator
 from amberelectric.models.actual_renewable import ActualRenewable
 from amberelectric.models.current_renewable import CurrentRenewable
 from amberelectric.models.forecast_renewable import ForecastRenewable
 from typing import Union, Any, List, TYPE_CHECKING
-from pydantic import StrictStr, Field
 
 RENEWABLE_ONE_OF_SCHEMAS = ["ActualRenewable", "CurrentRenewable", "ForecastRenewable"]
+
 
 class Renewable(BaseModel):
     """
     Renewable
     """
+
     # data type: ActualRenewable
     oneof_schema_1_validator: Optional[ActualRenewable] = None
     # data type: CurrentRenewable
@@ -56,39 +57,55 @@ class Renewable(BaseModel):
     def __init__(self, *args, **kwargs) -> None:
         if args:
             if len(args) > 1:
-                raise ValueError("If a position argument is used, only 1 is allowed to set `actual_instance`")
+                raise ValueError(
+                    "If a position argument is used, only 1 is allowed to set `actual_instance`"
+                )
             if kwargs:
-                raise ValueError("If a position argument is used, keyword arguments cannot be used.")
+                raise ValueError(
+                    "If a position argument is used, keyword arguments cannot be used."
+                )
             super().__init__(actual_instance=args[0])
         else:
             super().__init__(**kwargs)
 
-    @validator('actual_instance')
+    @validator("actual_instance")
     def actual_instance_must_validate_oneof(cls, v):
         instance = Renewable.construct()
         error_messages = []
         match = 0
         # validate data type: ActualRenewable
         if not isinstance(v, ActualRenewable):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `ActualRenewable`")
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `ActualRenewable`"
+            )
         else:
             match += 1
         # validate data type: CurrentRenewable
         if not isinstance(v, CurrentRenewable):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `CurrentRenewable`")
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `CurrentRenewable`"
+            )
         else:
             match += 1
         # validate data type: ForecastRenewable
         if not isinstance(v, ForecastRenewable):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `ForecastRenewable`")
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `ForecastRenewable`"
+            )
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "Multiple matches found when setting `actual_instance` in Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: "
+                + ", ".join(error_messages)
+            )
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "No match found when setting `actual_instance` in Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: "
+                + ", ".join(error_messages)
+            )
         else:
             return v
 
@@ -124,10 +141,16 @@ class Renewable(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "Multiple matches found when deserializing the JSON string into Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: "
+                + ", ".join(error_messages)
+            )
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "No match found when deserializing the JSON string into Renewable with oneOf schemas: ActualRenewable, CurrentRenewable, ForecastRenewable. Details: "
+                + ", ".join(error_messages)
+            )
         else:
             return instance
 
@@ -157,5 +180,3 @@ class Renewable(BaseModel):
     def to_str(self) -> str:
         """Returns the string representation of the actual instance"""
         return pprint.pformat(self.dict())
-
-

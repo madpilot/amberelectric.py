@@ -21,28 +21,59 @@ import json
 from datetime import date, datetime
 
 try:
-    
+
     from pydantic.v1 import BaseModel, Field, StrictInt, StrictStr, confloat, validator
 except ImportError:
-    
+
     from pydantic import BaseModel, Field, StrictInt, StrictStr, confloat, validator
 from amberelectric.models.renewable_descriptor import RenewableDescriptor
+
 
 class ForecastRenewable(BaseModel):
     """
     ForecastRenewable
     """
-    type: StrictStr = Field(...)
-    duration: StrictInt = Field(default=..., description="Length of the interval in minutes.")
-    var_date: date = Field(default=..., alias="date", description="Date the interval belongs to (in NEM time). This may be different to the date component of nemTime, as the last interval of the day ends at 12:00 the following day. Formatted as a ISO 8601 date")
-    nem_time: datetime = Field(default=..., alias="nemTime", description="The interval's NEM time. This represents the time at the end of the interval UTC+10. Formatted as a ISO 8601 time")
-    start_time: datetime = Field(default=..., alias="startTime", description="Start time of the interval in UTC. Formatted as a ISO 8601 time")
-    end_time: datetime = Field(default=..., alias="endTime", description="End time of the interval in UTC. Formatted as a ISO 8601 time")
-    renewables: confloat(le=100, ge=0) = Field(default=..., description="Percentage of renewables in the grid")
-    descriptor: RenewableDescriptor = Field(...)
-    __properties = ["type", "duration", "date", "nemTime", "startTime", "endTime", "renewables", "descriptor"]
 
-    @validator('duration')
+    type: StrictStr = Field(...)
+    duration: StrictInt = Field(
+        default=..., description="Length of the interval in minutes."
+    )
+    var_date: date = Field(
+        default=...,
+        alias="date",
+        description="Date the interval belongs to (in NEM time). This may be different to the date component of nemTime, as the last interval of the day ends at 12:00 the following day. Formatted as a ISO 8601 date",
+    )
+    nem_time: datetime = Field(
+        default=...,
+        alias="nemTime",
+        description="The interval's NEM time. This represents the time at the end of the interval UTC+10. Formatted as a ISO 8601 time",
+    )
+    start_time: datetime = Field(
+        default=...,
+        alias="startTime",
+        description="Start time of the interval in UTC. Formatted as a ISO 8601 time",
+    )
+    end_time: datetime = Field(
+        default=...,
+        alias="endTime",
+        description="End time of the interval in UTC. Formatted as a ISO 8601 time",
+    )
+    renewables: confloat(le=100, ge=0) = Field(
+        default=..., description="Percentage of renewables in the grid"
+    )
+    descriptor: RenewableDescriptor = Field(...)
+    __properties = [
+        "type",
+        "duration",
+        "date",
+        "nemTime",
+        "startTime",
+        "endTime",
+        "renewables",
+        "descriptor",
+    ]
+
+    @validator("duration")
     def duration_validate_enum(cls, value):
         """Validates the enum"""
         if value not in (5, 15, 30):
@@ -51,6 +82,7 @@ class ForecastRenewable(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         allow_population_by_field_name = True
         validate_assignment = True
 
@@ -69,10 +101,7 @@ class ForecastRenewable(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         return _dict
 
     @classmethod
@@ -84,16 +113,16 @@ class ForecastRenewable(BaseModel):
         if not isinstance(obj, dict):
             return ForecastRenewable.parse_obj(obj)
 
-        _obj = ForecastRenewable.parse_obj({
-            "type": obj.get("type"),
-            "duration": obj.get("duration"),
-            "var_date": obj.get("date"),
-            "nem_time": obj.get("nemTime"),
-            "start_time": obj.get("startTime"),
-            "end_time": obj.get("endTime"),
-            "renewables": obj.get("renewables"),
-            "descriptor": obj.get("descriptor")
-        })
+        _obj = ForecastRenewable.parse_obj(
+            {
+                "type": obj.get("type"),
+                "duration": obj.get("duration"),
+                "var_date": obj.get("date"),
+                "nem_time": obj.get("nemTime"),
+                "start_time": obj.get("startTime"),
+                "end_time": obj.get("endTime"),
+                "renewables": obj.get("renewables"),
+                "descriptor": obj.get("descriptor"),
+            }
+        )
         return _obj
-
-

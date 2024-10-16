@@ -14,15 +14,18 @@
 
 
 import json
-from aenum import Enum # type: ignore
+from aenum import Enum  # type: ignore
+from typing import Type, TypeVar
+
+T = TypeVar("T", bound="PriceDescriptor")
 
 
-try: 
+try:
     pass
-    
+
 except ImportError:
     pass
-    
+
 
 class PriceDescriptor(str, Enum):
     """
@@ -32,17 +35,15 @@ class PriceDescriptor(str, Enum):
     """
     allowed enum values
     """
-    NEGATIVE = 'negative'
-    EXTREMELYLOW = 'extremelyLow'
-    VERYLOW = 'veryLow'
-    LOW = 'low'
-    NEUTRAL = 'neutral'
-    HIGH = 'high'
-    SPIKE = 'spike'
+    NEGATIVE = "negative"
+    EXTREMELYLOW = "extremelyLow"
+    VERYLOW = "veryLow"
+    LOW = "low"
+    NEUTRAL = "neutral"
+    HIGH = "high"
+    SPIKE = "spike"
 
     @classmethod
-    def from_json(cls, json_str: str) -> PriceDescriptor:
+    def from_json(cls: Type[T], json_str: str) -> T:
         """Create an instance of PriceDescriptor from a JSON string"""
         return PriceDescriptor(json.loads(json_str))
-
-

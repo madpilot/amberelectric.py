@@ -1,5 +1,4 @@
 from __future__ import annotations
-from inspect import getfullargspec
 import json
 import pprint
 import re  # noqa: F401
@@ -10,7 +9,6 @@ import re  # noqa: F401
 {{{.}}}
 {{/vendorExtensions.x-py-model-imports}}
 from typing import Union, Any, List, TYPE_CHECKING
-from pydantic import StrictStr, Field
 
 {{#lambda.uppercase}}{{{classname}}}{{/lambda.uppercase}}_ANY_OF_SCHEMAS = [{{#anyOf}}"{{.}}"{{^-last}}, {{/-last}}{{/anyOf}}]
 

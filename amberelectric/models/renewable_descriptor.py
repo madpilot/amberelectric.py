@@ -14,15 +14,18 @@
 
 
 import json
-from aenum import Enum # type: ignore
+from aenum import Enum  # type: ignore
+from typing import Type, TypeVar
+
+T = TypeVar("T", bound="RenewableDescriptor")
 
 
-try: 
+try:
     pass
-    
+
 except ImportError:
     pass
-    
+
 
 class RenewableDescriptor(str, Enum):
     """
@@ -32,15 +35,13 @@ class RenewableDescriptor(str, Enum):
     """
     allowed enum values
     """
-    BEST = 'best'
-    GREAT = 'great'
-    OK = 'ok'
-    NOTGREAT = 'notGreat'
-    WORST = 'worst'
+    BEST = "best"
+    GREAT = "great"
+    OK = "ok"
+    NOTGREAT = "notGreat"
+    WORST = "worst"
 
     @classmethod
-    def from_json(cls, json_str: str) -> RenewableDescriptor:
+    def from_json(cls: Type[T], json_str: str) -> T:
         """Create an instance of RenewableDescriptor from a JSON string"""
         return RenewableDescriptor(json.loads(json_str))
-
-

@@ -19,25 +19,36 @@ import re  # noqa: F401
 import json
 
 
-
 try:
-    
+
     from pydantic.v1 import BaseModel, Field
 except ImportError:
-    
+
     from pydantic import BaseModel, Field
+
 
 class AdvancedPrice(BaseModel):
     """
     Amber has created an advanced forecast system, that represents our confidence in the AEMO forecast. The range indicates where we think the price will land for a given interval.  # noqa: E501
     """
-    low: float = Field(default=..., description="The lower bound of our prediction band. Price includes network and market fees. (c/kWh).")
-    predicted: float = Field(default=..., description="The predicted price. Use this if you need a single number for forecasting against. Price includes network and market fees. (c/kWh).")
-    high: float = Field(default=..., description="The upper bound of our prediction band. Price includes network and market fees. (c/kWh).")
+
+    low: float = Field(
+        default=...,
+        description="The lower bound of our prediction band. Price includes network and market fees. (c/kWh).",
+    )
+    predicted: float = Field(
+        default=...,
+        description="The predicted price. Use this if you need a single number for forecasting against. Price includes network and market fees. (c/kWh).",
+    )
+    high: float = Field(
+        default=...,
+        description="The upper bound of our prediction band. Price includes network and market fees. (c/kWh).",
+    )
     __properties = ["low", "predicted", "high"]
 
     class Config:
         """Pydantic configuration"""
+
         allow_population_by_field_name = True
         validate_assignment = True
 
@@ -56,10 +67,7 @@ class AdvancedPrice(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         return _dict
 
     @classmethod
@@ -71,11 +79,11 @@ class AdvancedPrice(BaseModel):
         if not isinstance(obj, dict):
             return AdvancedPrice.parse_obj(obj)
 
-        _obj = AdvancedPrice.parse_obj({
-            "low": obj.get("low"),
-            "predicted": obj.get("predicted"),
-            "high": obj.get("high")
-        })
+        _obj = AdvancedPrice.parse_obj(
+            {
+                "low": obj.get("low"),
+                "predicted": obj.get("predicted"),
+                "high": obj.get("high"),
+            }
+        )
         return _obj
-
-

@@ -20,45 +20,77 @@ import json
 
 
 from typing import Optional
+
 try:
-    
+
     from pydantic.v1 import BaseModel, Field, StrictBool, StrictStr, confloat, validator
 except ImportError:
-    
+
     from pydantic import BaseModel, Field, StrictBool, StrictStr, confloat, validator
+
 
 class TariffInformation(BaseModel):
     """
     Information about how your tariff affects an interval  # noqa: E501
     """
-    period: Optional[StrictStr] = Field(default=None, description="The Time of Use period that is currently active. Only available if the site in on a time of use tariff")
-    season: Optional[StrictStr] = Field(default=None, description="The Time of Use season that is currently active. Only available if the site in on a time of use tariff")
-    block: Optional[confloat(le=2, ge=1)] = Field(default=None, description="The block that is currently active. Only available in the site in on a block tariff")
-    demand_window: Optional[StrictBool] = Field(default=None, alias="demandWindow", description="Is this interval currently in the demand window? Only available if the site in on a demand tariff")
+
+    period: Optional[StrictStr] = Field(
+        default=None,
+        description="The Time of Use period that is currently active. Only available if the site in on a time of use tariff",
+    )
+    season: Optional[StrictStr] = Field(
+        default=None,
+        description="The Time of Use season that is currently active. Only available if the site in on a time of use tariff",
+    )
+    block: Optional[confloat(le=2, ge=1)] = Field(
+        default=None,
+        description="The block that is currently active. Only available in the site in on a block tariff",
+    )
+    demand_window: Optional[StrictBool] = Field(
+        default=None,
+        alias="demandWindow",
+        description="Is this interval currently in the demand window? Only available if the site in on a demand tariff",
+    )
     __properties = ["period", "season", "block", "demandWindow"]
 
-    @validator('period')
+    @validator("period")
     def period_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
 
-        if value not in ('offPeak', 'shoulder', 'solarSponge', 'peak'):
-            raise ValueError("must be one of enum values ('offPeak', 'shoulder', 'solarSponge', 'peak')")
+        if value not in ("offPeak", "shoulder", "solarSponge", "peak"):
+            raise ValueError(
+                "must be one of enum values ('offPeak', 'shoulder', 'solarSponge', 'peak')"
+            )
         return value
 
-    @validator('season')
+    @validator("season")
     def season_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
 
-        if value not in ('default', 'summer', 'autumn', 'winter', 'spring', 'nonSummer', 'holiday', 'weekend', 'weekendHoliday', 'weekday'):
-            raise ValueError("must be one of enum values ('default', 'summer', 'autumn', 'winter', 'spring', 'nonSummer', 'holiday', 'weekend', 'weekendHoliday', 'weekday')")
+        if value not in (
+            "default",
+            "summer",
+            "autumn",
+            "winter",
+            "spring",
+            "nonSummer",
+            "holiday",
+            "weekend",
+            "weekendHoliday",
+            "weekday",
+        ):
+            raise ValueError(
+                "must be one of enum values ('default', 'summer', 'autumn', 'winter', 'spring', 'nonSummer', 'holiday', 'weekend', 'weekendHoliday', 'weekday')"
+            )
         return value
 
     class Config:
         """Pydantic configuration"""
+
         allow_population_by_field_name = True
         validate_assignment = True
 
@@ -77,10 +109,7 @@ class TariffInformation(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         return _dict
 
     @classmethod
@@ -92,12 +121,12 @@ class TariffInformation(BaseModel):
         if not isinstance(obj, dict):
             return TariffInformation.parse_obj(obj)
 
-        _obj = TariffInformation.parse_obj({
-            "period": obj.get("period"),
-            "season": obj.get("season"),
-            "block": obj.get("block"),
-            "demand_window": obj.get("demandWindow")
-        })
+        _obj = TariffInformation.parse_obj(
+            {
+                "period": obj.get("period"),
+                "season": obj.get("season"),
+                "block": obj.get("block"),
+                "demand_window": obj.get("demandWindow"),
+            }
+        )
         return _obj
-
-

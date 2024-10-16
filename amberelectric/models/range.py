@@ -19,24 +19,26 @@ import re  # noqa: F401
 import json
 
 
-
 try:
-    
+
     from pydantic.v1 import BaseModel, Field
 except ImportError:
-    
+
     from pydantic import BaseModel, Field
+
 
 class Range(BaseModel):
     """
     When prices are particularly volatile, the API may return a range of NEM spot prices (c/kWh) that are possible.  # noqa: E501
     """
+
     min: float = Field(default=..., description="Estimated minimum price (c/kWh)")
     max: float = Field(default=..., description="Estimated maximum price (c/kWh)")
     __properties = ["min", "max"]
 
     class Config:
         """Pydantic configuration"""
+
         allow_population_by_field_name = True
         validate_assignment = True
 
@@ -55,10 +57,7 @@ class Range(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         return _dict
 
     @classmethod
@@ -70,10 +69,5 @@ class Range(BaseModel):
         if not isinstance(obj, dict):
             return Range.parse_obj(obj)
 
-        _obj = Range.parse_obj({
-            "min": obj.get("min"),
-            "max": obj.get("max")
-        })
+        _obj = Range.parse_obj({"min": obj.get("min"), "max": obj.get("max")})
         return _obj
-
-

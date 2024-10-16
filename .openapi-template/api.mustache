@@ -7,9 +7,9 @@ import io
 import warnings
 
 try:
-    from pydantic.v1 import validate_arguments, ValidationError
+    from pydantic.v1 import validate_arguments
 except ImportError:
-    from pydantic import validate_arguments, ValidationError
+    from pydantic import validate_arguments
 {{#asyncio}}
 from typing import overload, Optional, Union, Awaitable
 {{/asyncio}}

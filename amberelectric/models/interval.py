@@ -14,30 +14,31 @@
 
 
 from __future__ import annotations
-from inspect import getfullargspec
 import json
 import pprint
 import re  # noqa: F401
 
 from typing import Any, List, Optional
+
 try:
-    
+
     from pydantic.v1 import BaseModel, Field, StrictStr, ValidationError, validator
 except ImportError:
-    
+
     from pydantic import BaseModel, Field, StrictStr, ValidationError, validator
 from amberelectric.models.actual_interval import ActualInterval
 from amberelectric.models.current_interval import CurrentInterval
 from amberelectric.models.forecast_interval import ForecastInterval
 from typing import Union, Any, List, TYPE_CHECKING
-from pydantic import StrictStr, Field
 
 INTERVAL_ONE_OF_SCHEMAS = ["ActualInterval", "CurrentInterval", "ForecastInterval"]
+
 
 class Interval(BaseModel):
     """
     Interval
     """
+
     # data type: ActualInterval
     oneof_schema_1_validator: Optional[ActualInterval] = None
     # data type: CurrentInterval
@@ -56,39 +57,55 @@ class Interval(BaseModel):
     def __init__(self, *args, **kwargs) -> None:
         if args:
             if len(args) > 1:
-                raise ValueError("If a position argument is used, only 1 is allowed to set `actual_instance`")
+                raise ValueError(
+                    "If a position argument is used, only 1 is allowed to set `actual_instance`"
+                )
             if kwargs:
-                raise ValueError("If a position argument is used, keyword arguments cannot be used.")
+                raise ValueError(
+                    "If a position argument is used, keyword arguments cannot be used."
+                )
             super().__init__(actual_instance=args[0])
         else:
             super().__init__(**kwargs)
 
-    @validator('actual_instance')
+    @validator("actual_instance")
     def actual_instance_must_validate_oneof(cls, v):
         instance = Interval.construct()
         error_messages = []
         match = 0
         # validate data type: ActualInterval
         if not isinstance(v, ActualInterval):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `ActualInterval`")
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `ActualInterval`"
+            )
         else:
             match += 1
         # validate data type: CurrentInterval
         if not isinstance(v, CurrentInterval):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `CurrentInterval`")
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `CurrentInterval`"
+            )
         else:
             match += 1
         # validate data type: ForecastInterval
         if not isinstance(v, ForecastInterval):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `ForecastInterval`")
+            error_messages.append(
+                f"Error! Input type `{type(v)}` is not `ForecastInterval`"
+            )
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "Multiple matches found when setting `actual_instance` in Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: "
+                + ", ".join(error_messages)
+            )
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "No match found when setting `actual_instance` in Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: "
+                + ", ".join(error_messages)
+            )
         else:
             return v
 
@@ -124,10 +141,16 @@ class Interval(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "Multiple matches found when deserializing the JSON string into Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: "
+                + ", ".join(error_messages)
+            )
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: " + ", ".join(error_messages))
+            raise ValueError(
+                "No match found when deserializing the JSON string into Interval with oneOf schemas: ActualInterval, CurrentInterval, ForecastInterval. Details: "
+                + ", ".join(error_messages)
+            )
         else:
             return instance
 
@@ -157,5 +180,3 @@ class Interval(BaseModel):
     def to_str(self) -> str:
         """Returns the string representation of the actual instance"""
         return pprint.pformat(self.dict())
-
-

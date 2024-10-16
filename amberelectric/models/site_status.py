@@ -14,15 +14,18 @@
 
 
 import json
-from aenum import Enum # type: ignore
+from aenum import Enum  # type: ignore
+from typing import Type, TypeVar
+
+T = TypeVar("T", bound="SiteStatus")
 
 
-try: 
+try:
     pass
-    
+
 except ImportError:
     pass
-    
+
 
 class SiteStatus(str, Enum):
     """
@@ -32,13 +35,11 @@ class SiteStatus(str, Enum):
     """
     allowed enum values
     """
-    PENDING = 'pending'
-    ACTIVE = 'active'
-    CLOSED = 'closed'
+    PENDING = "pending"
+    ACTIVE = "active"
+    CLOSED = "closed"
 
     @classmethod
-    def from_json(cls, json_str: str) -> SiteStatus:
+    def from_json(cls: Type[T], json_str: str) -> T:
         """Create an instance of SiteStatus from a JSON string"""
         return SiteStatus(json.loads(json_str))
-
-
