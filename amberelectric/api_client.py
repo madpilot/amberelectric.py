@@ -52,25 +52,19 @@ class ApiClient:
 
     PRIMITIVE_TYPES = (float, bool, bytes, str, int)
     NATIVE_TYPES_MAPPING = {
-        "int": int,
-        "long": int,  # TODO remove as only py3 is supported?
-        "float": float,
-        "str": str,
-        "bool": bool,
-        "date": datetime.date,
-        "datetime": datetime.datetime,
-        "object": object,
+        'int': int,
+        'long': int, # TODO remove as only py3 is supported?
+        'float': float,
+        'str': str,
+        'bool': bool,
+        'date': datetime.date,
+        'datetime': datetime.datetime,
+        'object': object,
     }
     _pool = None
 
-    def __init__(
-        self,
-        configuration=None,
-        header_name=None,
-        header_value=None,
-        cookie=None,
-        pool_threads=1,
-    ) -> None:
+    def __init__(self, configuration=None, header_name=None, header_value=None,
+                 cookie=None, pool_threads=1) -> None:
         # use default configuration if none is provided
         if configuration is None:
             configuration = Configuration.get_default()
@@ -83,7 +77,7 @@ class ApiClient:
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = "OpenAPI-Generator/2.0.1/python"
+        self.user_agent = 'OpenAPI-Generator/2.0.1/python'
         self.client_side_validation = configuration.client_side_validation
 
     def __enter__(self):
@@ -97,13 +91,13 @@ class ApiClient:
             self._pool.close()
             self._pool.join()
             self._pool = None
-            if hasattr(atexit, "unregister"):
+            if hasattr(atexit, 'unregister'):
                 atexit.unregister(self.close)
 
     @property
     def pool(self):
         """Create thread pool on first request
-        avoids instantiating unused threadpool for blocking clients.
+         avoids instantiating unused threadpool for blocking clients.
         """
         if self._pool is None:
             atexit.register(self.close)
@@ -113,14 +107,15 @@ class ApiClient:
     @property
     def user_agent(self):
         """User agent for this API client"""
-        return self.default_headers["User-Agent"]
+        return self.default_headers['User-Agent']
 
     @user_agent.setter
     def user_agent(self, value):
-        self.default_headers["User-Agent"] = value
+        self.default_headers['User-Agent'] = value
 
     def set_default_header(self, header_name, header_value):
         self.default_headers[header_name] = header_value
+
 
     _default = None
 
@@ -149,24 +144,12 @@ class ApiClient:
         cls._default = default
 
     def __call_api(
-        self,
-        resource_path,
-        method,
-        path_params=None,
-        query_params=None,
-        header_params=None,
-        body=None,
-        post_params=None,
-        files=None,
-        response_types_map=None,
-        auth_settings=None,
-        _return_http_data_only=None,
-        collection_formats=None,
-        _preload_content=True,
-        _request_timeout=None,
-        _host=None,
-        _request_auth=None,
-    ):
+            self, resource_path, method, path_params=None,
+            query_params=None, header_params=None, body=None, post_params=None,
+            files=None, response_types_map=None, auth_settings=None,
+            _return_http_data_only=None, collection_formats=None,
+            _preload_content=True, _request_timeout=None, _host=None,
+            _request_auth=None):
 
         config = self.configuration
 
@@ -174,40 +157,37 @@ class ApiClient:
         header_params = header_params or {}
         header_params.update(self.default_headers)
         if self.cookie:
-            header_params["Cookie"] = self.cookie
+            header_params['Cookie'] = self.cookie
         if header_params:
             header_params = self.sanitize_for_serialization(header_params)
-            header_params = dict(
-                self.parameters_to_tuples(header_params, collection_formats)
-            )
+            header_params = dict(self.parameters_to_tuples(header_params,
+                                                           collection_formats))
 
         # path parameters
         if path_params:
             path_params = self.sanitize_for_serialization(path_params)
-            path_params = self.parameters_to_tuples(path_params, collection_formats)
+            path_params = self.parameters_to_tuples(path_params,
+                                                    collection_formats)
             for k, v in path_params:
                 # specified safe chars, encode everything
                 resource_path = resource_path.replace(
-                    "{%s}" % k, quote(str(v), safe=config.safe_chars_for_path_param)
+                    '{%s}' % k,
+                    quote(str(v), safe=config.safe_chars_for_path_param)
                 )
 
         # post parameters
         if post_params or files:
             post_params = post_params if post_params else []
             post_params = self.sanitize_for_serialization(post_params)
-            post_params = self.parameters_to_tuples(post_params, collection_formats)
+            post_params = self.parameters_to_tuples(post_params,
+                                                    collection_formats)
             post_params.extend(self.files_parameters(files))
 
         # auth setting
         self.update_params_for_auth(
-            header_params,
-            query_params,
-            auth_settings,
-            resource_path,
-            method,
-            body,
-            request_auth=_request_auth,
-        )
+            header_params, query_params, auth_settings,
+            resource_path, method, body,
+            request_auth=_request_auth)
 
         # body
         if body:
@@ -223,69 +203,59 @@ class ApiClient:
         # query parameters
         if query_params:
             query_params = self.sanitize_for_serialization(query_params)
-            url_query = self.parameters_to_url_query(query_params, collection_formats)
+            url_query = self.parameters_to_url_query(query_params,
+                                                     collection_formats)
             url += "?" + url_query
 
         try:
             # perform request and return response
             response_data = self.request(
-                method,
-                url,
+                method, url,
                 query_params=query_params,
                 headers=header_params,
-                post_params=post_params,
-                body=body,
+                post_params=post_params, body=body,
                 _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-            )
+                _request_timeout=_request_timeout)
         except ApiException as e:
             if e.body:
-                e.body = e.body.decode("utf-8")
+                e.body = e.body.decode('utf-8')
             raise e
 
         self.last_response = response_data
 
-        return_data = None  # assuming deserialization is not needed
+        return_data = None # assuming deserialization is not needed
         # data needs deserialization or returns HTTP data (deserialized) only
         if _preload_content or _return_http_data_only:
-            response_type = response_types_map.get(str(response_data.status), None)
-            if (
-                not response_type
-                and isinstance(response_data.status, int)
-                and 100 <= response_data.status <= 599
-            ):
-                # if not found, look for '1XX', '2XX', etc.
-                response_type = response_types_map.get(
-                    str(response_data.status)[0] + "XX", None
-                )
+          response_type = response_types_map.get(str(response_data.status), None)
+          if not response_type and isinstance(response_data.status, int) and 100 <= response_data.status <= 599:
+              # if not found, look for '1XX', '2XX', etc.
+              response_type = response_types_map.get(str(response_data.status)[0] + "XX", None)
 
-            if response_type == "bytearray":
-                response_data.data = response_data.data
-            else:
-                match = None
-                content_type = response_data.getheader("content-type")
-                if content_type is not None:
-                    match = re.search(r"charset=([a-zA-Z\-\d]+)[\s;]?", content_type)
-                encoding = match.group(1) if match else "utf-8"
-                response_data.data = response_data.data.decode(encoding)
+          if response_type == "bytearray":
+              response_data.data = response_data.data
+          else:
+              match = None
+              content_type = response_data.getheader('content-type')
+              if content_type is not None:
+                  match = re.search(r"charset=([a-zA-Z\-\d]+)[\s;]?", content_type)
+              encoding = match.group(1) if match else "utf-8"
+              response_data.data = response_data.data.decode(encoding)
 
-            # deserialize response data
-            if response_type == "bytearray":
-                return_data = response_data.data
-            elif response_type:
-                return_data = self.deserialize(response_data, response_type)
-            else:
-                return_data = None
+          # deserialize response data
+          if response_type == "bytearray":
+              return_data = response_data.data
+          elif response_type:
+              return_data = self.deserialize(response_data, response_type)
+          else:
+              return_data = None
 
         if _return_http_data_only:
             return return_data
         else:
-            return ApiResponse(
-                status_code=response_data.status,
-                data=return_data,
-                headers=response_data.getheaders(),
-                raw_data=response_data.data,
-            )
+            return ApiResponse(status_code = response_data.status,
+                           data = return_data,
+                           headers = response_data.getheaders(),
+                           raw_data = response_data.data)
 
     def sanitize_for_serialization(self, obj):
         """Builds a JSON POST object.
@@ -306,9 +276,11 @@ class ApiClient:
         elif isinstance(obj, self.PRIMITIVE_TYPES):
             return obj
         elif isinstance(obj, list):
-            return [self.sanitize_for_serialization(sub_obj) for sub_obj in obj]
+            return [self.sanitize_for_serialization(sub_obj)
+                    for sub_obj in obj]
         elif isinstance(obj, tuple):
-            return tuple(self.sanitize_for_serialization(sub_obj) for sub_obj in obj)
+            return tuple(self.sanitize_for_serialization(sub_obj)
+                         for sub_obj in obj)
         elif isinstance(obj, (datetime.datetime, datetime.date)):
             return obj.isoformat()
 
@@ -322,9 +294,8 @@ class ApiClient:
             # model definition for request.
             obj_dict = obj.to_dict()
 
-        return {
-            key: self.sanitize_for_serialization(val) for key, val in obj_dict.items()
-        }
+        return {key: self.sanitize_for_serialization(val)
+                for key, val in obj_dict.items()}
 
     def deserialize(self, response, response_type):
         """Deserializes response into an object.
@@ -360,13 +331,15 @@ class ApiClient:
             return None
 
         if isinstance(klass, str):
-            if klass.startswith("List["):
-                sub_kls = re.match(r"List\[(.*)]", klass).group(1)
-                return [self.__deserialize(sub_data, sub_kls) for sub_data in data]
+            if klass.startswith('List['):
+                sub_kls = re.match(r'List\[(.*)]', klass).group(1)
+                return [self.__deserialize(sub_data, sub_kls)
+                        for sub_data in data]
 
-            if klass.startswith("Dict["):
-                sub_kls = re.match(r"Dict\[([^,]*), (.*)]", klass).group(2)
-                return {k: self.__deserialize(v, sub_kls) for k, v in data.items()}
+            if klass.startswith('Dict['):
+                sub_kls = re.match(r'Dict\[([^,]*), (.*)]', klass).group(2)
+                return {k: self.__deserialize(v, sub_kls)
+                        for k, v in data.items()}
 
             # convert str to class
             if klass in self.NATIVE_TYPES_MAPPING:
@@ -385,26 +358,13 @@ class ApiClient:
         else:
             return self.__deserialize_model(data, klass)
 
-    def call_api(
-        self,
-        resource_path,
-        method,
-        path_params=None,
-        query_params=None,
-        header_params=None,
-        body=None,
-        post_params=None,
-        files=None,
-        response_types_map=None,
-        auth_settings=None,
-        async_req=None,
-        _return_http_data_only=None,
-        collection_formats=None,
-        _preload_content=True,
-        _request_timeout=None,
-        _host=None,
-        _request_auth=None,
-    ):
+    def call_api(self, resource_path, method,
+                 path_params=None, query_params=None, header_params=None,
+                 body=None, post_params=None, files=None,
+                 response_types_map=None, auth_settings=None,
+                 async_req=None, _return_http_data_only=None,
+                 collection_formats=None, _preload_content=True,
+                 _request_timeout=None, _host=None, _request_auth=None):
         """Makes the HTTP request (synchronous) and returns deserialized data.
 
         To make an async_req request, set the async_req parameter.
@@ -469,81 +429,59 @@ class ApiClient:
 
         return self.pool.apply_async(self.__call_api, args)
 
-    def request(
-        self,
-        method,
-        url,
-        query_params=None,
-        headers=None,
-        post_params=None,
-        body=None,
-        _preload_content=True,
-        _request_timeout=None,
-    ):
+    def request(self, method, url, query_params=None, headers=None,
+                post_params=None, body=None, _preload_content=True,
+                _request_timeout=None):
         """Makes the HTTP request using RESTClient."""
         if method == "GET":
-            return self.rest_client.get_request(
-                url,
-                query_params=query_params,
-                _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-                headers=headers,
-            )
+            return self.rest_client.get_request(url,
+                                        query_params=query_params,
+                                        _preload_content=_preload_content,
+                                        _request_timeout=_request_timeout,
+                                        headers=headers)
         elif method == "HEAD":
-            return self.rest_client.head_request(
-                url,
-                query_params=query_params,
-                _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-                headers=headers,
-            )
+            return self.rest_client.head_request(url,
+                                         query_params=query_params,
+                                         _preload_content=_preload_content,
+                                         _request_timeout=_request_timeout,
+                                         headers=headers)
         elif method == "OPTIONS":
-            return self.rest_client.options_request(
-                url,
-                query_params=query_params,
-                headers=headers,
-                _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-            )
+            return self.rest_client.options_request(url,
+                                            query_params=query_params,
+                                            headers=headers,
+                                            _preload_content=_preload_content,
+                                            _request_timeout=_request_timeout)
         elif method == "POST":
-            return self.rest_client.post_request(
-                url,
-                query_params=query_params,
-                headers=headers,
-                post_params=post_params,
-                _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-                body=body,
-            )
+            return self.rest_client.post_request(url,
+                                         query_params=query_params,
+                                         headers=headers,
+                                         post_params=post_params,
+                                         _preload_content=_preload_content,
+                                         _request_timeout=_request_timeout,
+                                         body=body)
         elif method == "PUT":
-            return self.rest_client.put_request(
-                url,
-                query_params=query_params,
-                headers=headers,
-                post_params=post_params,
-                _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-                body=body,
-            )
+            return self.rest_client.put_request(url,
+                                        query_params=query_params,
+                                        headers=headers,
+                                        post_params=post_params,
+                                        _preload_content=_preload_content,
+                                        _request_timeout=_request_timeout,
+                                        body=body)
         elif method == "PATCH":
-            return self.rest_client.patch_request(
-                url,
-                query_params=query_params,
-                headers=headers,
-                post_params=post_params,
-                _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-                body=body,
-            )
+            return self.rest_client.patch_request(url,
+                                          query_params=query_params,
+                                          headers=headers,
+                                          post_params=post_params,
+                                          _preload_content=_preload_content,
+                                          _request_timeout=_request_timeout,
+                                          body=body)
         elif method == "DELETE":
-            return self.rest_client.delete_request(
-                url,
-                query_params=query_params,
-                headers=headers,
-                _preload_content=_preload_content,
-                _request_timeout=_request_timeout,
-                body=body,
-            )
+            return self.rest_client.delete_request(url,
+                                           query_params=query_params,
+                                           headers=headers,
+                                           _preload_content=_preload_content,
+                                           _request_timeout=_request_timeout,
+                                           body=body)
         else:
             raise ApiValueError(
                 "http method must be `GET`, `HEAD`, `OPTIONS`,"
@@ -560,23 +498,22 @@ class ApiClient:
         new_params = []
         if collection_formats is None:
             collection_formats = {}
-        for k, v in (
-            params.items() if isinstance(params, dict) else params
-        ):  # noqa: E501
+        for k, v in params.items() if isinstance(params, dict) else params:  # noqa: E501
             if k in collection_formats:
                 collection_format = collection_formats[k]
-                if collection_format == "multi":
+                if collection_format == 'multi':
                     new_params.extend((k, value) for value in v)
                 else:
-                    if collection_format == "ssv":
-                        delimiter = " "
-                    elif collection_format == "tsv":
-                        delimiter = "\t"
-                    elif collection_format == "pipes":
-                        delimiter = "|"
+                    if collection_format == 'ssv':
+                        delimiter = ' '
+                    elif collection_format == 'tsv':
+                        delimiter = '\t'
+                    elif collection_format == 'pipes':
+                        delimiter = '|'
                     else:  # csv is the default
-                        delimiter = ","
-                    new_params.append((k, delimiter.join(str(value) for value in v)))
+                        delimiter = ','
+                    new_params.append(
+                        (k, delimiter.join(str(value) for value in v)))
             else:
                 new_params.append((k, v))
         return new_params
@@ -591,9 +528,7 @@ class ApiClient:
         new_params = []
         if collection_formats is None:
             collection_formats = {}
-        for k, v in (
-            params.items() if isinstance(params, dict) else params
-        ):  # noqa: E501
+        for k, v in params.items() if isinstance(params, dict) else params:  # noqa: E501
             if isinstance(v, bool):
                 v = str(v).lower()
             if isinstance(v, (int, float)):
@@ -603,20 +538,19 @@ class ApiClient:
 
             if k in collection_formats:
                 collection_format = collection_formats[k]
-                if collection_format == "multi":
+                if collection_format == 'multi':
                     new_params.extend((k, str(value)) for value in v)
                 else:
-                    if collection_format == "ssv":
-                        delimiter = " "
-                    elif collection_format == "tsv":
-                        delimiter = "\t"
-                    elif collection_format == "pipes":
-                        delimiter = "|"
+                    if collection_format == 'ssv':
+                        delimiter = ' '
+                    elif collection_format == 'tsv':
+                        delimiter = '\t'
+                    elif collection_format == 'pipes':
+                        delimiter = '|'
                     else:  # csv is the default
-                        delimiter = ","
+                        delimiter = ','
                     new_params.append(
-                        (k, delimiter.join(quote(str(value)) for value in v))
-                    )
+                        (k, delimiter.join(quote(str(value)) for value in v)))
             else:
                 new_params.append((k, quote(str(v))))
 
@@ -636,14 +570,13 @@ class ApiClient:
                     continue
                 file_names = v if type(v) is list else [v]
                 for n in file_names:
-                    with open(n, "rb") as f:
+                    with open(n, 'rb') as f:
                         filename = os.path.basename(f.name)
                         filedata = f.read()
-                        mimetype = (
-                            mimetypes.guess_type(filename)[0]
-                            or "application/octet-stream"
-                        )
-                        params.append(tuple([k, tuple([filename, filedata, mimetype])]))
+                        mimetype = (mimetypes.guess_type(filename)[0] or
+                                    'application/octet-stream')
+                        params.append(
+                            tuple([k, tuple([filename, filedata, mimetype])]))
 
         return params
 
@@ -657,7 +590,7 @@ class ApiClient:
             return
 
         for accept in accepts:
-            if re.search("json", accept, re.IGNORECASE):
+            if re.search('json', accept, re.IGNORECASE):
                 return accept
 
         return accepts[0]
@@ -672,21 +605,14 @@ class ApiClient:
             return None
 
         for content_type in content_types:
-            if re.search("json", content_type, re.IGNORECASE):
+            if re.search('json', content_type, re.IGNORECASE):
                 return content_type
 
         return content_types[0]
 
-    def update_params_for_auth(
-        self,
-        headers,
-        queries,
-        auth_settings,
-        resource_path,
-        method,
-        body,
-        request_auth=None,
-    ):
+    def update_params_for_auth(self, headers, queries, auth_settings,
+                               resource_path, method, body,
+                               request_auth=None):
         """Updates header and query params based on authentication setting.
 
         :param headers: Header parameters dict to be updated.
@@ -703,21 +629,21 @@ class ApiClient:
             return
 
         if request_auth:
-            self._apply_auth_params(
-                headers, queries, resource_path, method, body, request_auth
-            )
+            self._apply_auth_params(headers, queries,
+                                    resource_path, method, body,
+                                    request_auth)
             return
 
         for auth in auth_settings:
             auth_setting = self.configuration.auth_settings().get(auth)
             if auth_setting:
-                self._apply_auth_params(
-                    headers, queries, resource_path, method, body, auth_setting
-                )
+                self._apply_auth_params(headers, queries,
+                                        resource_path, method, body,
+                                        auth_setting)
 
-    def _apply_auth_params(
-        self, headers, queries, resource_path, method, body, auth_setting
-    ):
+    def _apply_auth_params(self, headers, queries,
+                           resource_path, method, body,
+                           auth_setting):
         """Updates the request parameters based on a single auth_setting
 
         :param headers: Header parameters dict to be updated.
@@ -728,15 +654,17 @@ class ApiClient:
         The object type is the return value of sanitize_for_serialization().
         :param auth_setting: auth settings for the endpoint
         """
-        if auth_setting["in"] == "cookie":
-            headers["Cookie"] = auth_setting["value"]
-        elif auth_setting["in"] == "header":
-            if auth_setting["type"] != "http-signature":
-                headers[auth_setting["key"]] = auth_setting["value"]
-        elif auth_setting["in"] == "query":
-            queries.append((auth_setting["key"], auth_setting["value"]))
+        if auth_setting['in'] == 'cookie':
+            headers['Cookie'] = auth_setting['value']
+        elif auth_setting['in'] == 'header':
+            if auth_setting['type'] != 'http-signature':
+                headers[auth_setting['key']] = auth_setting['value']
+        elif auth_setting['in'] == 'query':
+            queries.append((auth_setting['key'], auth_setting['value']))
         else:
-            raise ApiValueError("Authentication token must be in `query` or `header`")
+            raise ApiValueError(
+                'Authentication token must be in `query` or `header`'
+            )
 
     def __deserialize_file(self, response):
         """Deserializes body to file
@@ -753,9 +681,8 @@ class ApiClient:
 
         content_disposition = response.getheader("Content-Disposition")
         if content_disposition:
-            filename = re.search(
-                r'filename=[\'"]?([^\'"\s]+)[\'"]?', content_disposition
-            ).group(1)
+            filename = re.search(r'filename=[\'"]?([^\'"\s]+)[\'"]?',
+                                 content_disposition).group(1)
             path = os.path.join(os.path.dirname(path), filename)
 
         with open(path, "wb") as f:
@@ -797,7 +724,8 @@ class ApiClient:
             return string
         except ValueError:
             raise rest.ApiException(
-                status=0, reason="Failed to parse `{0}` as date object".format(string)
+                status=0,
+                reason="Failed to parse `{0}` as date object".format(string)
             )
 
     def __deserialize_datetime(self, string):
@@ -815,7 +743,10 @@ class ApiClient:
         except ValueError:
             raise rest.ApiException(
                 status=0,
-                reason=("Failed to parse `{0}` as datetime object".format(string)),
+                reason=(
+                    "Failed to parse `{0}` as datetime object"
+                    .format(string)
+                )
             )
 
     def __deserialize_model(self, data, klass):
