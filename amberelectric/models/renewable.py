@@ -20,10 +20,6 @@ import pprint
 import re  # noqa: F401
 
 from typing import Any, List, Optional
-try:
-    from pydantic.v1 import BaseModel, Field, StrictStr, ValidationError, validator
-except ImportError:
-    from pydantic import BaseModel, Field, StrictStr, ValidationError, validator
 from amberelectric.models.actual_renewable import ActualRenewable
 from amberelectric.models.current_renewable import CurrentRenewable
 from amberelectric.models.forecast_renewable import ForecastRenewable

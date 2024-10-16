@@ -20,10 +20,6 @@ import json
 
 from datetime import date, datetime
 
-try:
-    from pydantic.v1 import BaseModel, Field, StrictInt, StrictStr, confloat, validator
-except ImportError:
-    from pydantic import BaseModel, Field, StrictInt, StrictStr, confloat, validator
 from amberelectric.models.renewable_descriptor import RenewableDescriptor
 
 class BaseRenewable(BaseModel):

@@ -20,10 +20,6 @@ import json
 
 
 from typing import Optional
-try:
-    from pydantic.v1 import BaseModel, Field, StrictBool, StrictStr, confloat, validator
-except ImportError:
-    from pydantic import BaseModel, Field, StrictBool, StrictStr, confloat, validator
 
 class TariffInformation(BaseModel):
     """
