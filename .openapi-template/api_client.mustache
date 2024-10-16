@@ -2,7 +2,7 @@
 
 {{>partial_header}}
 
-import atexit
+{{^asyncio}}import atexit{{/asyncio}}
 import datetime
 from dateutil.parser import parse
 import json

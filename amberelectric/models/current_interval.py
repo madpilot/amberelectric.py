@@ -20,6 +20,12 @@ import json
 
 from datetime import date, datetime
 from typing import Optional
+try:
+    
+    from pydantic.v1 import BaseModel, Field, StrictBool, StrictInt, StrictStr, confloat, validator
+except ImportError:
+    
+    from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, confloat, validator
 from amberelectric.models.advanced_price import AdvancedPrice
 from amberelectric.models.channel_type import ChannelType
 from amberelectric.models.price_descriptor import PriceDescriptor

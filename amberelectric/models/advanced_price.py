@@ -20,6 +20,12 @@ import json
 
 
 
+try:
+    
+    from pydantic.v1 import BaseModel, Field
+except ImportError:
+    
+    from pydantic import BaseModel, Field
 
 class AdvancedPrice(BaseModel):
     """

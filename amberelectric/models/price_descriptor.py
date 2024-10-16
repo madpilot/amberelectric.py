@@ -17,6 +17,12 @@ import json
 from aenum import Enum # type: ignore
 
 
+try: 
+    pass
+    
+except ImportError:
+    pass
+    
 
 class PriceDescriptor(str, Enum):
     """

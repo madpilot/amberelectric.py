@@ -20,6 +20,12 @@ import json
 
 
 
+try:
+    
+    from pydantic.v1 import BaseModel, Field, StrictStr
+except ImportError:
+    
+    from pydantic import BaseModel, Field, StrictStr
 from amberelectric.models.channel_type import ChannelType
 
 class Channel(BaseModel):

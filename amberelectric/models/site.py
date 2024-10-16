@@ -20,6 +20,12 @@ import json
 
 from datetime import date
 from typing import List, Optional
+try:
+    
+    from pydantic.v1 import BaseModel, Field, StrictStr, conlist, constr
+except ImportError:
+    
+    from pydantic import BaseModel, Field, StrictStr, conlist, constr
 from amberelectric.models.channel import Channel
 from amberelectric.models.site_status import SiteStatus
 
