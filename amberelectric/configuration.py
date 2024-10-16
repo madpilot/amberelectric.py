@@ -15,7 +15,6 @@
 
 import copy
 import logging
-import multiprocessing
 import sys
 import urllib3
 
@@ -149,12 +148,9 @@ class Configuration:
            Set this to the SNI value expected by the server.
         """
 
-        self.connection_pool_maxsize = multiprocessing.cpu_count() * 5
-        """urllib3 connection pool's maximum number of connections saved
-           per pool. urllib3 uses 1 connection as default value, but this is
-           not the best value when you are making a lot of possibly parallel
-           requests to the same host, which is often the case here.
-           cpu_count * 5 is used as default value to increase performance.
+        self.connection_pool_maxsize = 100
+        """This value is passed to the aiohttp to limit simultaneous connections.
+           Default values is 100, None means no-limit.
         """
 
         self.proxy = None
@@ -377,7 +373,7 @@ class Configuration:
                "OS: {env}\n"\
                "Python Version: {pyversion}\n"\
                "Version of the API: 2.0.0\n"\
-               "SDK Package Version: 2.0.0".\
+               "SDK Package Version: 2.0.1".\
                format(env=sys.platform, pyversion=sys.version)
 
     def get_host_settings(self):

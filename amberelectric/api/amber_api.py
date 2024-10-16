@@ -17,7 +17,11 @@ import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_arguments, ValidationError
+try:
+    from pydantic.v1 import validate_arguments, ValidationError
+except ImportError:
+    from pydantic import validate_arguments, ValidationError
+from typing import overload, Optional, Union, Awaitable
 
 from typing_extensions import Annotated
 from datetime import date
@@ -52,15 +56,10 @@ class AmberApi:
         self.api_client = api_client
 
     @validate_arguments
-    def get_current_prices(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> List[Interval]:  # noqa: E501
+    async def get_current_prices(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> List[Interval]:  # noqa: E501
         """get_current_prices  # noqa: E501
 
         Returns the current price  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_current_prices(site_id, next, previous, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param site_id: ID of the site you are fetching prices for. Can be found using the `/sites` enpoint (required)
         :type site_id: str
@@ -70,8 +69,6 @@ class AmberApi:
         :type previous: int
         :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
                If one number provided, it will be total request
                timeout. It can also be a pair (tuple) of
@@ -85,18 +82,13 @@ class AmberApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the get_current_prices_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_current_prices_with_http_info(site_id, next, previous, resolution, **kwargs)  # noqa: E501
+        return await self.get_current_prices_with_http_info(site_id, next, previous, resolution, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_current_prices_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    async def get_current_prices_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """get_current_prices  # noqa: E501
 
         Returns the current price  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_current_prices_with_http_info(site_id, next, previous, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param site_id: ID of the site you are fetching prices for. Can be found using the `/sites` enpoint (required)
         :type site_id: str
@@ -106,8 +98,6 @@ class AmberApi:
         :type previous: int
         :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
                                  be set to none and raw_data will store the
                                  HTTP response body without reading/decoding.
@@ -141,7 +131,6 @@ class AmberApi:
         ]
         _all_params.extend(
             [
-                'async_req',
                 '_return_http_data_only',
                 '_preload_content',
                 '_request_timeout',
@@ -202,7 +191,7 @@ class AmberApi:
             '500': None,
         }
 
-        return self.api_client.call_api(
+        return await self.api_client.call_api(
             '/sites/{siteId}/prices/current', 'GET',
             _path_params,
             _query_params,
@@ -212,7 +201,6 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
             _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
             _preload_content=_params.get('_preload_content', True),
             _request_timeout=_params.get('_request_timeout'),
@@ -220,15 +208,10 @@ class AmberApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_current_renewables(self, state : Annotated[StrictStr, Field(..., description="State you would like the renewables for. Valid states: nsw, sa, qld, vic")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> List[Renewable]:  # noqa: E501
+    async def get_current_renewables(self, state : Annotated[StrictStr, Field(..., description="State you would like the renewables for. Valid states: nsw, sa, qld, vic")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> List[Renewable]:  # noqa: E501
         """get_current_renewables  # noqa: E501
 
         Returns the current percentage of renewables in the grid  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_current_renewables(state, next, previous, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param state: State you would like the renewables for. Valid states: nsw, sa, qld, vic (required)
         :type state: str
@@ -238,8 +221,6 @@ class AmberApi:
         :type previous: int
         :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
                If one number provided, it will be total request
                timeout. It can also be a pair (tuple) of
@@ -253,18 +234,13 @@ class AmberApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the get_current_renewables_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_current_renewables_with_http_info(state, next, previous, resolution, **kwargs)  # noqa: E501
+        return await self.get_current_renewables_with_http_info(state, next, previous, resolution, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_current_renewables_with_http_info(self, state : Annotated[StrictStr, Field(..., description="State you would like the renewables for. Valid states: nsw, sa, qld, vic")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    async def get_current_renewables_with_http_info(self, state : Annotated[StrictStr, Field(..., description="State you would like the renewables for. Valid states: nsw, sa, qld, vic")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """get_current_renewables  # noqa: E501
 
         Returns the current percentage of renewables in the grid  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_current_renewables_with_http_info(state, next, previous, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param state: State you would like the renewables for. Valid states: nsw, sa, qld, vic (required)
         :type state: str
@@ -274,8 +250,6 @@ class AmberApi:
         :type previous: int
         :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
                                  be set to none and raw_data will store the
                                  HTTP response body without reading/decoding.
@@ -309,7 +283,6 @@ class AmberApi:
         ]
         _all_params.extend(
             [
-                'async_req',
                 '_return_http_data_only',
                 '_preload_content',
                 '_request_timeout',
@@ -369,7 +342,7 @@ class AmberApi:
             '500': None,
         }
 
-        return self.api_client.call_api(
+        return await self.api_client.call_api(
             '/state/{state}/renewables/current', 'GET',
             _path_params,
             _query_params,
@@ -379,7 +352,6 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
             _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
             _preload_content=_params.get('_preload_content', True),
             _request_timeout=_params.get('_request_timeout'),
@@ -387,15 +359,10 @@ class AmberApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_prices(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint")], start_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and after this day. Defaults to today.")] = None, end_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and before this day. Defaults to today.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> List[Interval]:  # noqa: E501
+    async def get_prices(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint")], start_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and after this day. Defaults to today.")] = None, end_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and before this day. Defaults to today.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> List[Interval]:  # noqa: E501
         """get_prices  # noqa: E501
 
         Returns all the prices between the start and end dates  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_prices(site_id, start_date, end_date, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param site_id: ID of the site you are fetching prices for. Can be found using the `/sites` endpoint (required)
         :type site_id: str
@@ -405,8 +372,6 @@ class AmberApi:
         :type end_date: date
         :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
                If one number provided, it will be total request
                timeout. It can also be a pair (tuple) of
@@ -420,18 +385,13 @@ class AmberApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the get_prices_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_prices_with_http_info(site_id, start_date, end_date, resolution, **kwargs)  # noqa: E501
+        return await self.get_prices_with_http_info(site_id, start_date, end_date, resolution, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_prices_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint")], start_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and after this day. Defaults to today.")] = None, end_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and before this day. Defaults to today.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    async def get_prices_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint")], start_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and after this day. Defaults to today.")] = None, end_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and before this day. Defaults to today.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """get_prices  # noqa: E501
 
         Returns all the prices between the start and end dates  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_prices_with_http_info(site_id, start_date, end_date, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param site_id: ID of the site you are fetching prices for. Can be found using the `/sites` endpoint (required)
         :type site_id: str
@@ -441,8 +401,6 @@ class AmberApi:
         :type end_date: date
         :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
                                  be set to none and raw_data will store the
                                  HTTP response body without reading/decoding.
@@ -476,7 +434,6 @@ class AmberApi:
         ]
         _all_params.extend(
             [
-                'async_req',
                 '_return_http_data_only',
                 '_preload_content',
                 '_request_timeout',
@@ -543,7 +500,7 @@ class AmberApi:
             '500': None,
         }
 
-        return self.api_client.call_api(
+        return await self.api_client.call_api(
             '/sites/{siteId}/prices', 'GET',
             _path_params,
             _query_params,
@@ -553,7 +510,6 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
             _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
             _preload_content=_params.get('_preload_content', True),
             _request_timeout=_params.get('_request_timeout'),
@@ -561,18 +517,11 @@ class AmberApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_sites(self, **kwargs) -> List[Site]:  # noqa: E501
+    async def get_sites(self, **kwargs) -> List[Site]:  # noqa: E501
         """get_sites  # noqa: E501
 
         Return all sites linked to your account  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_sites(async_req=True)
-        >>> result = thread.get()
-
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
                If one number provided, it will be total request
                timeout. It can also be a pair (tuple) of
@@ -586,21 +535,14 @@ class AmberApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the get_sites_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_sites_with_http_info(**kwargs)  # noqa: E501
+        return await self.get_sites_with_http_info(**kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_sites_with_http_info(self, **kwargs) -> ApiResponse:  # noqa: E501
+    async def get_sites_with_http_info(self, **kwargs) -> ApiResponse:  # noqa: E501
         """get_sites  # noqa: E501
 
         Return all sites linked to your account  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_sites_with_http_info(async_req=True)
-        >>> result = thread.get()
-
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
                                  be set to none and raw_data will store the
                                  HTTP response body without reading/decoding.
@@ -630,7 +572,6 @@ class AmberApi:
         ]
         _all_params.extend(
             [
-                'async_req',
                 '_return_http_data_only',
                 '_preload_content',
                 '_request_timeout',
@@ -677,7 +618,7 @@ class AmberApi:
             '500': None,
         }
 
-        return self.api_client.call_api(
+        return await self.api_client.call_api(
             '/sites', 'GET',
             _path_params,
             _query_params,
@@ -687,7 +628,6 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
             _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
             _preload_content=_params.get('_preload_content', True),
             _request_timeout=_params.get('_request_timeout'),
@@ -695,15 +635,10 @@ class AmberApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_usage(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint")], start_date : Annotated[date, Field(..., description="Return all usage for each interval on and after this day.")], end_date : Annotated[date, Field(..., description="Return all usage for each interval on and before this day.")], resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> List[Usage]:  # noqa: E501
+    async def get_usage(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint")], start_date : Annotated[date, Field(..., description="Return all usage for each interval on and after this day.")], end_date : Annotated[date, Field(..., description="Return all usage for each interval on and before this day.")], resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> List[Usage]:  # noqa: E501
         """get_usage  # noqa: E501
 
         Returns all usage data between the start and end dates. The API can only return 90-days worth of data.  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_usage(site_id, start_date, end_date, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param site_id: ID of the site you are fetching usage for. Can be found using the `/sites` enpoint (required)
         :type site_id: str
@@ -713,8 +648,6 @@ class AmberApi:
         :type end_date: date
         :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
                If one number provided, it will be total request
                timeout. It can also be a pair (tuple) of
@@ -728,18 +661,13 @@ class AmberApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the get_usage_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_usage_with_http_info(site_id, start_date, end_date, resolution, **kwargs)  # noqa: E501
+        return await self.get_usage_with_http_info(site_id, start_date, end_date, resolution, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_usage_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint")], start_date : Annotated[date, Field(..., description="Return all usage for each interval on and after this day.")], end_date : Annotated[date, Field(..., description="Return all usage for each interval on and before this day.")], resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    async def get_usage_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint")], start_date : Annotated[date, Field(..., description="Return all usage for each interval on and after this day.")], end_date : Annotated[date, Field(..., description="Return all usage for each interval on and before this day.")], resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """get_usage  # noqa: E501
 
         Returns all usage data between the start and end dates. The API can only return 90-days worth of data.  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_usage_with_http_info(site_id, start_date, end_date, resolution, async_req=True)
-        >>> result = thread.get()
 
         :param site_id: ID of the site you are fetching usage for. Can be found using the `/sites` enpoint (required)
         :type site_id: str
@@ -749,8 +677,6 @@ class AmberApi:
         :type end_date: date
         :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
         :type resolution: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
                                  be set to none and raw_data will store the
                                  HTTP response body without reading/decoding.
@@ -784,7 +710,6 @@ class AmberApi:
         ]
         _all_params.extend(
             [
-                'async_req',
                 '_return_http_data_only',
                 '_preload_content',
                 '_request_timeout',
@@ -851,7 +776,7 @@ class AmberApi:
             '500': None,
         }
 
-        return self.api_client.call_api(
+        return await self.api_client.call_api(
             '/sites/{siteId}/usage', 'GET',
             _path_params,
             _query_params,
@@ -861,7 +786,6 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
             _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
             _preload_content=_params.get('_preload_content', True),
             _request_timeout=_params.get('_request_timeout'),

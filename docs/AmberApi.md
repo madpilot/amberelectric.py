@@ -46,7 +46,7 @@ configuration = amberelectric.Configuration(
 )
 
 # Enter a context with an instance of the API client
-with amberelectric.ApiClient(configuration) as api_client:
+async with amberelectric.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = amberelectric.AmberApi(api_client)
     site_id = '01J23BAP2SFA218BMV8A73Y9Z9' # str | ID of the site you are fetching prices for. Can be found using the `/sites` enpoint
@@ -55,7 +55,7 @@ with amberelectric.ApiClient(configuration) as api_client:
     resolution = 30 # int | Specify the required interval duration resolution. Valid options: 30. Default: 30 (optional) (default to 30)
 
     try:
-        api_response = api_instance.get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
+        api_response = await api_instance.get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
         print("The response of AmberApi->get_current_prices:\n")
         pprint(api_response)
     except Exception as e:
@@ -122,7 +122,7 @@ configuration = amberelectric.Configuration(
 
 
 # Enter a context with an instance of the API client
-with amberelectric.ApiClient(configuration) as api_client:
+async with amberelectric.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = amberelectric.AmberApi(api_client)
     state = 'vic' # str | State you would like the renewables for. Valid states: nsw, sa, qld, vic
@@ -131,7 +131,7 @@ with amberelectric.ApiClient(configuration) as api_client:
     resolution = 30 # int | Specify the required interval duration resolution. Valid options: 5, 30. Default: 30 (optional) (default to 30)
 
     try:
-        api_response = api_instance.get_current_renewables(state, next=next, previous=previous, resolution=resolution)
+        api_response = await api_instance.get_current_renewables(state, next=next, previous=previous, resolution=resolution)
         print("The response of AmberApi->get_current_renewables:\n")
         pprint(api_response)
     except Exception as e:
@@ -207,7 +207,7 @@ configuration = amberelectric.Configuration(
 )
 
 # Enter a context with an instance of the API client
-with amberelectric.ApiClient(configuration) as api_client:
+async with amberelectric.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = amberelectric.AmberApi(api_client)
     site_id = '01J23BAP2SFA218BMV8A73Y9Z9' # str | ID of the site you are fetching prices for. Can be found using the `/sites` endpoint
@@ -216,7 +216,7 @@ with amberelectric.ApiClient(configuration) as api_client:
     resolution = 30 # int | Specify the required interval duration resolution. Valid options: 5, 30. Default: 30 (optional) (default to 30)
 
     try:
-        api_response = api_instance.get_prices(site_id, start_date=start_date, end_date=end_date, resolution=resolution)
+        api_response = await api_instance.get_prices(site_id, start_date=start_date, end_date=end_date, resolution=resolution)
         print("The response of AmberApi->get_prices:\n")
         pprint(api_response)
     except Exception as e:
@@ -293,12 +293,12 @@ configuration = amberelectric.Configuration(
 )
 
 # Enter a context with an instance of the API client
-with amberelectric.ApiClient(configuration) as api_client:
+async with amberelectric.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = amberelectric.AmberApi(api_client)
 
     try:
-        api_response = api_instance.get_sites()
+        api_response = await api_instance.get_sites()
         print("The response of AmberApi->get_sites:\n")
         pprint(api_response)
     except Exception as e:
@@ -367,7 +367,7 @@ configuration = amberelectric.Configuration(
 )
 
 # Enter a context with an instance of the API client
-with amberelectric.ApiClient(configuration) as api_client:
+async with amberelectric.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = amberelectric.AmberApi(api_client)
     site_id = '01J23BAP2SFA218BMV8A73Y9Z9' # str | ID of the site you are fetching usage for. Can be found using the `/sites` enpoint
@@ -376,7 +376,7 @@ with amberelectric.ApiClient(configuration) as api_client:
     resolution = 30 # int | Specify the required interval duration resolution. Valid options: 30. Default: 30 (optional) (default to 30)
 
     try:
-        api_response = api_instance.get_usage(site_id, start_date, end_date, resolution=resolution)
+        api_response = await api_instance.get_usage(site_id, start_date, end_date, resolution=resolution)
         print("The response of AmberApi->get_usage:\n")
         pprint(api_response)
     except Exception as e:

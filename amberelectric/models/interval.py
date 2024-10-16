@@ -20,7 +20,10 @@ import pprint
 import re  # noqa: F401
 
 from typing import Any, List, Optional
-from pydantic import BaseModel, Field, StrictStr, ValidationError, validator
+try:
+    from pydantic.v1 import BaseModel, Field, StrictStr, ValidationError, validator
+except ImportError:
+    from pydantic import BaseModel, Field, StrictStr, ValidationError, validator
 from amberelectric.models.actual_interval import ActualInterval
 from amberelectric.models.current_interval import CurrentInterval
 from amberelectric.models.forecast_interval import ForecastInterval

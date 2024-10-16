@@ -1,0 +1,38 @@
+import json
+from aenum import Enum{{#defaultValue}}, no_arg{{/defaultValue}} # type: ignore
+{{#vendorExtensions.x-py-datetime-imports}}{{#-first}}from datetime import{{/-first}} {{{.}}}{{^-last}},{{/-last}}{{/vendorExtensions.x-py-datetime-imports}}
+{{#vendorExtensions.x-py-typing-imports}}{{#-first}}from typing import{{/-first}} {{{.}}}{{^-last}},{{/-last}}{{/vendorExtensions.x-py-typing-imports}}
+{{#vendorExtensions.x-py-pydantic-imports.0}}
+try: 
+    {{#vendorExtensions.x-py-pydantic-imports}}{{#-first}}from pydantic.v1 import{{/-first}} {{{.}}}{{^-last}},{{/-last}}{{/vendorExtensions.x-py-pydantic-imports}}
+except ImportError:
+    {{#vendorExtensions.x-py-pydantic-imports}}{{#-first}}from pydantic import{{/-first}} {{{.}}}{{^-last}},{{/-last}}{{/vendorExtensions.x-py-pydantic-imports}}
+{{/vendorExtensions.x-py-pydantic-imports.0}}
+
+class {{classname}}({{vendorExtensions.x-py-enum-type}}, Enum):
+    """
+    {{{description}}}{{^description}}{{{classname}}}{{/description}}
+    """
+
+    """
+    allowed enum values
+    """
+{{#allowableValues}}
+    {{#enumVars}}
+    {{{name}}} = {{{value}}}
+    {{/enumVars}}
+
+    @classmethod
+    def from_json(cls, json_str: str) -> {{{classname}}}:
+        """Create an instance of {{classname}} from a JSON string"""
+        return {{classname}}(json.loads(json_str))
+
+    {{#defaultValue}}
+
+    #
+    @classmethod
+    def _missing_value_(cls, value):
+        if value is no_arg:
+            return cls.{{{.}}}
+    {{/defaultValue}}
+{{/allowableValues}}
