@@ -19,14 +19,20 @@ import re  # noqa: F401
 import json
 
 
+try:
 
-from pydantic import BaseModel, Field, StrictStr
+    from pydantic.v1 import BaseModel, Field, StrictStr
+except ImportError:
+
+    from pydantic import BaseModel, Field, StrictStr
 from amberelectric.models.channel_type import ChannelType
+
 
 class Channel(BaseModel):
     """
     Describes a power meter channel.  The General channel provides continuous power - it's the channel all of your appliances and lights are attached to.  Controlled loads are only on for a limited time during the day (usually when the load on the network is low, or generation is high) - you may have your hot water system attached to this channel.  The feed in channel sends power back to the grid - you will have these types of channels if you have solar or batteries.  # noqa: E501
     """
+
     identifier: StrictStr = Field(default=..., description="Identifier of the channel")
     type: ChannelType = Field(...)
     tariff: StrictStr = Field(default=..., description="The tariff code of the channel")
@@ -34,6 +40,7 @@ class Channel(BaseModel):
 
     class Config:
         """Pydantic configuration"""
+
         allow_population_by_field_name = True
         validate_assignment = True
 
@@ -52,10 +59,7 @@ class Channel(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         return _dict
 
     @classmethod
@@ -67,11 +71,11 @@ class Channel(BaseModel):
         if not isinstance(obj, dict):
             return Channel.parse_obj(obj)
 
-        _obj = Channel.parse_obj({
-            "identifier": obj.get("identifier"),
-            "type": obj.get("type"),
-            "tariff": obj.get("tariff")
-        })
+        _obj = Channel.parse_obj(
+            {
+                "identifier": obj.get("identifier"),
+                "type": obj.get("type"),
+                "tariff": obj.get("tariff"),
+            }
+        )
         return _obj
-
-

@@ -20,25 +20,56 @@ import json
 
 from datetime import date
 from typing import List, Optional
-from pydantic import BaseModel, Field, StrictStr, conlist, constr
+
+try:
+
+    from pydantic.v1 import BaseModel, Field, StrictStr, conlist, constr
+except ImportError:
+
+    from pydantic import BaseModel, Field, StrictStr, conlist, constr
 from amberelectric.models.channel import Channel
 from amberelectric.models.site_status import SiteStatus
+
 
 class Site(BaseModel):
     """
     Site
     """
+
     id: StrictStr = Field(default=..., description="Unique Site Identifier")
-    nmi: constr(strict=True, max_length=11, min_length=10) = Field(default=..., description="National Metering Identifier (NMI) for the site")
-    channels: conlist(Channel) = Field(default=..., description="List of channels that are readable from your meter")
-    network: StrictStr = Field(default=..., description="The name of the site's network")
+    nmi: constr(strict=True, max_length=11, min_length=10) = Field(
+        default=..., description="National Metering Identifier (NMI) for the site"
+    )
+    channels: conlist(Channel) = Field(
+        default=..., description="List of channels that are readable from your meter"
+    )
+    network: StrictStr = Field(
+        default=..., description="The name of the site's network"
+    )
     status: SiteStatus = Field(...)
-    active_from: Optional[date] = Field(default=None, alias="activeFrom", description="Date the site became active. This date will be in the future for pending sites. It may also be undefined, though if it is, contact [info@amber.com.au](mailto:info@amber.com.au) - there may be an issue with your address. Formatted as a ISO 8601 date when present.")
-    closed_on: Optional[date] = Field(default=None, alias="closedOn", description="Date the site closed. Undefined if the site is pending or active. Formatted as a ISO 8601 date when present.")
-    __properties = ["id", "nmi", "channels", "network", "status", "activeFrom", "closedOn"]
+    active_from: Optional[date] = Field(
+        default=None,
+        alias="activeFrom",
+        description="Date the site became active. This date will be in the future for pending sites. It may also be undefined, though if it is, contact [info@amber.com.au](mailto:info@amber.com.au) - there may be an issue with your address. Formatted as a ISO 8601 date when present.",
+    )
+    closed_on: Optional[date] = Field(
+        default=None,
+        alias="closedOn",
+        description="Date the site closed. Undefined if the site is pending or active. Formatted as a ISO 8601 date when present.",
+    )
+    __properties = [
+        "id",
+        "nmi",
+        "channels",
+        "network",
+        "status",
+        "activeFrom",
+        "closedOn",
+    ]
 
     class Config:
         """Pydantic configuration"""
+
         allow_population_by_field_name = True
         validate_assignment = True
 
@@ -57,17 +88,14 @@ class Site(BaseModel):
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of each item in channels (list)
         _items = []
         if self.channels:
             for _item in self.channels:
                 if _item:
                     _items.append(_item.to_dict())
-            _dict['channels'] = _items
+            _dict["channels"] = _items
         return _dict
 
     @classmethod
@@ -79,15 +107,19 @@ class Site(BaseModel):
         if not isinstance(obj, dict):
             return Site.parse_obj(obj)
 
-        _obj = Site.parse_obj({
-            "id": obj.get("id"),
-            "nmi": obj.get("nmi"),
-            "channels": [Channel.from_dict(_item) for _item in obj.get("channels")] if obj.get("channels") is not None else None,
-            "network": obj.get("network"),
-            "status": obj.get("status"),
-            "active_from": obj.get("activeFrom"),
-            "closed_on": obj.get("closedOn")
-        })
+        _obj = Site.parse_obj(
+            {
+                "id": obj.get("id"),
+                "nmi": obj.get("nmi"),
+                "channels": (
+                    [Channel.from_dict(_item) for _item in obj.get("channels")]
+                    if obj.get("channels") is not None
+                    else None
+                ),
+                "network": obj.get("network"),
+                "status": obj.get("status"),
+                "active_from": obj.get("activeFrom"),
+                "closed_on": obj.get("closedOn"),
+            }
+        )
         return _obj
-
-

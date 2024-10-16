@@ -14,12 +14,17 @@
 
 
 import json
-import pprint
-import re  # noqa: F401
-from aenum import Enum, no_arg
+from aenum import Enum  # type: ignore
+from typing import Type, TypeVar
+
+T = TypeVar("T", bound="SpikeStatus")
 
 
+try:
+    pass
 
+except ImportError:
+    pass
 
 
 class SpikeStatus(str, Enum):
@@ -30,13 +35,11 @@ class SpikeStatus(str, Enum):
     """
     allowed enum values
     """
-    NONE = 'none'
-    POTENTIAL = 'potential'
-    SPIKE = 'spike'
+    NONE = "none"
+    POTENTIAL = "potential"
+    SPIKE = "spike"
 
     @classmethod
-    def from_json(cls, json_str: str) -> SpikeStatus:
+    def from_json(cls: Type[T], json_str: str) -> T:
         """Create an instance of SpikeStatus from a JSON string"""
         return SpikeStatus(json.loads(json_str))
-
-

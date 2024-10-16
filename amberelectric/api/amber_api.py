@@ -17,7 +17,10 @@ import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_arguments, ValidationError
+try:
+    from pydantic.v1 import validate_arguments
+except ImportError:
+    from pydantic import validate_arguments
 
 from typing_extensions import Annotated
 from datetime import date
@@ -33,10 +36,7 @@ from amberelectric.models.usage import Usage
 
 from amberelectric.api_client import ApiClient
 from amberelectric.api_response import ApiResponse
-from amberelectric.exceptions import (  # noqa: F401
-    ApiTypeError,
-    ApiValueError
-)
+from amberelectric.exceptions import ApiTypeError, ApiValueError  # noqa: F401
 
 
 class AmberApi:
@@ -52,7 +52,31 @@ class AmberApi:
         self.api_client = api_client
 
     @validate_arguments
-    def get_current_prices(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> List[Interval]:  # noqa: E501
+    def get_current_prices(
+        self,
+        site_id: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint",
+            ),
+        ],
+        next: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _next_ number of forecast intervals"),
+        ] = None,
+        previous: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _previous_ number of actual intervals."),
+        ] = None,
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> List[Interval]:  # noqa: E501
         """get_current_prices  # noqa: E501
 
         Returns the current price  # noqa: E501
@@ -81,14 +105,40 @@ class AmberApi:
                  returns the request thread.
         :rtype: List[Interval]
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
+        kwargs["_return_http_data_only"] = True
+        if "_preload_content" in kwargs:
             message = "Error! Please call the get_current_prices_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_current_prices_with_http_info(site_id, next, previous, resolution, **kwargs)  # noqa: E501
+        return self.get_current_prices_with_http_info(
+            site_id, next, previous, resolution, **kwargs
+        )  # noqa: E501
 
     @validate_arguments
-    def get_current_prices_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_current_prices_with_http_info(
+        self,
+        site_id: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="ID of the site you are fetching prices for. Can be found using the `/sites` enpoint",
+            ),
+        ],
+        next: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _next_ number of forecast intervals"),
+        ] = None,
+        previous: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _previous_ number of actual intervals."),
+        ] = None,
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> ApiResponse:  # noqa: E501
         """get_current_prices  # noqa: E501
 
         Returns the current price  # noqa: E501
@@ -133,77 +183,73 @@ class AmberApi:
 
         _params = locals()
 
-        _all_params = [
-            'site_id',
-            'next',
-            'previous',
-            'resolution'
-        ]
+        _all_params = ["site_id", "next", "previous", "resolution"]
         _all_params.extend(
             [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers'
+                "async_req",
+                "_return_http_data_only",
+                "_preload_content",
+                "_request_timeout",
+                "_request_auth",
+                "_content_type",
+                "_headers",
             ]
         )
 
         # validate the arguments
-        for _key, _val in _params['kwargs'].items():
+        for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
                     " to method get_current_prices" % _key
                 )
             _params[_key] = _val
-        del _params['kwargs']
+        del _params["kwargs"]
 
         _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
-        if _params['site_id'] is not None:
-            _path_params['siteId'] = _params['site_id']
-
+        if _params["site_id"] is not None:
+            _path_params["siteId"] = _params["site_id"]
 
         # process the query parameters
         _query_params = []
-        if _params.get('next') is not None:  # noqa: E501
-            _query_params.append(('next', _params['next']))
+        if _params.get("next") is not None:  # noqa: E501
+            _query_params.append(("next", _params["next"]))
 
-        if _params.get('previous') is not None:  # noqa: E501
-            _query_params.append(('previous', _params['previous']))
+        if _params.get("previous") is not None:  # noqa: E501
+            _query_params.append(("previous", _params["previous"]))
 
-        if _params.get('resolution') is not None:  # noqa: E501
-            _query_params.append(('resolution', _params['resolution']))
+        if _params.get("resolution") is not None:  # noqa: E501
+            _query_params.append(("resolution", _params["resolution"]))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
+        _header_params = dict(_params.get("_headers", {}))
         # process the form parameters
         _form_params = []
         _files = {}
         # process the body parameter
         _body_params = None
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
+        _header_params["Accept"] = self.api_client.select_header_accept(
+            ["application/json"]
+        )  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['apiKey']  # noqa: E501
+        _auth_settings = ["apiKey"]  # noqa: E501
 
         _response_types_map = {
-            '200': "List[Interval]",
-            '400': None,
-            '401': None,
-            '404': None,
-            '500': None,
+            "200": "List[Interval]",
+            "400": None,
+            "401": None,
+            "404": None,
+            "500": None,
         }
 
         return self.api_client.call_api(
-            '/sites/{siteId}/prices/current', 'GET',
+            "/sites/{siteId}/prices/current",
+            "GET",
             _path_params,
             _query_params,
             _header_params,
@@ -212,15 +258,40 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
+            async_req=_params.get("async_req"),
+            _return_http_data_only=_params.get("_return_http_data_only"),  # noqa: E501
+            _preload_content=_params.get("_preload_content", True),
+            _request_timeout=_params.get("_request_timeout"),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'))
+            _request_auth=_params.get("_request_auth"),
+        )
 
     @validate_arguments
-    def get_current_renewables(self, state : Annotated[StrictStr, Field(..., description="State you would like the renewables for. Valid states: nsw, sa, qld, vic")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> List[Renewable]:  # noqa: E501
+    def get_current_renewables(
+        self,
+        state: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="State you would like the renewables for. Valid states: nsw, sa, qld, vic",
+            ),
+        ],
+        next: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _next_ number of forecast intervals"),
+        ] = None,
+        previous: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _previous_ number of actual intervals."),
+        ] = None,
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> List[Renewable]:  # noqa: E501
         """get_current_renewables  # noqa: E501
 
         Returns the current percentage of renewables in the grid  # noqa: E501
@@ -249,14 +320,40 @@ class AmberApi:
                  returns the request thread.
         :rtype: List[Renewable]
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
+        kwargs["_return_http_data_only"] = True
+        if "_preload_content" in kwargs:
             message = "Error! Please call the get_current_renewables_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_current_renewables_with_http_info(state, next, previous, resolution, **kwargs)  # noqa: E501
+        return self.get_current_renewables_with_http_info(
+            state, next, previous, resolution, **kwargs
+        )  # noqa: E501
 
     @validate_arguments
-    def get_current_renewables_with_http_info(self, state : Annotated[StrictStr, Field(..., description="State you would like the renewables for. Valid states: nsw, sa, qld, vic")], next : Annotated[Optional[StrictInt], Field(description="Return the _next_ number of forecast intervals")] = None, previous : Annotated[Optional[StrictInt], Field(description="Return the _previous_ number of actual intervals.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_current_renewables_with_http_info(
+        self,
+        state: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="State you would like the renewables for. Valid states: nsw, sa, qld, vic",
+            ),
+        ],
+        next: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _next_ number of forecast intervals"),
+        ] = None,
+        previous: Annotated[
+            Optional[StrictInt],
+            Field(description="Return the _previous_ number of actual intervals."),
+        ] = None,
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> ApiResponse:  # noqa: E501
         """get_current_renewables  # noqa: E501
 
         Returns the current percentage of renewables in the grid  # noqa: E501
@@ -301,76 +398,72 @@ class AmberApi:
 
         _params = locals()
 
-        _all_params = [
-            'state',
-            'next',
-            'previous',
-            'resolution'
-        ]
+        _all_params = ["state", "next", "previous", "resolution"]
         _all_params.extend(
             [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers'
+                "async_req",
+                "_return_http_data_only",
+                "_preload_content",
+                "_request_timeout",
+                "_request_auth",
+                "_content_type",
+                "_headers",
             ]
         )
 
         # validate the arguments
-        for _key, _val in _params['kwargs'].items():
+        for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
                     " to method get_current_renewables" % _key
                 )
             _params[_key] = _val
-        del _params['kwargs']
+        del _params["kwargs"]
 
         _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
-        if _params['state'] is not None:
-            _path_params['state'] = _params['state']
-
+        if _params["state"] is not None:
+            _path_params["state"] = _params["state"]
 
         # process the query parameters
         _query_params = []
-        if _params.get('next') is not None:  # noqa: E501
-            _query_params.append(('next', _params['next']))
+        if _params.get("next") is not None:  # noqa: E501
+            _query_params.append(("next", _params["next"]))
 
-        if _params.get('previous') is not None:  # noqa: E501
-            _query_params.append(('previous', _params['previous']))
+        if _params.get("previous") is not None:  # noqa: E501
+            _query_params.append(("previous", _params["previous"]))
 
-        if _params.get('resolution') is not None:  # noqa: E501
-            _query_params.append(('resolution', _params['resolution']))
+        if _params.get("resolution") is not None:  # noqa: E501
+            _query_params.append(("resolution", _params["resolution"]))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
+        _header_params = dict(_params.get("_headers", {}))
         # process the form parameters
         _form_params = []
         _files = {}
         # process the body parameter
         _body_params = None
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
+        _header_params["Accept"] = self.api_client.select_header_accept(
+            ["application/json"]
+        )  # noqa: E501
 
         # authentication setting
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[Renewable]",
-            '400': None,
-            '404': None,
-            '500': None,
+            "200": "List[Renewable]",
+            "400": None,
+            "404": None,
+            "500": None,
         }
 
         return self.api_client.call_api(
-            '/state/{state}/renewables/current', 'GET',
+            "/state/{state}/renewables/current",
+            "GET",
             _path_params,
             _query_params,
             _header_params,
@@ -379,15 +472,44 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
+            async_req=_params.get("async_req"),
+            _return_http_data_only=_params.get("_return_http_data_only"),  # noqa: E501
+            _preload_content=_params.get("_preload_content", True),
+            _request_timeout=_params.get("_request_timeout"),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'))
+            _request_auth=_params.get("_request_auth"),
+        )
 
     @validate_arguments
-    def get_prices(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint")], start_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and after this day. Defaults to today.")] = None, end_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and before this day. Defaults to today.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> List[Interval]:  # noqa: E501
+    def get_prices(
+        self,
+        site_id: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint",
+            ),
+        ],
+        start_date: Annotated[
+            Optional[date],
+            Field(
+                description="Return all prices for each interval on and after this day. Defaults to today."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Optional[date],
+            Field(
+                description="Return all prices for each interval on and before this day. Defaults to today."
+            ),
+        ] = None,
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> List[Interval]:  # noqa: E501
         """get_prices  # noqa: E501
 
         Returns all the prices between the start and end dates  # noqa: E501
@@ -416,14 +538,44 @@ class AmberApi:
                  returns the request thread.
         :rtype: List[Interval]
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
+        kwargs["_return_http_data_only"] = True
+        if "_preload_content" in kwargs:
             message = "Error! Please call the get_prices_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_prices_with_http_info(site_id, start_date, end_date, resolution, **kwargs)  # noqa: E501
+        return self.get_prices_with_http_info(
+            site_id, start_date, end_date, resolution, **kwargs
+        )  # noqa: E501
 
     @validate_arguments
-    def get_prices_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint")], start_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and after this day. Defaults to today.")] = None, end_date : Annotated[Optional[date], Field(description="Return all prices for each interval on and before this day. Defaults to today.")] = None, resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_prices_with_http_info(
+        self,
+        site_id: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="ID of the site you are fetching prices for. Can be found using the `/sites` endpoint",
+            ),
+        ],
+        start_date: Annotated[
+            Optional[date],
+            Field(
+                description="Return all prices for each interval on and after this day. Defaults to today."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Optional[date],
+            Field(
+                description="Return all prices for each interval on and before this day. Defaults to today."
+            ),
+        ] = None,
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> ApiResponse:  # noqa: E501
         """get_prices  # noqa: E501
 
         Returns all the prices between the start and end dates  # noqa: E501
@@ -468,83 +620,93 @@ class AmberApi:
 
         _params = locals()
 
-        _all_params = [
-            'site_id',
-            'start_date',
-            'end_date',
-            'resolution'
-        ]
+        _all_params = ["site_id", "start_date", "end_date", "resolution"]
         _all_params.extend(
             [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers'
+                "async_req",
+                "_return_http_data_only",
+                "_preload_content",
+                "_request_timeout",
+                "_request_auth",
+                "_content_type",
+                "_headers",
             ]
         )
 
         # validate the arguments
-        for _key, _val in _params['kwargs'].items():
+        for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
                     " to method get_prices" % _key
                 )
             _params[_key] = _val
-        del _params['kwargs']
+        del _params["kwargs"]
 
         _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
-        if _params['site_id'] is not None:
-            _path_params['siteId'] = _params['site_id']
-
+        if _params["site_id"] is not None:
+            _path_params["siteId"] = _params["site_id"]
 
         # process the query parameters
         _query_params = []
-        if _params.get('start_date') is not None:  # noqa: E501
-            if isinstance(_params['start_date'], date):
-                _query_params.append(('startDate', _params['start_date'].strftime(self.api_client.configuration.date_format)))
+        if _params.get("start_date") is not None:  # noqa: E501
+            if isinstance(_params["start_date"], date):
+                _query_params.append(
+                    (
+                        "startDate",
+                        _params["start_date"].strftime(
+                            self.api_client.configuration.date_format
+                        ),
+                    )
+                )
             else:
-                _query_params.append(('startDate', _params['start_date']))
+                _query_params.append(("startDate", _params["start_date"]))
 
-        if _params.get('end_date') is not None:  # noqa: E501
-            if isinstance(_params['end_date'], date):
-                _query_params.append(('endDate', _params['end_date'].strftime(self.api_client.configuration.date_format)))
+        if _params.get("end_date") is not None:  # noqa: E501
+            if isinstance(_params["end_date"], date):
+                _query_params.append(
+                    (
+                        "endDate",
+                        _params["end_date"].strftime(
+                            self.api_client.configuration.date_format
+                        ),
+                    )
+                )
             else:
-                _query_params.append(('endDate', _params['end_date']))
+                _query_params.append(("endDate", _params["end_date"]))
 
-        if _params.get('resolution') is not None:  # noqa: E501
-            _query_params.append(('resolution', _params['resolution']))
+        if _params.get("resolution") is not None:  # noqa: E501
+            _query_params.append(("resolution", _params["resolution"]))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
+        _header_params = dict(_params.get("_headers", {}))
         # process the form parameters
         _form_params = []
         _files = {}
         # process the body parameter
         _body_params = None
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
+        _header_params["Accept"] = self.api_client.select_header_accept(
+            ["application/json"]
+        )  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['apiKey']  # noqa: E501
+        _auth_settings = ["apiKey"]  # noqa: E501
 
         _response_types_map = {
-            '200': "List[Interval]",
-            '400': None,
-            '401': None,
-            '404': None,
-            '500': None,
+            "200": "List[Interval]",
+            "400": None,
+            "401": None,
+            "404": None,
+            "500": None,
         }
 
         return self.api_client.call_api(
-            '/sites/{siteId}/prices', 'GET',
+            "/sites/{siteId}/prices",
+            "GET",
             _path_params,
             _query_params,
             _header_params,
@@ -553,12 +715,13 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
+            async_req=_params.get("async_req"),
+            _return_http_data_only=_params.get("_return_http_data_only"),  # noqa: E501
+            _preload_content=_params.get("_preload_content", True),
+            _request_timeout=_params.get("_request_timeout"),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'))
+            _request_auth=_params.get("_request_auth"),
+        )
 
     @validate_arguments
     def get_sites(self, **kwargs) -> List[Site]:  # noqa: E501
@@ -582,8 +745,8 @@ class AmberApi:
                  returns the request thread.
         :rtype: List[Site]
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
+        kwargs["_return_http_data_only"] = True
+        if "_preload_content" in kwargs:
             message = "Error! Please call the get_sites_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
         return self.get_sites_with_http_info(**kwargs)  # noqa: E501
@@ -626,29 +789,28 @@ class AmberApi:
 
         _params = locals()
 
-        _all_params = [
-        ]
+        _all_params = []
         _all_params.extend(
             [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers'
+                "async_req",
+                "_return_http_data_only",
+                "_preload_content",
+                "_request_timeout",
+                "_request_auth",
+                "_content_type",
+                "_headers",
             ]
         )
 
         # validate the arguments
-        for _key, _val in _params['kwargs'].items():
+        for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
                     " to method get_sites" % _key
                 )
             _params[_key] = _val
-        del _params['kwargs']
+        del _params["kwargs"]
 
         _collection_formats = {}
 
@@ -658,27 +820,29 @@ class AmberApi:
         # process the query parameters
         _query_params = []
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
+        _header_params = dict(_params.get("_headers", {}))
         # process the form parameters
         _form_params = []
         _files = {}
         # process the body parameter
         _body_params = None
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
+        _header_params["Accept"] = self.api_client.select_header_accept(
+            ["application/json"]
+        )  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['apiKey']  # noqa: E501
+        _auth_settings = ["apiKey"]  # noqa: E501
 
         _response_types_map = {
-            '200': "List[Site]",
-            '401': None,
-            '500': None,
+            "200": "List[Site]",
+            "401": None,
+            "500": None,
         }
 
         return self.api_client.call_api(
-            '/sites', 'GET',
+            "/sites",
+            "GET",
             _path_params,
             _query_params,
             _header_params,
@@ -687,15 +851,46 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
+            async_req=_params.get("async_req"),
+            _return_http_data_only=_params.get("_return_http_data_only"),  # noqa: E501
+            _preload_content=_params.get("_preload_content", True),
+            _request_timeout=_params.get("_request_timeout"),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'))
+            _request_auth=_params.get("_request_auth"),
+        )
 
     @validate_arguments
-    def get_usage(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint")], start_date : Annotated[date, Field(..., description="Return all usage for each interval on and after this day.")], end_date : Annotated[date, Field(..., description="Return all usage for each interval on and before this day.")], resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> List[Usage]:  # noqa: E501
+    def get_usage(
+        self,
+        site_id: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint",
+            ),
+        ],
+        start_date: Annotated[
+            date,
+            Field(
+                ...,
+                description="Return all usage for each interval on and after this day.",
+            ),
+        ],
+        end_date: Annotated[
+            date,
+            Field(
+                ...,
+                description="Return all usage for each interval on and before this day.",
+            ),
+        ],
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> List[Usage]:  # noqa: E501
         """get_usage  # noqa: E501
 
         Returns all usage data between the start and end dates. The API can only return 90-days worth of data.  # noqa: E501
@@ -724,14 +919,46 @@ class AmberApi:
                  returns the request thread.
         :rtype: List[Usage]
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
+        kwargs["_return_http_data_only"] = True
+        if "_preload_content" in kwargs:
             message = "Error! Please call the get_usage_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_usage_with_http_info(site_id, start_date, end_date, resolution, **kwargs)  # noqa: E501
+        return self.get_usage_with_http_info(
+            site_id, start_date, end_date, resolution, **kwargs
+        )  # noqa: E501
 
     @validate_arguments
-    def get_usage_with_http_info(self, site_id : Annotated[StrictStr, Field(..., description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint")], start_date : Annotated[date, Field(..., description="Return all usage for each interval on and after this day.")], end_date : Annotated[date, Field(..., description="Return all usage for each interval on and before this day.")], resolution : Annotated[Optional[StrictInt], Field(description="Specify the required interval duration resolution. Valid options: 30. Default: 30")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_usage_with_http_info(
+        self,
+        site_id: Annotated[
+            StrictStr,
+            Field(
+                ...,
+                description="ID of the site you are fetching usage for. Can be found using the `/sites` enpoint",
+            ),
+        ],
+        start_date: Annotated[
+            date,
+            Field(
+                ...,
+                description="Return all usage for each interval on and after this day.",
+            ),
+        ],
+        end_date: Annotated[
+            date,
+            Field(
+                ...,
+                description="Return all usage for each interval on and before this day.",
+            ),
+        ],
+        resolution: Annotated[
+            Optional[StrictInt],
+            Field(
+                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+            ),
+        ] = None,
+        **kwargs
+    ) -> ApiResponse:  # noqa: E501
         """get_usage  # noqa: E501
 
         Returns all usage data between the start and end dates. The API can only return 90-days worth of data.  # noqa: E501
@@ -776,83 +1003,93 @@ class AmberApi:
 
         _params = locals()
 
-        _all_params = [
-            'site_id',
-            'start_date',
-            'end_date',
-            'resolution'
-        ]
+        _all_params = ["site_id", "start_date", "end_date", "resolution"]
         _all_params.extend(
             [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers'
+                "async_req",
+                "_return_http_data_only",
+                "_preload_content",
+                "_request_timeout",
+                "_request_auth",
+                "_content_type",
+                "_headers",
             ]
         )
 
         # validate the arguments
-        for _key, _val in _params['kwargs'].items():
+        for _key, _val in _params["kwargs"].items():
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
                     " to method get_usage" % _key
                 )
             _params[_key] = _val
-        del _params['kwargs']
+        del _params["kwargs"]
 
         _collection_formats = {}
 
         # process the path parameters
         _path_params = {}
-        if _params['site_id'] is not None:
-            _path_params['siteId'] = _params['site_id']
-
+        if _params["site_id"] is not None:
+            _path_params["siteId"] = _params["site_id"]
 
         # process the query parameters
         _query_params = []
-        if _params.get('start_date') is not None:  # noqa: E501
-            if isinstance(_params['start_date'], date):
-                _query_params.append(('startDate', _params['start_date'].strftime(self.api_client.configuration.date_format)))
+        if _params.get("start_date") is not None:  # noqa: E501
+            if isinstance(_params["start_date"], date):
+                _query_params.append(
+                    (
+                        "startDate",
+                        _params["start_date"].strftime(
+                            self.api_client.configuration.date_format
+                        ),
+                    )
+                )
             else:
-                _query_params.append(('startDate', _params['start_date']))
+                _query_params.append(("startDate", _params["start_date"]))
 
-        if _params.get('end_date') is not None:  # noqa: E501
-            if isinstance(_params['end_date'], date):
-                _query_params.append(('endDate', _params['end_date'].strftime(self.api_client.configuration.date_format)))
+        if _params.get("end_date") is not None:  # noqa: E501
+            if isinstance(_params["end_date"], date):
+                _query_params.append(
+                    (
+                        "endDate",
+                        _params["end_date"].strftime(
+                            self.api_client.configuration.date_format
+                        ),
+                    )
+                )
             else:
-                _query_params.append(('endDate', _params['end_date']))
+                _query_params.append(("endDate", _params["end_date"]))
 
-        if _params.get('resolution') is not None:  # noqa: E501
-            _query_params.append(('resolution', _params['resolution']))
+        if _params.get("resolution") is not None:  # noqa: E501
+            _query_params.append(("resolution", _params["resolution"]))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
+        _header_params = dict(_params.get("_headers", {}))
         # process the form parameters
         _form_params = []
         _files = {}
         # process the body parameter
         _body_params = None
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
+        _header_params["Accept"] = self.api_client.select_header_accept(
+            ["application/json"]
+        )  # noqa: E501
 
         # authentication setting
-        _auth_settings = ['apiKey']  # noqa: E501
+        _auth_settings = ["apiKey"]  # noqa: E501
 
         _response_types_map = {
-            '200': "List[Usage]",
-            '400': None,
-            '401': None,
-            '404': None,
-            '500': None,
+            "200": "List[Usage]",
+            "400": None,
+            "401": None,
+            "404": None,
+            "500": None,
         }
 
         return self.api_client.call_api(
-            '/sites/{siteId}/usage', 'GET',
+            "/sites/{siteId}/usage",
+            "GET",
             _path_params,
             _query_params,
             _header_params,
@@ -861,9 +1098,10 @@ class AmberApi:
             files=_files,
             response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
+            async_req=_params.get("async_req"),
+            _return_http_data_only=_params.get("_return_http_data_only"),  # noqa: E501
+            _preload_content=_params.get("_preload_content", True),
+            _request_timeout=_params.get("_request_timeout"),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'))
+            _request_auth=_params.get("_request_auth"),
+        )

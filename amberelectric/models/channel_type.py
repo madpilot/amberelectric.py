@@ -14,12 +14,17 @@
 
 
 import json
-import pprint
-import re  # noqa: F401
-from aenum import Enum, no_arg
+from aenum import Enum  # type: ignore
+from typing import Type, TypeVar
+
+T = TypeVar("T", bound="ChannelType")
 
 
+try:
+    pass
 
+except ImportError:
+    pass
 
 
 class ChannelType(str, Enum):
@@ -30,13 +35,11 @@ class ChannelType(str, Enum):
     """
     allowed enum values
     """
-    GENERAL = 'general'
-    CONTROLLEDLOAD = 'controlledLoad'
-    FEEDIN = 'feedIn'
+    GENERAL = "general"
+    CONTROLLEDLOAD = "controlledLoad"
+    FEEDIN = "feedIn"
 
     @classmethod
-    def from_json(cls, json_str: str) -> ChannelType:
+    def from_json(cls: Type[T], json_str: str) -> T:
         """Create an instance of ChannelType from a JSON string"""
         return ChannelType(json.loads(json_str))
-
-
