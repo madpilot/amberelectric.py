@@ -19,7 +19,7 @@ import logging
 import re
 import ssl
 
-from urllib.parse import urlencode, quote_plus
+from urllib.parse import urlencode
 import urllib3
 
 from amberelectric.exceptions import ApiException, UnauthorizedException, ForbiddenException, NotFoundException, ServiceException, ApiValueError, BadRequestException
