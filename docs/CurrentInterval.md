@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 **descriptor** | [**PriceDescriptor**](PriceDescriptor.md) |  | 
 **range** | [**Range**](Range.md) |  | [optional] 
 **estimate** | **bool** | Shows true the current price is an estimate. Shows false is the price has been locked in. | 
-**advanced_price** | [**AdvancedPrice**](AdvancedPrice.md) | Amber has created an advanced forecast system, that represents our confidence in the AEMO forecast. The range indicates where we think the price will land for a given interval. The advanced price will only be returned if the current price is an estimate. | [optional] 
+**advanced_price** | [**AdvancedPrice**](AdvancedPrice.md) |  | [optional] 
 
 ## Example
 

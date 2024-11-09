@@ -22,10 +22,10 @@ from datetime import date, datetime
 
 try:
 
-    from pydantic.v1 import BaseModel, Field, StrictInt, StrictStr, confloat, validator
+    from pydantic.v1 import BaseModel, Field, StrictInt, StrictStr, validator
 except ImportError:
 
-    from pydantic import BaseModel, Field, StrictInt, StrictStr, confloat, validator
+    from pydantic import BaseModel, Field, StrictInt, StrictStr, validator
 from amberelectric.models.renewable_descriptor import RenewableDescriptor
 
 
@@ -58,7 +58,7 @@ class ForecastRenewable(BaseModel):
         alias="endTime",
         description="End time of the interval in UTC. Formatted as a ISO 8601 time",
     )
-    renewables: confloat(le=100, ge=0) = Field(
+    renewables: float = Field(
         default=..., description="Percentage of renewables in the grid"
     )
     descriptor: RenewableDescriptor = Field(...)

@@ -6,7 +6,7 @@ Amber has created an advanced forecast system, that represents our confidence in
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **low** | **float** | The lower bound of our prediction band. Price includes network and market fees. (c/kWh). | 
-**predicted** | **float** | The predicted price. Use this if you need a single number for forecasting against. Price includes network and market fees. (c/kWh). | 
+**predicted** | **float** | The predicted price. Use this if you need a single number to forecast against. Price includes network and market fees. (c/kWh). | 
 **high** | **float** | The upper bound of our prediction band. Price includes network and market fees. (c/kWh). | 
 
 ## Example

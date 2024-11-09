@@ -23,10 +23,10 @@ from typing import Optional
 
 try:
 
-    from pydantic.v1 import BaseModel, Field, StrictInt, StrictStr, confloat, validator
+    from pydantic.v1 import BaseModel, Field, StrictInt, StrictStr, validator
 except ImportError:
 
-    from pydantic import BaseModel, Field, StrictInt, StrictStr, confloat, validator
+    from pydantic import BaseModel, Field, StrictInt, StrictStr, validator
 from amberelectric.models.channel_type import ChannelType
 from amberelectric.models.price_descriptor import PriceDescriptor
 from amberelectric.models.spike_status import SpikeStatus
@@ -72,7 +72,7 @@ class Usage(BaseModel):
         alias="endTime",
         description="End time of the interval in UTC. Formatted as a ISO 8601 time",
     )
-    renewables: confloat(le=100, ge=0) = Field(
+    renewables: float = Field(
         default=..., description="Percentage of renewables in the grid"
     )
     channel_type: ChannelType = Field(default=..., alias="channelType")

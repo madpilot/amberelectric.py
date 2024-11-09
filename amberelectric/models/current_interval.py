@@ -29,20 +29,11 @@ try:
         StrictBool,
         StrictInt,
         StrictStr,
-        confloat,
         validator,
     )
 except ImportError:
 
-    from pydantic import (
-        BaseModel,
-        Field,
-        StrictBool,
-        StrictInt,
-        StrictStr,
-        confloat,
-        validator,
-    )
+    from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, validator
 from amberelectric.models.advanced_price import AdvancedPrice
 from amberelectric.models.channel_type import ChannelType
 from amberelectric.models.price_descriptor import PriceDescriptor
@@ -90,7 +81,7 @@ class CurrentInterval(BaseModel):
         alias="endTime",
         description="End time of the interval in UTC. Formatted as a ISO 8601 time",
     )
-    renewables: confloat(le=100, ge=0) = Field(
+    renewables: float = Field(
         default=..., description="Percentage of renewables in the grid"
     )
     channel_type: ChannelType = Field(default=..., alias="channelType")
@@ -104,11 +95,7 @@ class CurrentInterval(BaseModel):
         default=...,
         description="Shows true the current price is an estimate. Shows false is the price has been locked in.",
     )
-    advanced_price: Optional[AdvancedPrice] = Field(
-        default=None,
-        alias="advancedPrice",
-        description="Amber has created an advanced forecast system, that represents our confidence in the AEMO forecast. The range indicates where we think the price will land for a given interval. The advanced price will only be returned if the current price is an estimate.",
-    )
+    advanced_price: Optional[AdvancedPrice] = Field(default=None, alias="advancedPrice")
     __properties = [
         "type",
         "duration",
@@ -180,16 +167,6 @@ class CurrentInterval(BaseModel):
             and "tariff_information" in self.__fields_set__
         ):
             _dict["tariffInformation"] = None
-
-        # set to None if range (nullable) is None
-        # and __fields_set__ contains the field
-        if self.range is None and "range" in self.__fields_set__:
-            _dict["range"] = None
-
-        # set to None if advanced_price (nullable) is None
-        # and __fields_set__ contains the field
-        if self.advanced_price is None and "advanced_price" in self.__fields_set__:
-            _dict["advancedPrice"] = None
 
         return _dict
 

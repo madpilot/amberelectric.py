@@ -38,7 +38,7 @@ class AdvancedPrice(BaseModel):
     )
     predicted: float = Field(
         default=...,
-        description="The predicted price. Use this if you need a single number for forecasting against. Price includes network and market fees. (c/kWh).",
+        description="The predicted price. Use this if you need a single number to forecast against. Price includes network and market fees. (c/kWh).",
     )
     high: float = Field(
         default=...,
