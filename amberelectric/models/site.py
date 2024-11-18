@@ -23,10 +23,10 @@ from typing import List, Optional
 
 try:
 
-    from pydantic.v1 import BaseModel, Field, StrictStr, conlist, constr
+    from pydantic.v1 import BaseModel, Field, StrictStr, conlist, constr, validator
 except ImportError:
 
-    from pydantic import BaseModel, Field, StrictStr, conlist, constr
+    from pydantic import BaseModel, Field, StrictStr, conlist, constr, validator
 from amberelectric.models.channel import Channel
 from amberelectric.models.site_status import SiteStatus
 
@@ -57,6 +57,11 @@ class Site(BaseModel):
         alias="closedOn",
         description="Date the site closed. Undefined if the site is pending or active. Formatted as a ISO 8601 date when present.",
     )
+    interval_length: float = Field(
+        default=...,
+        alias="intervalLength",
+        description="Length of interval that you will be billed on. 5 or 30 minutes.",
+    )
     __properties = [
         "id",
         "nmi",
@@ -65,7 +70,15 @@ class Site(BaseModel):
         "status",
         "activeFrom",
         "closedOn",
+        "intervalLength",
     ]
+
+    @validator("interval_length")
+    def interval_length_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in (5, 30):
+            raise ValueError("must be one of enum values (5, 30)")
+        return value
 
     class Config:
         """Pydantic configuration"""
@@ -120,6 +133,11 @@ class Site(BaseModel):
                 "status": obj.get("status"),
                 "active_from": obj.get("activeFrom"),
                 "closed_on": obj.get("closedOn"),
+                "interval_length": (
+                    obj.get("intervalLength")
+                    if obj.get("intervalLength") is not None
+                    else 30
+                ),
             }
         )
         return _obj

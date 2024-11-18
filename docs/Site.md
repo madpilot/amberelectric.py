@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **status** | [**SiteStatus**](SiteStatus.md) |  | 
 **active_from** | **date** | Date the site became active. This date will be in the future for pending sites. It may also be undefined, though if it is, contact [info@amber.com.au](mailto:info@amber.com.au) - there may be an issue with your address. Formatted as a ISO 8601 date when present. | [optional] 
 **closed_on** | **date** | Date the site closed. Undefined if the site is pending or active. Formatted as a ISO 8601 date when present. | [optional] 
+**interval_length** | **float** | Length of interval that you will be billed on. 5 or 30 minutes. | [default to 30]
 
 ## Example
 
