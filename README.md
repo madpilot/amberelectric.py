@@ -32,18 +32,12 @@ Then import the package:
 import amberelectric
 ```
 
-### Setuptools
+### Building
 
-Install via [Setuptools](http://pypi.python.org/pypi/setuptools).
+Build via Poetry
 
 ```sh
-python setup.py install --user
-```
-(or `sudo python setup.py install` to install the package for all users)
-
-Then import the package:
-```python
-import amberelectric
+poetry build
 ```
 
 ### Tests
