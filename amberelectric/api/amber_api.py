@@ -72,7 +72,7 @@ class AmberApi:
         resolution: Annotated[
             Optional[StrictInt],
             Field(
-                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length."
             ),
         ] = None,
         **kwargs
@@ -92,7 +92,7 @@ class AmberApi:
         :type next: int
         :param previous: Return the _previous_ number of actual intervals.
         :type previous: int
-        :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
+        :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length.
         :type resolution: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
@@ -134,7 +134,7 @@ class AmberApi:
         resolution: Annotated[
             Optional[StrictInt],
             Field(
-                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length."
             ),
         ] = None,
         **kwargs
@@ -154,7 +154,7 @@ class AmberApi:
         :type next: int
         :param previous: Return the _previous_ number of actual intervals.
         :type previous: int
-        :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
+        :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length.
         :type resolution: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
@@ -505,7 +505,7 @@ class AmberApi:
         resolution: Annotated[
             Optional[StrictInt],
             Field(
-                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30"
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length."
             ),
         ] = None,
         **kwargs
@@ -525,7 +525,7 @@ class AmberApi:
         :type start_date: date
         :param end_date: Return all prices for each interval on and before this day. Defaults to today.
         :type end_date: date
-        :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: 30
+        :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length.
         :type resolution: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
@@ -571,7 +571,7 @@ class AmberApi:
         resolution: Annotated[
             Optional[StrictInt],
             Field(
-                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: 30"
+                description="Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length."
             ),
         ] = None,
         **kwargs
@@ -591,7 +591,7 @@ class AmberApi:
         :type start_date: date
         :param end_date: Return all prices for each interval on and before this day. Defaults to today.
         :type end_date: date
-        :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: 30
+        :param resolution: Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length.
         :type resolution: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
@@ -886,7 +886,7 @@ class AmberApi:
         resolution: Annotated[
             Optional[StrictInt],
             Field(
-                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+                description="Deprecated. Usage will always be returned in your billing interval length. If you supply this parameter, it will be ignored."
             ),
         ] = None,
         **kwargs
@@ -906,7 +906,7 @@ class AmberApi:
         :type start_date: date
         :param end_date: Return all usage for each interval on and before this day. (required)
         :type end_date: date
-        :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
+        :param resolution: Deprecated. Usage will always be returned in your billing interval length. If you supply this parameter, it will be ignored.
         :type resolution: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
@@ -954,7 +954,7 @@ class AmberApi:
         resolution: Annotated[
             Optional[StrictInt],
             Field(
-                description="Specify the required interval duration resolution. Valid options: 30. Default: 30"
+                description="Deprecated. Usage will always be returned in your billing interval length. If you supply this parameter, it will be ignored."
             ),
         ] = None,
         **kwargs
@@ -974,7 +974,7 @@ class AmberApi:
         :type start_date: date
         :param end_date: Return all usage for each interval on and before this day. (required)
         :type end_date: date
-        :param resolution: Specify the required interval duration resolution. Valid options: 30. Default: 30
+        :param resolution: Deprecated. Usage will always be returned in your billing interval length. If you supply this parameter, it will be ignored.
         :type resolution: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional

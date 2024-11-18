@@ -52,7 +52,7 @@ with amberelectric.ApiClient(configuration) as api_client:
     site_id = '01J23BAP2SFA218BMV8A73Y9Z9' # str | ID of the site you are fetching prices for. Can be found using the `/sites` enpoint
     next = 48 # int | Return the _next_ number of forecast intervals (optional)
     previous = 48 # int | Return the _previous_ number of actual intervals. (optional)
-    resolution = 30 # int | Specify the required interval duration resolution. Valid options: 30. Default: 30 (optional) (default to 30)
+    resolution = 56 # int | Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length. (optional)
 
     try:
         api_response = api_instance.get_current_prices(site_id, next=next, previous=previous, resolution=resolution)
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
  **site_id** | **str**| ID of the site you are fetching prices for. Can be found using the &#x60;/sites&#x60; enpoint | 
  **next** | **int**| Return the _next_ number of forecast intervals | [optional] 
  **previous** | **int**| Return the _previous_ number of actual intervals. | [optional] 
- **resolution** | **int**| Specify the required interval duration resolution. Valid options: 30. Default: 30 | [optional] [default to 30]
+ **resolution** | **int**| Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length. | [optional] 
 
 ### Return type
 
@@ -213,7 +213,7 @@ with amberelectric.ApiClient(configuration) as api_client:
     site_id = '01J23BAP2SFA218BMV8A73Y9Z9' # str | ID of the site you are fetching prices for. Can be found using the `/sites` endpoint
     start_date = '2021-05-05' # date | Return all prices for each interval on and after this day. Defaults to today. (optional)
     end_date = '2021-05-05' # date | Return all prices for each interval on and before this day. Defaults to today. (optional)
-    resolution = 30 # int | Specify the required interval duration resolution. Valid options: 5, 30. Default: 30 (optional) (default to 30)
+    resolution = 56 # int | Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length. (optional)
 
     try:
         api_response = api_instance.get_prices(site_id, start_date=start_date, end_date=end_date, resolution=resolution)
@@ -232,7 +232,7 @@ Name | Type | Description  | Notes
  **site_id** | **str**| ID of the site you are fetching prices for. Can be found using the &#x60;/sites&#x60; endpoint | 
  **start_date** | **date**| Return all prices for each interval on and after this day. Defaults to today. | [optional] 
  **end_date** | **date**| Return all prices for each interval on and before this day. Defaults to today. | [optional] 
- **resolution** | **int**| Specify the required interval duration resolution. Valid options: 5, 30. Default: 30 | [optional] [default to 30]
+ **resolution** | **int**| Specify the required interval duration resolution. Valid options: 5, 30. Default: Your billing interval length. | [optional] 
 
 ### Return type
 
@@ -373,7 +373,7 @@ with amberelectric.ApiClient(configuration) as api_client:
     site_id = '01J23BAP2SFA218BMV8A73Y9Z9' # str | ID of the site you are fetching usage for. Can be found using the `/sites` enpoint
     start_date = '2021-05-05' # date | Return all usage for each interval on and after this day.
     end_date = '2021-05-05' # date | Return all usage for each interval on and before this day.
-    resolution = 30 # int | Specify the required interval duration resolution. Valid options: 30. Default: 30 (optional) (default to 30)
+    resolution = 56 # int | Deprecated. Usage will always be returned in your billing interval length. If you supply this parameter, it will be ignored. (optional)
 
     try:
         api_response = api_instance.get_usage(site_id, start_date, end_date, resolution=resolution)
@@ -392,7 +392,7 @@ Name | Type | Description  | Notes
  **site_id** | **str**| ID of the site you are fetching usage for. Can be found using the &#x60;/sites&#x60; enpoint | 
  **start_date** | **date**| Return all usage for each interval on and after this day. | 
  **end_date** | **date**| Return all usage for each interval on and before this day. | 
- **resolution** | **int**| Specify the required interval duration resolution. Valid options: 30. Default: 30 | [optional] [default to 30]
+ **resolution** | **int**| Deprecated. Usage will always be returned in your billing interval length. If you supply this parameter, it will be ignored. | [optional] 
 
 ### Return type
 
