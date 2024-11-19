@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "amberelectric"
-version = "2.0.8"
+version = "2.0.9"
 description = "Amber Electric Public API"
 authors = ["Amber Electric Development Team <dev@amber.com.au>"]
-license = "Apache Software License"
+license = "Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/madpilot/amberelectric.py"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Amber Electric Public API"]
