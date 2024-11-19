@@ -15,7 +15,7 @@
 """  # noqa: E501
 
 
-__version__ = "2.0.10"
+__version__ = "2.0.12"
 
 # import apis into sdk package
 from amberelectric.api.amber_api import AmberApi
