@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "amberelectric"
-version = "2.0.6"
+version = "2.0.7"
 description = "Amber Electric Public API"
 authors = ["Amber Electric Development Team <dev@amber.com.au>"]
-license = "Apache Software License"
+license = "Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
+repository = "https://github.com/madpilot/amberelectric.py"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Amber Electric Public API"]
 include = ["amberelectric/py.typed"]
 
