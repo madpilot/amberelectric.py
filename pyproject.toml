@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "amberelectric"
-version = "2.0.5"
+version = "2.0.6"
 description = "Amber Electric Public API"
 authors = ["Amber Electric Development Team <dev@amber.com.au>"]
 license = "Apache Software License"
